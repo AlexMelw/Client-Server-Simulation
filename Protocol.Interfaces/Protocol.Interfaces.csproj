@@ -41,8 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ICommunicationProtocol.cs" />
-    <Compile Include="ITcpCommunicationProtocol.cs" />
-    <Compile Include="IUdpCommunicationProtocol.cs" />
+    <Compile Include="ICommunicationProtocolRequestProcessor.cs" />
+    <Compile Include="ICommunicationProtocolResponseProcessor.cs" />
+    <Compile Include="IServerWorker.cs" />
+    <Compile Include="IWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -41,6 +41,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestProcessor.cs" />
+    <Compile Include="ResponseProcessor.cs" />
+    <Compile Include="TcpWorker.cs" />
+    <Compile Include="UdpWorker.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\EasySharp\NHelpers\NHelpers.csproj">
+      <Project>{cac83cf1-e5d4-45f6-85cc-e0ad29b55a8e}</Project>
+      <Name>NHelpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Protocol.Interfaces\Protocol.Interfaces.csproj">
+      <Project>{6FA0AB1A-03E8-4C70-B628-8507CAA15247}</Project>
+      <Name>Protocol.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
