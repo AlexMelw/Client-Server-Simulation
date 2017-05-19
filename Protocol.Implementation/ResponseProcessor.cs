@@ -1,8 +1,8 @@
-﻿namespace Presentation.Console.ClientApp
+﻿namespace Protocol.Implementation
 {
     using System;
     using System.Collections.Generic;
-    using Protocol.Interfaces;
+    using Interfaces;
 
     public class ResponseProcessor : ICommunicationProtocolResponseProcessor
     {

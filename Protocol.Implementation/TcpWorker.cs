@@ -1,4 +1,4 @@
-﻿namespace Presentation.Console.ClientApp
+﻿namespace Protocol.Implementation
 {
     using System;
     using System.Linq;
@@ -6,20 +6,20 @@
     using System.Net.Sockets;
     using System.Threading;
     using EasySharp.NHelpers;
-    using Protocol.Interfaces;
+    using Interfaces;
 
     public class TcpWorker : IWorker
     {
+        private ICommunicationProtocolResponseProcessor _responseProcessor;
         private const int FromBeginning = 0;
         private const int EthernetTcpUdpPacketSize = 1472;
         private TcpClient _client;
+        public TcpWorker(ICommunicationProtocolResponseProcessor responseProcessor)
+        {
+            _responseProcessor = responseProcessor;
+        }
         public int Port { get; private set; }
         public IPAddress RemoteHostIpAddress { get; private set; }
-
-        public void Init(string ipAddress, int port)
-        {
-            Init(IPAddress.Parse(ipAddress), port);
-        }
 
         public void Init(IPAddress ipAddress, int port)
         {
@@ -72,6 +72,11 @@
             {
                 networkStream.Write(bufferBytesArray, FromBeginning, bufferBytesArray.Length);
             }
+        }
+
+        public void Init(string ipAddress, int port)
+        {
+            Init(IPAddress.Parse(ipAddress), port);
         }
     }
 }
