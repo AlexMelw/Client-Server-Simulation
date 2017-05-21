@@ -11,7 +11,7 @@
 
         private static void Main(string[] args)
         {
-            var tcpWorker = new TcpClientWorker(new ResponseProcessor());
+            var tcpWorker = new TcpClientWorker(new ResponseProcessor(new ResponseParser()));
             tcpWorker.Init(Localhost, ConnectionPort);
             tcpWorker.StartCommunication();
         }
