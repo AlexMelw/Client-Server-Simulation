@@ -51,7 +51,7 @@
                 {
                     string textToBeSent = Console.ReadLine();
                     NetworkStream networkStream = _client.GetStream();
-                    byte[] bufferBytesArray = textToBeSent.GetAsciiEncodedByteArray();
+                    byte[] bufferBytesArray = textToBeSent.ToAsciiEncodedByteArray();
 
                     Console.Out.WriteLine($"Transmitting [ {textToBeSent} ]");
 
@@ -79,7 +79,7 @@
                 throw new Exception($"{nameof(_client)} is not initialized");
             }
             NetworkStream networkStream = _client.GetStream();
-            byte[] bufferBytesArray = message.GetAsciiEncodedByteArray();
+            byte[] bufferBytesArray = message.ToAsciiEncodedByteArray();
 
             Console.Out.WriteLine($"Transmitting [ {message} ]");
 

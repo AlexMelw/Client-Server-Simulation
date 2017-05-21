@@ -2,12 +2,22 @@
 {
     using System;
     using System.Diagnostics;
-    using Interfaces;
     using Interfaces.Request;
     using TranslatorService;
 
     public class RequestProcessor : ICommunicationProtocolRequestProcessor
     {
+        private readonly RequestParser _requestParser;
+
+        #region CONSTRUCTORS
+
+        public RequestProcessor(RequestParser requestParser)
+        {
+            _requestParser = requestParser;
+        }
+
+        #endregion
+
         public void ProcessRequest(string response)
         {
             throw new NotImplementedException();
@@ -20,10 +30,10 @@
                 var translatorClient = new LanguageServiceClient();
 
                 translatorClient.Translate(
-                    appId: "6CE9C85A41571C050C379F60DA173D286384E0F2",
-                    text: sourceText,
-                    @from: "",
-                    to: "en");
+                    "6CE9C85A41571C050C379F60DA173D286384E0F2",
+                    sourceText,
+                    "",
+                    "en");
 
 
                 //todo
