@@ -1,23 +1,24 @@
-﻿namespace Protocol.Implementation
+﻿namespace Protocol.Implementation.Workers
 {
     using System;
     using System.Net;
-    using Protocol.Interfaces;
+    using Interfaces;
+    using Interfaces.Response;
 
-    public class UdpWorker : IWorker
+    public class UdpClientWorker : IClientWorker
     {
         private ICommunicationProtocolResponseProcessor _responseProcessor;
-        public UdpWorker(ICommunicationProtocolResponseProcessor responseProcessor)
+
+        #region CONSTRUCTORS
+
+        public UdpClientWorker(ICommunicationProtocolResponseProcessor responseProcessor)
         {
             _responseProcessor = responseProcessor;
         }
 
-        public void Send(string message)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
 
-        public void Receive(string message)
+        public void Send(string message)
         {
             throw new NotImplementedException();
         }
@@ -28,6 +29,11 @@
         }
 
         public void StartCommunication()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Receive(string message)
         {
             throw new NotImplementedException();
         }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Protocol.Interfaces
+﻿namespace Protocol.Interfaces.Common
 {
     public interface ICommunicationProtocol
     {

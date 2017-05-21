@@ -1,8 +1,8 @@
-namespace Protocol.Interfaces
+namespace Protocol.Interfaces.Response
 {
     public interface ICommunicationProtocolResponseProcessor
     {
-        string ProcessResponseGetImageSrc(string response);
+        byte[] ProcessResponseGetImageBytes(string response);
 
         //ConcurrentDictionary<string, string> ParseResponse(string response);
     }

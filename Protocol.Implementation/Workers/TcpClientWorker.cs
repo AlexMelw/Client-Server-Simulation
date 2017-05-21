@@ -1,4 +1,4 @@
-﻿namespace Protocol.Implementation
+﻿namespace Protocol.Implementation.Workers
 {
     using System;
     using System.Linq;
@@ -7,19 +7,25 @@
     using System.Threading;
     using EasySharp.NHelpers;
     using Interfaces;
+    using Interfaces.Response;
 
-    public class TcpWorker : IWorker
+    public class TcpClientWorker : IClientWorker
     {
-        private ICommunicationProtocolResponseProcessor _responseProcessor;
         private const int FromBeginning = 0;
         private const int EthernetTcpUdpPacketSize = 1472;
         private TcpClient _client;
-        public TcpWorker(ICommunicationProtocolResponseProcessor responseProcessor)
+        private ICommunicationProtocolResponseProcessor _responseProcessor;
+        public int Port { get; private set; }
+        public IPAddress RemoteHostIpAddress { get; private set; }
+
+        #region CONSTRUCTORS
+
+        public TcpClientWorker(ICommunicationProtocolResponseProcessor responseProcessor)
         {
             _responseProcessor = responseProcessor;
         }
-        public int Port { get; private set; }
-        public IPAddress RemoteHostIpAddress { get; private set; }
+
+        #endregion
 
         public void Init(IPAddress ipAddress, int port)
         {
@@ -30,6 +36,11 @@
 
         public void StartCommunication()
         {
+            if (_client == null)
+            {
+                throw new Exception($"{nameof(_client)} is not initialized");
+            }
+
             new Thread(() =>
             {
                 Console.Out.WriteLine("Connecting to server");
@@ -63,6 +74,10 @@
 
         public void Send(string message)
         {
+            if (_client == null)
+            {
+                throw new Exception($"{nameof(_client)} is not initialized");
+            }
             NetworkStream networkStream = _client.GetStream();
             byte[] bufferBytesArray = message.GetAsciiEncodedByteArray();
 

@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation.Console.Client
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation.Console.ServerApp", "Presentation.Console.ServerApp\Presentation.Console.ServerApp.csproj", "{24FD1886-FD11-4705-AABC-32C5467736E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation.WinForms.ServerApp", "Presentation.WinForms.ServerApp\Presentation.WinForms.ServerApp.csproj", "{FA3A3B0F-77FC-498D-A36C-6ACFBD9476A0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation.WinForms.ClientApp", "Presentation.WinForms.ClientApp\Presentation.WinForms.ClientApp.csproj", "{459E9F9F-B9A1-429C-BEC8-D7D9CEB9AAFF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{D2F0F193-B562-4209-8919-F05E0FD88420}"
@@ -53,10 +51,6 @@ Global
 		{24FD1886-FD11-4705-AABC-32C5467736E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24FD1886-FD11-4705-AABC-32C5467736E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24FD1886-FD11-4705-AABC-32C5467736E9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FA3A3B0F-77FC-498D-A36C-6ACFBD9476A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FA3A3B0F-77FC-498D-A36C-6ACFBD9476A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FA3A3B0F-77FC-498D-A36C-6ACFBD9476A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FA3A3B0F-77FC-498D-A36C-6ACFBD9476A0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{459E9F9F-B9A1-429C-BEC8-D7D9CEB9AAFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{459E9F9F-B9A1-429C-BEC8-D7D9CEB9AAFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{459E9F9F-B9A1-429C-BEC8-D7D9CEB9AAFF}.Release|Any CPU.ActiveCfg = Release|Any CPU

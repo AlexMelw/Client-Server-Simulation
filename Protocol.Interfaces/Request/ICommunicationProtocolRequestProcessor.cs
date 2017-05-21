@@ -1,4 +1,4 @@
-﻿namespace Protocol.Interfaces
+﻿namespace Protocol.Interfaces.Request
 {
     public interface ICommunicationProtocolRequestProcessor
     {

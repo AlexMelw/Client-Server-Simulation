@@ -1,31 +1,19 @@
-﻿namespace Protocol.Implementation
+﻿namespace Protocol.Implementation.Response
 {
     using System.Collections.Concurrent;
     using System.Text.RegularExpressions;
-    using Interfaces;
+    using Interfaces.Response;
 
-    public class ResponseParser : ICommunicationProtocolResponseProcessor
+    public class ResponseParser : ICommunicationProtocolResponseParser
     {
+        private const long Size10MB = 10 * 1024 * 1024L;
         private const string StatusCode = "StatusCode";
         private const string ObjectType = "objectType";
         private const string ObjectValue = "objectValue";
         private const string StatusDescription = "StatusDescription";
-
+        private const int FromBeginning = 0;
         private readonly string _pattern = @"(THIS IS A PATTERN)";
-
-        public string ProcessResponseGetImageSrc(string response)
-        {
-            var responseComponents = ParseResponse(response);
-
-            /* PROCESS RESPONSE */
-
-            // Maybe deserialize JSON/XML and get image src.
-
-            return "IMAGE SOURCE (SRC='http://example.com/image.png')";
-        }
-        //private ConcurrentDictionary<string, string> responseComponents;
-
-        private ConcurrentDictionary<string, string> ParseResponse(string response)
+        public ConcurrentDictionary<string, string> ParseResponse(string response)
         {
             Regex parser = new Regex(_pattern);
             Match match = parser.Match(response);

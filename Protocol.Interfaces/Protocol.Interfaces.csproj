@@ -40,11 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ICommunicationProtocol.cs" />
-    <Compile Include="ICommunicationProtocolRequestProcessor.cs" />
-    <Compile Include="ICommunicationProtocolResponseProcessor.cs" />
+    <Compile Include="Common\ICommunicationProtocol.cs" />
+    <Compile Include="Request\ICommunicationProtocolRequestParser.cs" />
+    <Compile Include="Request\ICommunicationProtocolRequestProcessor.cs" />
+    <Compile Include="Response\ICommunicationProtocolResponseParser.cs" />
+    <Compile Include="Response\ICommunicationProtocolResponseProcessor.cs" />
     <Compile Include="IServerWorker.cs" />
-    <Compile Include="IWorker.cs" />
+    <Compile Include="IClientWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
