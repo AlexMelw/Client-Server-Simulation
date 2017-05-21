@@ -1,6 +1,6 @@
 namespace Protocol.Interfaces.Response
 {
-    public interface ICommunicationProtocolResponseProcessor
+    public interface IFlowProtocolResponseProcessor
     {
         byte[] ProcessResponseGetImageBytes(string response);
 

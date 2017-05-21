@@ -41,13 +41,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\ICommunicationProtocol.cs" />
-    <Compile Include="Request\ICommunicationProtocolRequestParser.cs" />
-    <Compile Include="Request\ICommunicationProtocolRequestProcessor.cs" />
-    <Compile Include="Response\ICommunicationProtocolResponseParser.cs" />
-    <Compile Include="Response\ICommunicationProtocolResponseProcessor.cs" />
+    <Compile Include="ProtocolHelpers\CommunicationProtocolEncodingHelper.cs" />
+    <Compile Include="Request\IFlowProtocolRequestParser.cs" />
+    <Compile Include="Request\IFlowProtocolRequestProcessor.cs" />
+    <Compile Include="Response\IFlowProtocolResponseParser.cs" />
+    <Compile Include="Response\IFlowProtocolResponseProcessor.cs" />
     <Compile Include="IServerWorker.cs" />
     <Compile Include="IClientWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\EasySharp\NHelpers\NHelpers.csproj">
+      <Project>{CAC83CF1-E5D4-45F6-85CC-E0AD29B55A8E}</Project>
+      <Name>NHelpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

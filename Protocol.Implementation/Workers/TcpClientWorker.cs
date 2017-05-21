@@ -14,13 +14,13 @@
         private const int FromBeginning = 0;
         private const int EthernetTcpUdpPacketSize = 1472;
         private TcpClient _client;
-        private ICommunicationProtocolResponseProcessor _responseProcessor;
+        private IFlowProtocolResponseProcessor _responseProcessor;
         public int Port { get; private set; }
         public IPAddress RemoteHostIpAddress { get; private set; }
 
         #region CONSTRUCTORS
 
-        public TcpClientWorker(ICommunicationProtocolResponseProcessor responseProcessor)
+        public TcpClientWorker(IFlowProtocolResponseProcessor responseProcessor)
         {
             _responseProcessor = responseProcessor;
         }

@@ -5,7 +5,7 @@
     using Interfaces;
     using Interfaces.Request;
 
-    public class RequestParser : ICommunicationProtocolRequestParser
+    public class RequestParser : IFlowProtocolRequestParser
     {
         private const string ClientTypeListenPortPattern =
             @"\s+--clienttype='(?<clienttype>(?:udp|tcp))'\s+--listenport='(?<listenport>\d{1,5})'";

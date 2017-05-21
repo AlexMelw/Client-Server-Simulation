@@ -1,6 +1,6 @@
 ﻿namespace Protocol.Interfaces.Request
 {
-    public interface ICommunicationProtocolRequestProcessor
+    public interface IFlowProtocolRequestProcessor
     {
         void ProcessRequest(string response);
 

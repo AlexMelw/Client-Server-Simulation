@@ -2,7 +2,7 @@
 {
     using System.Collections.Concurrent;
 
-    public interface ICommunicationProtocolResponseParser
+    public interface IFlowProtocolResponseParser
     {
         ConcurrentDictionary<string, string> ParseResponse(string response);
     }

@@ -6,30 +6,44 @@ using System.Threading.Tasks;
 
 namespace TestTcpClient
 {
+    using System.Net;
     using System.Net.Sockets;
     using EasySharp.NHelpers;
+    using Protocol.Interfaces.ProtocolHelpers;
 
     class Program
     {
+        private const string Localhost = "127.0.0.1";
+        private const string CloseConnection = "close connection";
+
         static void Main(string[] args)
         {
             TcpClient tcpClient = new TcpClient();
-            Console.WriteLine("Connecting to server");
+            Console.WriteLine(" Connecting to server");
 
-            tcpClient.Connect("127.0.0.1", 5150);
-            Console.WriteLine("Connected");
-            Console.WriteLine("enter The string to be  transmitted");
+            tcpClient.Connect(IPAddress.Parse(Localhost), 5150);
+            Console.WriteLine(" Connected");
 
             string textToTransmit = string.Empty;
 
             while (textToTransmit != "quit")
             {
+                Console.WriteLine(" Enter The string to be transmitted: ");
                 textToTransmit = Console.ReadLine();
 
-                NetworkStream tcpStream = tcpClient.GetStream();
-                byte[] bytesArray = textToTransmit.ToAsciiEncodedByteArray();
+                if (!tcpClient.Connected)
+                {
+                    Console.Out.WriteLine(" Client is not connected to the server!");
+                    Console.ReadLine();
+                    tcpClient.Close();
+                }
 
-                Console.WriteLine("Transmitting.....");
+                NetworkStream tcpStream = tcpClient.GetStream();
+
+
+                byte[] bytesArray = textToTransmit.ToFlowProtocolAsciiEncodedBytesArray();
+
+                Console.WriteLine(" Transmitting.....");
 
                 tcpStream.Write(bytesArray, 0, bytesArray.Length);
 
@@ -37,9 +51,13 @@ namespace TestTcpClient
 
                 int bytesRead = tcpStream.Read(bufferArray, 0, 1472);
 
-                for (int i = 0; i < bytesRead; i++)
+                string serverResponse = bufferArray.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
+
+                if (serverResponse == CloseConnection)
                 {
-                    Console.Write(Convert.ToChar(bufferArray[i]));
+                    Console.Out.WriteLine(" Server is no more serving requests");
+                    Console.ReadLine();
+                    break;
                 }
             }
             tcpClient.Close();

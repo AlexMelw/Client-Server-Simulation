@@ -9,7 +9,7 @@
     using Interfaces;
     using Interfaces.Response;
 
-    public class ResponseProcessor : ICommunicationProtocolResponseProcessor
+    public class ResponseProcessor : IFlowProtocolResponseProcessor
     {
         private const long Size10MB = 10 * 1024 * 1024L;
         private const string StatusCode = "StatusCode";

@@ -7,11 +7,11 @@
 
     public class UdpClientWorker : IClientWorker
     {
-        private ICommunicationProtocolResponseProcessor _responseProcessor;
+        private IFlowProtocolResponseProcessor _responseProcessor;
 
         #region CONSTRUCTORS
 
-        public UdpClientWorker(ICommunicationProtocolResponseProcessor responseProcessor)
+        public UdpClientWorker(IFlowProtocolResponseProcessor responseProcessor)
         {
             _responseProcessor = responseProcessor;
         }

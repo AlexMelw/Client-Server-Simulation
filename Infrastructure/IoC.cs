@@ -13,24 +13,24 @@
         public static void RegisterAll()
         {
             // Register Protocol Parsers
-            Kernel.Bind<ICommunicationProtocolRequestParser>()
+            Kernel.Bind<IFlowProtocolRequestParser>()
                 .To<RequestParser>();
 
-            Kernel.Bind<ICommunicationProtocolResponseParser>()
+            Kernel.Bind<IFlowProtocolResponseParser>()
                 .To<ResponseParser>();
 
             // Register Protocol Processors
-            Kernel.Bind<ICommunicationProtocolRequestProcessor>()
+            Kernel.Bind<IFlowProtocolRequestProcessor>()
                 .To<RequestProcessor>()
                 .WithConstructorArgument(
                     name: "requestParser",
-                    value: Kernel.Get<ICommunicationProtocolRequestParser>());
+                    value: Kernel.Get<IFlowProtocolRequestParser>());
 
-            Kernel.Bind<ICommunicationProtocolResponseProcessor>()
+            Kernel.Bind<IFlowProtocolResponseProcessor>()
                 .To<ResponseProcessor>()
                 .WithConstructorArgument(
                     name: "responseParser",
-                    value: Kernel.Get<ICommunicationProtocolResponseParser>());
+                    value: Kernel.Get<IFlowProtocolResponseParser>());
         }
 
         public static T Resolve<T>()

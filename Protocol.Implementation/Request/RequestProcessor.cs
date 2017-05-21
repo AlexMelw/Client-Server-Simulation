@@ -5,7 +5,7 @@
     using Interfaces.Request;
     using TranslatorService;
 
-    public class RequestProcessor : ICommunicationProtocolRequestProcessor
+    public class RequestProcessor : IFlowProtocolRequestProcessor
     {
         private readonly RequestParser _requestParser;
 

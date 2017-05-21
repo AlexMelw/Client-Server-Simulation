@@ -4,7 +4,7 @@
     using System.Text.RegularExpressions;
     using Interfaces.Response;
 
-    public class ResponseParser : ICommunicationProtocolResponseParser
+    public class ResponseParser : IFlowProtocolResponseParser
     {
         private const long Size10MB = 10 * 1024 * 1024L;
         private const string StatusCode = "StatusCode";

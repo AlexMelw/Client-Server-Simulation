@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace TestTcpServer
 {
+    using System.Diagnostics;
     using System.Net;
     using System.Net.Sockets;
     using EasySharp.NHelpers;
 
     class Program
     {
+        private const string CloseConnection = "close connection";
+
         static void Main(string[] args)
         {
             try
@@ -29,7 +32,6 @@ namespace TestTcpServer
                 int count = 0;
                 while (true)
                 {
-                    count++;
                     Socket workerTcpSocket = tcpListener.AcceptSocket();
                     Console.WriteLine(" Connection accepted from " + workerTcpSocket.RemoteEndPoint);
 
@@ -41,6 +43,7 @@ namespace TestTcpServer
 
                     while (true)
                     {
+                        count++;
                         int receivedBytes = workerTcpSocket.Receive(buffer);
 
                         if (receivedBytes == 0)
@@ -56,27 +59,41 @@ namespace TestTcpServer
                         //    Console.Write(Convert.ToChar(buffer[i]));
 
                         string responseString = buffer.Take(receivedBytes).ToArray().ToAsciiString();
+
+                        if (responseString == "close")
+                        {
+                            workerTcpSocket.Send(CloseConnection.ToAsciiEncodedByteArray());
+                            workerTcpSocket.Close();
+                            Console.Out.WriteLine(" Connection closed by client's intent.");
+                            Console.ReadLine();
+                        }
+
                         Console.Out.WriteLine($" REMOTE MESSAGE: {responseString}");
 
                         //ASCIIEncoding asen = new ASCIIEncoding();
 
                         workerTcpSocket.Send(" 200 OK [ Message Received ]".ToAsciiEncodedByteArray());
 
-
+                        if ( /*stop server command received*/ count == 5)
+                        {
+                            Console.Out.WriteLine("Server has ended serving requests for given client.");
+                            workerTcpSocket.Close();
+                            tcpListener.Stop();
+                            Console.ReadLine();
+                            break;
+                        }
                     }
-                    if ( /*stop server command received*/ count == 5)
-                    {
-                        
-                        tcpListener.Stop();
-                        break;
-                    }
+                    Console.Out.WriteLine("SERVER HALTED");
+                    Console.ReadLine();
                 }
-
-                Console.ReadLine();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                // ignored
+                Console.Out.WriteLine("Grave error occured");
+                Console.Out.WriteLine("e = {0}", e);
+                Debug.WriteLine("Grave error occured");
+                throw;
+                Console.ReadLine();
             }
         }
     }
