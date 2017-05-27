@@ -3,10 +3,6 @@
     using System;
     using System.Net;
     using System.Windows.Forms;
-    using FlowProtocol.Implementation.Response;
-    using FlowProtocol.Implementation.Workers;
-    using FlowProtocol.Implementation.Workers.Clients;
-    using FlowProtocol.Interfaces;
     using FlowProtocol.Interfaces.CommonConventions;
 
     public partial class FlowClientForm : Form
@@ -36,14 +32,14 @@
             if (ClientType.Equals(Conventions.TransportType.Tcp, StringComparison.OrdinalIgnoreCase))
             {
                 //_flowClientWorker = IoC.Resolve<TcpClientWorker>();
-                _flowClientWorker = new TcpClientWorker();
+                _flowClientWorker = new TcpServerWorker(new ResponseParser());
                 serverPortTextBox.Text = Conventions.TcpServerListeningPort.ToString();
             }
 
             if (ClientType.Equals(Conventions.TransportType.Udp, StringComparison.OrdinalIgnoreCase))
             {
                 //_flowClientWorker = IoC.Resolve<UdpClientWorker>();s
-                _flowClientWorker = new UdpClientWorker(new ResponseProcessor(new ResponseParser()));
+                _flowClientWorker = new UdpClientWorker(new ResponseParser());
                 serverPortTextBox.Text = Conventions.UdpServerListeningPort.ToString();
             }
         }
@@ -67,7 +63,7 @@
                 _flowClientWorker.Authenticate(
                     authLoginTextBox.Text,
                     authPassTextBox.Text);
-            }
+            };
         }
     }
 }

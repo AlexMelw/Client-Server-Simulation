@@ -6,7 +6,7 @@
     using Response;
 
     /* TCP/UDP Client */
-    public interface IFlowClientWorker : IFlowProtocol, IFlowProtocolResponseProcessor, IDisposable
+    public interface IFlowClientWorker : IFlowProtocol, IDisposable
     {
         void Init(IPAddress ipAddress, int port);
         void StartCommunication();

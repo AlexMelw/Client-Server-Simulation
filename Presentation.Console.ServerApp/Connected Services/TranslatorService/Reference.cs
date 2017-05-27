@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FlowProtocol.Implementation.TranslatorService {
+namespace Presentation.Console.ServerApp.TranslatorService {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -45,12 +45,12 @@ namespace FlowProtocol.Implementation.TranslatorService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface LanguageServiceChannel : FlowProtocol.Implementation.TranslatorService.LanguageService, System.ServiceModel.IClientChannel {
+    public interface LanguageServiceChannel : Presentation.Console.ServerApp.TranslatorService.LanguageService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class LanguageServiceClient : System.ServiceModel.ClientBase<FlowProtocol.Implementation.TranslatorService.LanguageService>, FlowProtocol.Implementation.TranslatorService.LanguageService {
+    public partial class LanguageServiceClient : System.ServiceModel.ClientBase<Presentation.Console.ServerApp.TranslatorService.LanguageService>, Presentation.Console.ServerApp.TranslatorService.LanguageService {
         
         public LanguageServiceClient() {
         }

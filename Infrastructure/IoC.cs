@@ -1,10 +1,11 @@
 ﻿namespace Infrastructure
 {
-    using Ninject;
     using FlowProtocol.Implementation.Request;
-    using FlowProtocol.Implementation.Response;
+    using FlowProtocol.Implementation.Servers;
+    using FlowProtocol.Implementation.Workers.Servers;
+    using FlowProtocol.Interfaces;
     using FlowProtocol.Interfaces.Request;
-    using FlowProtocol.Interfaces.Response;
+    using Ninject;
 
     public class IoC
     {
@@ -12,25 +13,17 @@
 
         public static void RegisterAll()
         {
-            // Register Protocol Parsers
             Kernel.Bind<IFlowProtocolRequestParser>()
                 .To<RequestParser>();
 
-            Kernel.Bind<IFlowProtocolResponseParser>()
-                .To<ResponseParser>();
+            Kernel.Bind<IServer>()
+                .To<FlowUdpServer>();
 
-            //// Register Protocol Processors
-            //Kernel.Bind<IFlowProtocolRequestProcessor>()
-            //    .To<RequestProcessor>()
-            //    .WithConstructorArgument(
-            //        name: "requestParser",
-            //        value: Kernel.Get<IFlowProtocolRequestParser>());
-
-            //Kernel.Bind<IFlowProtocolResponseProcessor>()
-            //    .To<ResponseProcessor>()
-            //    .WithConstructorArgument(
-            //        name: "responseParser",
-            //        value: Kernel.Get<IFlowProtocolResponseParser>());
+            Kernel.Bind<IFlowServerWorker>()
+                .To<UdpServerWorker>()
+                .WithConstructorArgument(
+                    "parser",
+                    Kernel.Get<IFlowProtocolRequestParser>());
         }
 
         public static T Resolve<T>()

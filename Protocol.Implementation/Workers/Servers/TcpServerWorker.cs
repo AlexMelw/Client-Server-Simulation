@@ -3,57 +3,53 @@
     using System;
     using System.Diagnostics;
     using System.Net;
+    using System.Net.Sockets;
     using Interfaces;
-    using TranslatorService;
 
     public class TcpServerWorker : IFlowServerWorker
     {
-        public void ProcessRequest(string response)
-        {
-            throw new NotImplementedException();
-        }
-
         public string Translate(string sourceText)
         {
-            try
-            {
-                var translatorClient = new LanguageServiceClient();
+            //try
+            //{
+            //    var translatorClient = new LanguageServiceClient();
 
-                translatorClient.Translate(
-                    "6CE9C85A41571C050C379F60DA173D286384E0F2",
-                    sourceText,
-                    "",
-                    "en");
+            //    translatorClient.Translate(
+            //        "6CE9C85A41571C050C379F60DA173D286384E0F2",
+            //        sourceText,
+            //        "",
+            //        "en");
 
 
-                //todo
-                return null;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-                throw;
-            }
+            //    //todo
+            //    return null;
+            //}
+            //catch (Exception e)
+            //{
+            //    Debug.WriteLine(e);
+            //    throw;
+            //}
+            return null;
         }
 
-        public void Send(string message)
+        private void ReleaseUnmanagedResources()
         {
-            throw new NotImplementedException();
+            // TODO release unmanaged resources here
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            ReleaseUnmanagedResources();
+            GC.SuppressFinalize(this);
         }
 
-        public void Init(IPAddress ipAddress, int port)
+        public void ProcessRequest(string request)
         {
             throw new NotImplementedException();
         }
 
-        public void StartServing()
-        {
-            throw new NotImplementedException();
+        ~TcpServerWorker() {
+            ReleaseUnmanagedResources();
         }
     }
 }

@@ -4,6 +4,6 @@
 
     public interface IFlowProtocolRequestParser
     {
-        ConcurrentDictionary<string, string> ParseResponse(string response);
+        ConcurrentDictionary<string, string> ParseRequest(string request);
     }
 }

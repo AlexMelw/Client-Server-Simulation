@@ -29,7 +29,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -42,16 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connected Services\TranslatorService\Reference.cs">
+    <Compile Include="Connected Services\TranslatorReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProtocolHelpers\FlowProtocolEncodingHelper.cs" />
     <Compile Include="Request\RequestParser.cs" />
     <Compile Include="Response\ResponseParser.cs" />
-    <Compile Include="Response\ResponseProcessor.cs" />
-    <Compile Include="Trash\Trash.cs" />
+    <Compile Include="Servers\FlowTcpServer.cs" />
+    <Compile Include="Servers\FlowUdpServer.cs" />
+    <Compile Include="Trash\ResponseProcessorTrash.cs" />
     <Compile Include="Workers\Servers\TcpServerWorker.cs" />
     <Compile Include="Workers\Servers\UdpServerWorker.cs" />
     <Compile Include="Workers\Clients\TcpClientWorker.cs" />
@@ -68,38 +76,38 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Connected Services\TranslatorReference\soap.wsdl" />
+    <None Include="Connected Services\TranslatorReference\soap.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TranslatorReference\soap1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TranslatorReference\soap2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TranslatorReference\SoapService.wsdl" />
+    <None Include="Connected Services\TranslatorReference\SoapService1.wsdl" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Connected Services\TranslatorService\soap.wsdl" />
-    <None Include="Connected Services\TranslatorService\soap.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\TranslatorService\soap1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\TranslatorService\soap2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\TranslatorService\SoapService.wsdl" />
-    <None Include="Connected Services\TranslatorService\SoapService1.wsdl" />
+    <WCFMetadataStorage Include="Connected Services\TranslatorReference\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\TranslatorService\" />
+    <None Include="Connected Services\TranslatorReference\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\TranslatorService\configuration91.svcinfo" />
+    <None Include="Connected Services\TranslatorReference\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\TranslatorService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\TranslatorService\Reference.svcmap">
+    <None Include="Connected Services\TranslatorReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -42,11 +42,9 @@
   <ItemGroup>
     <Compile Include="CommonConventions\Conventions.cs" />
     <Compile Include="Common\IFlowProtocol.cs" />
-    <Compile Include="ProtocolHelpers\FlowProtocolEncodingHelper.cs" />
+    <Compile Include="IServer.cs" />
     <Compile Include="Request\IFlowProtocolRequestParser.cs" />
-    <Compile Include="Request\IFlowProtocolRequestProcessor.cs" />
     <Compile Include="Response\IFlowProtocolResponseParser.cs" />
-    <Compile Include="Response\IFlowProtocolResponseProcessor.cs" />
     <Compile Include="IFlowServerWorker.cs" />
     <Compile Include="IFlowClientWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

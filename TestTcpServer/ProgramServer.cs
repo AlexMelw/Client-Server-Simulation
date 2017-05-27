@@ -11,7 +11,7 @@ namespace TestTcpServer
     using System.Net.Sockets;
     using System.Threading;
     using EasySharp.NHelpers;
-    using FlowProtocol.Interfaces.ProtocolHelpers;
+    using FlowProtocol.Implementation.ProtocolHelpers;
 
     class ProgramServer
     {

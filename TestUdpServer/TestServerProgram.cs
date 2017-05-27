@@ -9,12 +9,15 @@ namespace TestUdpServer
     using System.Net;
     using System.Net.Sockets;
     using EasySharp.NHelpers;
+    using FlowProtocol.Implementation.Servers;
     using FlowProtocol.Interfaces.CommonConventions;
+    using Presentation.Console.ServerApp;
 
-    class Program
+    class TestServerProgram
     {
         static void Main(string[] args)
         {
+            //SINGLE THREAD
             // Server --------------------------
             Console.Out.WriteLine("Server...");
             IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Any, Conventions.UdpServerListeningPort);

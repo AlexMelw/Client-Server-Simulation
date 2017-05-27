@@ -9,23 +9,25 @@ namespace TestUdpClient
     using System.Net;
     using System.Net.Sockets;
     using EasySharp.NHelpers;
+    using static FlowProtocol.Interfaces.CommonConventions.Conventions;
 
-    class Program
+    class TestClientProgram
     {
-        private const string IpAddress = "127.0.0.1";
-        private const int ServerUdpListeningPort = 6401;
-
         static void Main(string[] args)
         {
-            // Client ---------------------------
             Console.Out.WriteLine("Client...");
-            IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Parse(IpAddress), ServerUdpListeningPort);
-            UdpClient udpClient = new UdpClient();
+
+            var remoteIpAddress = IPAddress.Parse(Localhost);
+
+            var serverEndPoint = new IPEndPoint(remoteIpAddress, UdpServerListeningPort);
+
+            var udpClient = new UdpClient();
+
             udpClient.Connect(serverEndPoint);
 
             for (
                 string cmdLine = Console.ReadLine();
-                cmdLine != "quit";
+                cmdLine != Quit;
                 cmdLine = Console.ReadLine())
             {
                 byte[] bufferByteArray = cmdLine.ToAsciiEncodedByteArray();

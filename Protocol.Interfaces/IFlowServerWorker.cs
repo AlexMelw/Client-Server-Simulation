@@ -2,13 +2,13 @@
 {
     using System;
     using System.Net;
+    using System.Net.Sockets;
     using Common;
     using Request;
 
     /* TCP/UDP Server */
-    public interface IFlowServerWorker : IFlowProtocol, IFlowProtocolRequestProcessor, IDisposable
+    public interface IFlowServerWorker : IFlowProtocol, IDisposable
     {
-        void Init(IPAddress ipAddress, int port);
-        void StartServing();
+        void ProcessRequest(string request);
     }
 }

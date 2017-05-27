@@ -9,11 +9,11 @@
     using Interfaces.CommonConventions;
     using Response;
 
-    class Trash
+    class ResponseProcessorTrash
     {
         private readonly ResponseParser _responseParser;
 
-        public ResponseProcessor(ResponseParser responseParser)
+        public ResponseProcessorTrash(ResponseParser responseParser)
         {
             _responseParser = responseParser;
         }
@@ -21,6 +21,7 @@
         public bool IsAuthenticated(string response)
         {
             var responseComponents = _responseParser.ParseResponse(response);
+            return true;
         }
 
         private byte[] DownloadRemoteImageBytes(string uri)
