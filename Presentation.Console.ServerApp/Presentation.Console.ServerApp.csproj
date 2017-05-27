@@ -47,28 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connected Services\TranslatorService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Connected Services\TranslatorService\soap.wsdl" />
-    <None Include="Connected Services\TranslatorService\soap.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\TranslatorService\soap1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\TranslatorService\soap2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\TranslatorService\SoapService.wsdl" />
-    <None Include="Connected Services\TranslatorService\SoapService1.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\EasySharp\NHelpers\NHelpers.csproj">
@@ -87,24 +70,6 @@
       <Project>{6FA0AB1A-03E8-4C70-B628-8507CAA15247}</Project>
       <Name>FlowProtocol.Interfaces</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\TranslatorService\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\TranslatorService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\TranslatorService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\TranslatorService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,11 +7,12 @@
     using System.Net.Sockets;
     using System.Threading;
     using EasySharp.NHelpers;
+    using GoGoService;
     using Interfaces;
     using Interfaces.Request;
+    using MSTranslatorService;
     using Ninject;
     using Request;
-    using TranslatorReference;
     using static Interfaces.CommonConventions.Conventions;
 
     public class UdpServerWorker : IFlowServerWorker
@@ -69,12 +70,11 @@
                     requestMembers.TryGetValue(TargetLang, out string targetLang);
 
                     string translatedText = Translate(
-                        sourceText: sourceText,
-                        sourceLang: sourceLang,
-                        targetLang: targetLang
+                        sourceText,
+                        sourceLang,
+                        targetLang
                     );
-                    return
-                        $@"200 OK TRANSLATE --TEXT='{translatedText}'";
+                    return $@"200 OK TRANSLATE --TEXT='{translatedText}'";
                 }
                 if (cmd == Commands.Auth) { }
                 if (cmd == Commands.Register) { }
@@ -86,10 +86,10 @@
         {
             try
             {
-                var translatorClient = new LanguageServiceClient();
-
-                string from = (targetLang == Lang.Unknown ? "" : targetLang);
-                string to = (targetLang == Lang.Unknown ? Lang.English : targetLang);
+                var translatorClient = new SoapService();
+                
+                string from = sourceLang == Lang.Unknown ? "" : sourceLang;
+                string to = targetLang == Lang.Unknown ? Lang.English : targetLang;
 
                 string translatedText = translatorClient.Translate(
                     "6CE9C85A41571C050C379F60DA173D286384E0F2",
@@ -122,6 +122,124 @@
             _remoteClientEndPoint = remoteClientEndPoint;
             _udpServer = udpServer;
             return this;
+        }
+    }
+}
+
+namespace FlowProtocol.Implementation.GoGoService
+{
+    using System.CodeDom.Compiler;
+    using System.Diagnostics;
+    using System.ServiceModel;
+    using System.ServiceModel.Channels;
+    using System.Threading.Tasks;
+
+
+    [GeneratedCode("System.ServiceModel", "4.0.0.0")]
+    [ServiceContract(Namespace = "http://api.microsofttranslator.com/v1/soap.svc",
+        ConfigurationName = "GoGoService.LanguageService")]
+    public interface LanguageService
+    {
+        [OperationContract(Action = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguages",
+            ReplyAction = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguagesRespon" +
+                          "se")]
+        string[] GetLanguages(string appId);
+
+        [OperationContract(Action = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguages",
+            ReplyAction = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguagesRespon" +
+                          "se")]
+        Task<string[]> GetLanguagesAsync(string appId);
+
+        [OperationContract(Action = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguageNames",
+            ReplyAction = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguageNamesRe" +
+                          "sponse")]
+        string[] GetLanguageNames(string appId, string locale);
+
+        [OperationContract(Action = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguageNames",
+            ReplyAction = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguageNamesRe" +
+                          "sponse")]
+        Task<string[]> GetLanguageNamesAsync(string appId, string locale);
+
+        [OperationContract(Action = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/Detect",
+            ReplyAction = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/DetectResponse")]
+        string Detect(string appId, string text);
+
+        [OperationContract(Action = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/Detect",
+            ReplyAction = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/DetectResponse")]
+        Task<string> DetectAsync(string appId, string text);
+
+        [OperationContract(Action = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/Translate",
+            ReplyAction = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/TranslateResponse")]
+        string Translate(string appId, string text, string from, string to);
+
+        [OperationContract(Action = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/Translate",
+            ReplyAction = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/TranslateResponse")]
+        Task<string> TranslateAsync(string appId, string text, string from, string to);
+    }
+
+    [GeneratedCode("System.ServiceModel", "4.0.0.0")]
+    public interface LanguageServiceChannel : LanguageService, IClientChannel { }
+
+    [DebuggerStepThrough]
+    [GeneratedCode("System.ServiceModel", "4.0.0.0")]
+    public class LanguageServiceClient : ClientBase<LanguageService>, LanguageService
+    {
+        #region CONSTRUCTORS
+
+        public LanguageServiceClient() { }
+
+        public LanguageServiceClient(string endpointConfigurationName) :
+            base(endpointConfigurationName) { }
+
+        public LanguageServiceClient(string endpointConfigurationName, string remoteAddress) :
+            base(endpointConfigurationName, remoteAddress) { }
+
+        public LanguageServiceClient(string endpointConfigurationName, EndpointAddress remoteAddress) :
+            base(endpointConfigurationName, remoteAddress) { }
+
+        public LanguageServiceClient(Binding binding, EndpointAddress remoteAddress) :
+            base(binding, remoteAddress) { }
+
+        #endregion
+
+        public string[] GetLanguages(string appId)
+        {
+            return Channel.GetLanguages(appId);
+        }
+
+        public Task<string[]> GetLanguagesAsync(string appId)
+        {
+            return Channel.GetLanguagesAsync(appId);
+        }
+
+        public string[] GetLanguageNames(string appId, string locale)
+        {
+            return Channel.GetLanguageNames(appId, locale);
+        }
+
+        public Task<string[]> GetLanguageNamesAsync(string appId, string locale)
+        {
+            return Channel.GetLanguageNamesAsync(appId, locale);
+        }
+
+        public string Detect(string appId, string text)
+        {
+            return Channel.Detect(appId, text);
+        }
+
+        public Task<string> DetectAsync(string appId, string text)
+        {
+            return Channel.DetectAsync(appId, text);
+        }
+
+        public string Translate(string appId, string text, string from, string to)
+        {
+            return Channel.Translate(appId, text, from, to);
+        }
+
+        public Task<string> TranslateAsync(string appId, string text, string from, string to)
+        {
+            return Channel.TranslateAsync(appId, text, from, to);
         }
     }
 }

@@ -11,6 +11,7 @@
     <AssemblyName>FlowProtocol.Implementation</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -38,8 +41,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,18 +53,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connected Services\TranslatorReference\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="ProtocolHelpers\FlowProtocolEncodingHelper.cs" />
     <Compile Include="Request\RequestParser.cs" />
     <Compile Include="Response\ResponseParser.cs" />
     <Compile Include="Servers\FlowTcpServer.cs" />
     <Compile Include="Servers\FlowUdpServer.cs" />
     <Compile Include="Trash\ResponseProcessorTrash.cs" />
+    <Compile Include="Web References\MSTranslatorService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <Compile Include="Workers\Servers\TcpServerWorker.cs" />
     <Compile Include="Workers\Servers\UdpServerWorker.cs" />
     <Compile Include="Workers\Clients\TcpClientWorker.cs" />
@@ -77,37 +87,46 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Connected Services\TranslatorReference\soap.wsdl" />
-    <None Include="Connected Services\TranslatorReference\soap.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\TranslatorReference\soap1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\TranslatorReference\soap2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\TranslatorReference\SoapService.wsdl" />
-    <None Include="Connected Services\TranslatorReference\SoapService1.wsdl" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\MSTranslatorService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\MSTranslatorService\soap.wsdl" />
+    <None Include="Web References\MSTranslatorService\soap.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\MSTranslatorService\soap0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\MSTranslatorService\soap1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\MSTranslatorService\SoapService.wsdl" />
+    <None Include="Web References\MSTranslatorService\SoapService0.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\TranslatorReference\" />
+    <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\TranslatorReference\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\TranslatorReference\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\TranslatorReference\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
+    <WebReferenceUrl Include="http://api.microsofttranslator.com/V1/SOAP.svc">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\MSTranslatorService\</RelPath>
+      <UpdateFromURL>http://api.microsofttranslator.com/V1/SOAP.svc</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>FlowProtocol_Implementation_MSTranslatorService_SoapService</CachedSettingsPropName>
+    </WebReferenceUrl>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

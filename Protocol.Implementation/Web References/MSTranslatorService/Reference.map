@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://api.microsofttranslator.com/V1/soap.svc?wsdl" filename="SoapService.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://api.microsofttranslator.com/V1/soap.svc?wsdl=wsdl0" filename="soap.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://api.microsofttranslator.com/V1/soap.svc?xsd=xsd2" filename="soap.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://api.microsofttranslator.com/V1/SOAP.svc" filename="SoapService0.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://api.microsofttranslator.com/V1/soap.svc?xsd=xsd1" filename="soap0.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://api.microsofttranslator.com/V1/soap.svc?xsd=xsd0" filename="soap1.xsd" />
+  </Results>
+</DiscoveryClientResultsFile>
