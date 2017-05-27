@@ -2,29 +2,27 @@
 {
     using System.Collections.Concurrent;
     using System.Text.RegularExpressions;
+    using Interfaces.CommonConventions;
     using Interfaces.Response;
 
     public class ResponseParser : IFlowProtocolResponseParser
     {
-        private const long Size10MB = 10 * 1024 * 1024L;
-        private const string StatusCode = "StatusCode";
-        private const string ObjectType = "objectType";
-        private const string ObjectValue = "objectValue";
-        private const string StatusDescription = "StatusDescription";
-        private const int FromBeginning = 0;
-        private readonly string _pattern = @"(THIS IS A PATTERN)";
+        private readonly string AuthenticationResponsePattern =
+                @"(?:(?<statuscode>(?:\d{3}))\s+(?<statusdesc>(?:OK|ERR))\s+(?<cmd>AUTH)\s+--RES='(?<resvalue>unauthorized|authorized)')"
+            ;
+
         public ConcurrentDictionary<string, string> ParseResponse(string response)
         {
-            Regex parser = new Regex(_pattern);
+            Regex parser = new Regex(AuthenticationResponsePattern);
             Match match = parser.Match(response);
 
-            ConcurrentDictionary<string, string> responseComponents = new ConcurrentDictionary<string, string>();
             if (match.Success)
             {
-                responseComponents.TryAdd(StatusCode, match.Groups[StatusCode].Value);
-                responseComponents.TryAdd(StatusDescription, match.Groups[StatusDescription].Value);
-                responseComponents.TryAdd(ObjectType, match.Groups[ObjectType].Value);
-                responseComponents.TryAdd(ObjectValue, match.Groups[ObjectValue].Value);
+                var responseComponents = new ConcurrentDictionary<string, string>();
+                responseComponents.TryAdd(Conventions.StatusCode, match.Groups[Conventions.StatusCode].Value);
+                responseComponents.TryAdd(Conventions.StatusDesc, match.Groups[Conventions.StatusDesc].Value);
+                responseComponents.TryAdd(Conventions.Cmd, match.Groups[Conventions.Cmd].Value);
+                responseComponents.TryAdd(Conventions.Res, match.Groups[Conventions.Res].Value);
 
                 return responseComponents;
             }

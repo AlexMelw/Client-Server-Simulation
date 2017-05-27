@@ -47,7 +47,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="CommonConventions\Conventions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\RequestParser.cs" />
     <Compile Include="Request\RequestProcessor.cs" />

@@ -33,9 +33,21 @@
             throw new NotImplementedException();
         }
 
+        public void Register(string login, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Authenticate(string login, string password)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Receive(string message)
         {
             throw new NotImplementedException();
         }
+
+        public void Dispose() { }
     }
 }

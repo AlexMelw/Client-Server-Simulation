@@ -9,19 +9,22 @@ namespace TestTcpServer
     using System.Diagnostics;
     using System.Net;
     using System.Net.Sockets;
+    using System.Threading;
     using EasySharp.NHelpers;
+    using Protocol.Interfaces.ProtocolHelpers;
 
-    class Program
+    class ProgramServer
     {
         private const string CloseConnection = "close connection";
 
         static void Main(string[] args)
         {
+            const int port = 5150;
+            IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
+            TcpListener tcpListener = new TcpListener(ipAddress, port);
+
             try
             {
-                const int port = 5150;
-                IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
-                TcpListener tcpListener = new TcpListener(ipAddress, port);
                 tcpListener.Start();
 
                 Console.WriteLine($" The server is running at port {port}...");
@@ -33,6 +36,7 @@ namespace TestTcpServer
                 while (true)
                 {
                     Socket workerTcpSocket = tcpListener.AcceptSocket();
+
                     Console.WriteLine(" Connection accepted from " + workerTcpSocket.RemoteEndPoint);
 
                     // The IP header and the TCP header take up 20 bytes each at least
@@ -58,42 +62,49 @@ namespace TestTcpServer
                         //for (int i = 0; i < receivedBytes; i++)
                         //    Console.Write(Convert.ToChar(buffer[i]));
 
-                        string responseString = buffer.Take(receivedBytes).ToArray().ToAsciiString();
+                        string requestString = buffer.Take(receivedBytes).ToArray().ToFlowProtocolAsciiDecodedString();
 
-                        if (responseString == "close")
+                        if (requestString == "close")
                         {
-                            workerTcpSocket.Send(CloseConnection.ToAsciiEncodedByteArray());
+                            workerTcpSocket.Send(CloseConnection.ToFlowProtocolAsciiEncodedBytesArray());
                             workerTcpSocket.Close();
                             Console.Out.WriteLine(" Connection closed by client's intent.");
-                            Console.ReadLine();
+                            //Console.ReadLine();
+                            break;
                         }
 
-                        Console.Out.WriteLine($" REMOTE MESSAGE: {responseString}");
+                        Console.Out.WriteLine($" REMOTE MESSAGE: {requestString}");
 
                         //ASCIIEncoding asen = new ASCIIEncoding();
 
-                        workerTcpSocket.Send(" 200 OK [ Message Received ]".ToAsciiEncodedByteArray());
+                        workerTcpSocket.Send(" 200 OK [ Message Received ]".ToFlowProtocolAsciiEncodedBytesArray());
 
                         if ( /*stop server command received*/ count == 5)
                         {
                             Console.Out.WriteLine("Server has ended serving requests for given client.");
                             workerTcpSocket.Close();
-                            tcpListener.Stop();
-                            Console.ReadLine();
+                            //Console.ReadLine();
                             break;
                         }
                     }
+                    count = 0;
                     Console.Out.WriteLine("SERVER HALTED");
-                    Console.ReadLine();
+                    //Console.ReadLine();
                 }
             }
             catch (Exception e)
             {
-                Console.Out.WriteLine("Grave error occured");
-                Console.Out.WriteLine("e = {0}", e);
-                Debug.WriteLine("Grave error occured");
-                throw;
+                
+                Console.Out.WriteLine("Grave error occured. Searver is dead.");
+                Console.Out.WriteLine($"e = {e}");
+                Debug.WriteLine("Grave error occured. Searver is dead.");
+                Debug.WriteLine($"e = {e}");
                 Console.ReadLine();
+                throw;
+            }
+            finally
+            {
+                tcpListener.Stop();
             }
         }
     }

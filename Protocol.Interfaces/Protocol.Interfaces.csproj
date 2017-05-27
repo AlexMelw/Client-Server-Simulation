@@ -40,8 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\ICommunicationProtocol.cs" />
-    <Compile Include="ProtocolHelpers\CommunicationProtocolEncodingHelper.cs" />
+    <Compile Include="CommonConventions\Conventions.cs" />
+    <Compile Include="Common\IFlowProtocol.cs" />
+    <Compile Include="ProtocolHelpers\FlowProtocolEncodingHelper.cs" />
     <Compile Include="Request\IFlowProtocolRequestParser.cs" />
     <Compile Include="Request\IFlowProtocolRequestProcessor.cs" />
     <Compile Include="Response\IFlowProtocolResponseParser.cs" />

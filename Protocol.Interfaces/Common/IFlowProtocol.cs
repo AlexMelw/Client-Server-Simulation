@@ -1,6 +1,6 @@
 ﻿namespace Protocol.Interfaces.Common
 {
-    public interface ICommunicationProtocol
+    public interface IFlowProtocol
     {
         void Send(string message);
     }

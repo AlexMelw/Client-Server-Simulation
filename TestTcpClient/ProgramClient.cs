@@ -11,7 +11,7 @@ namespace TestTcpClient
     using EasySharp.NHelpers;
     using Protocol.Interfaces.ProtocolHelpers;
 
-    class Program
+    class ProgramClient
     {
         private const string Localhost = "127.0.0.1";
         private const string CloseConnection = "close connection";
@@ -39,13 +39,13 @@ namespace TestTcpClient
                 }
 
                 NetworkStream tcpStream = tcpClient.GetStream();
-
-
+                
                 byte[] bytesArray = textToTransmit.ToFlowProtocolAsciiEncodedBytesArray();
 
                 Console.WriteLine(" Transmitting.....");
 
                 tcpStream.Write(bytesArray, 0, bytesArray.Length);
+                tcpStream.Flush();
 
                 byte[] bufferArray = new byte[1472];
 

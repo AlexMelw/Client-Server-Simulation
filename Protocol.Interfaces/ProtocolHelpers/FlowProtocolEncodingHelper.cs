@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Protocol.Interfaces.ProtocolHelpers
+﻿namespace Protocol.Interfaces.ProtocolHelpers
 {
     using EasySharp.NHelpers;
 
-    public static class CommunicationProtocolEncodingHelper
+    public static class FlowProtocolEncodingHelper
     {
         public static byte[] ToFlowProtocolAsciiEncodedBytesArray(this string source)
         {
@@ -19,6 +13,5 @@ namespace Protocol.Interfaces.ProtocolHelpers
         {
             return source.ToAsciiString().ToDecodedStringFromBase64();
         }
-
     }
 }

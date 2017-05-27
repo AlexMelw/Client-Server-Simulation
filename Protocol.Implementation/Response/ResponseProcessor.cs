@@ -7,46 +7,22 @@
     using System.Linq;
     using System.Net;
     using Interfaces;
+    using Interfaces.CommonConventions;
     using Interfaces.Response;
 
     public class ResponseProcessor : IFlowProtocolResponseProcessor
     {
-        private const long Size10MB = 10 * 1024 * 1024L;
-        private const string StatusCode = "StatusCode";
-        private const string ObjectType = "objectType";
-        private const string ObjectValue = "objectValue";
-        private const string StatusDescription = "StatusDescription";
-        private const int FromBeginning = 0;
-        private readonly string _pattern = @"(THIS IS A PATTERN)";
         private readonly ResponseParser _responseParser;
+
         public ResponseProcessor(ResponseParser responseParser)
         {
             _responseParser = responseParser;
         }
 
-        public byte[] ProcessResponseGetImageBytes(string response)
+        public bool IsAuthenticated(string response)
         {
-            ConcurrentDictionary<string, string> responseComponents = _responseParser.ParseResponse(response);
-
-            /* PROCESS RESPONSE */ // todo
-
-            // Maybe deserialize JSON/XML and get image src. // todo
-
-            string imageSrc = "SOME IMAGE SOURCE"; // todo
-
-            byte[] imageBytes = DownloadRemoteImageBytes(imageSrc);
-
-            return imageBytes;
-
-            // CONVERT byte[] to Bitmap
-            //Bitmap bmp;
-            //using (var ms = new MemoryStream(imageData))
-            //{
-            //    bmp = new Bitmap(ms);
-            //}
+            var responseComponents = _responseParser.ParseResponse(response);
         }
-        //private ConcurrentDictionary<string, string> responseComponents;
-
 
         private byte[] DownloadRemoteImageBytes(string uri)
         {
@@ -76,9 +52,9 @@
 
                     List<byte> imageBytes = new List<byte>();
 
-                    for (int bytesRead = inputStream.Read(buffer, FromBeginning, buffer.Length); // initial statement
+                    for (int bytesRead = inputStream.Read(buffer, Conventions.FromBeginning, buffer.Length); // initial statement
                         bytesRead != 0; // condition
-                        bytesRead = inputStream.Read(buffer, FromBeginning, buffer.Length)) // post iteration statement
+                        bytesRead = inputStream.Read(buffer, Conventions.FromBeginning, buffer.Length)) // post iteration statement
                     {
                         imageBytes.AddRange(buffer.Take(bytesRead));
                     }
@@ -89,6 +65,28 @@
             }
 
             return null;
+        }
+
+        public byte[] ProcessResponseGetImageBytes(string response)
+        {
+            ConcurrentDictionary<string, string> responseComponents = _responseParser.ParseResponse(response);
+
+            /* PROCESS RESPONSE */ // todo
+
+            // Maybe deserialize JSON/XML and get image src. // todo
+
+            string imageSrc = "SOME IMAGE SOURCE"; // todo
+
+            byte[] imageBytes = DownloadRemoteImageBytes(imageSrc);
+
+            return imageBytes;
+
+            // CONVERT byte[] to Bitmap
+            //Bitmap bmp;
+            //using (var ms = new MemoryStream(imageData))
+            //{
+            //    bmp = new Bitmap(ms);
+            //}
         }
     }
 }
