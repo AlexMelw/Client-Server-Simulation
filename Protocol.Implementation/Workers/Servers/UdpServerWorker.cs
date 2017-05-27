@@ -7,7 +7,6 @@
     using System.Net.Sockets;
     using System.Threading;
     using EasySharp.NHelpers;
-    using GoGoService;
     using Interfaces;
     using Interfaces.Request;
     using MSTranslatorService;
@@ -41,7 +40,7 @@
 
                 string result = ExecuteRequest(request);
 
-                byte[] bufferByteArray = $"OK 200 [ {result} ]".ToAsciiEncodedByteArray();
+                byte[] bufferByteArray = result.ToAsciiEncodedByteArray();
                 _udpServer.Send(bufferByteArray, bufferByteArray.Length, _remoteClientEndPoint);
 
                 Console.Out.WriteLine($"[ UDP ] SERVER WORKER for {_remoteClientEndPoint} finished job");
@@ -87,7 +86,7 @@
             try
             {
                 var translatorClient = new SoapService();
-                
+
                 string from = sourceLang == Lang.Unknown ? "" : sourceLang;
                 string to = targetLang == Lang.Unknown ? Lang.English : targetLang;
 
@@ -133,7 +132,6 @@ namespace FlowProtocol.Implementation.GoGoService
     using System.ServiceModel;
     using System.ServiceModel.Channels;
     using System.Threading.Tasks;
-
 
     [GeneratedCode("System.ServiceModel", "4.0.0.0")]
     [ServiceContract(Namespace = "http://api.microsofttranslator.com/v1/soap.svc",
