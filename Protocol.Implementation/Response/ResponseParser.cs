@@ -1,4 +1,4 @@
-﻿namespace Protocol.Implementation.Response
+﻿namespace FlowProtocol.Implementation.Response
 {
     using System.Collections.Concurrent;
     using System.Text.RegularExpressions;

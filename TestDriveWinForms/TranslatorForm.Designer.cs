@@ -1,6 +1,6 @@
 ﻿namespace TestDriveWinForms
 {
-    partial class Form1
+    partial class TranslatorForm
     {
         /// <summary>
         /// Required designer variable.
@@ -58,7 +58,7 @@
             this.translateButton.Text = "TRANSLATE";
             this.translateButton.UseVisualStyleBackColor = true;
             // 
-            // Form1
+            // TranslatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -66,8 +66,8 @@
             this.Controls.Add(this.translateButton);
             this.Controls.Add(this.translatedTextRichTextBox);
             this.Controls.Add(this.originalTextRichTextBox);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "TranslatorForm";
+            this.Text = "TranslatorForm";
             this.ResumeLayout(false);
 
         }

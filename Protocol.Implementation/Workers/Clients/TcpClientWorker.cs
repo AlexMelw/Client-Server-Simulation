@@ -1,4 +1,4 @@
-﻿namespace Protocol.Implementation.Workers
+﻿namespace FlowProtocol.Implementation.Workers.Clients
 {
     using System;
     using System.Linq;
@@ -11,7 +11,7 @@
     using Interfaces.ProtocolHelpers;
     using Interfaces.Response;
 
-    public class TcpClientWorker : IClientWorker
+    public class TcpClientWorker : IFlowClientWorker
     {
         private const int FromBeginning = 0;
         private const int EthernetTcpUdpPacketSize = 1472;
@@ -19,19 +19,20 @@
         private const string AuthenticationFormat =
             @"AUTH --clienttype='tcp' --listenport='0' --login='{0}' --pass='{1}'";
 
+        private readonly IFlowProtocolResponseParser _responseParser;
+
         private TcpClient _client;
         private string _login;
         private string _password;
-        private IFlowProtocolResponseProcessor _responseProcessor;
         public int Port { get; private set; }
         public IPAddress RemoteHostIpAddress { get; private set; }
         public string TextToBeSent { get; set; } = string.Empty;
 
         #region CONSTRUCTORS
 
-        public TcpClientWorker(IFlowProtocolResponseProcessor responseProcessor)
+        public TcpClientWorker(IFlowProtocolResponseParser responseParser)
         {
-            _responseProcessor = responseProcessor;
+            _responseParser = responseParser;
         }
 
         #endregion
@@ -113,9 +114,9 @@
             if (tcpStream.CanRead)
             {
                 int bytesRead = tcpStream.Read(
-                    buffer: bufferBytesArray,
-                    offset: Conventions.FromBeginning,
-                    size: Conventions.EthernetTcpUdpPacketSize);
+                    bufferBytesArray,
+                    Conventions.FromBeginning,
+                    Conventions.EthernetTcpUdpPacketSize);
 
                 string serverResponse = bufferBytesArray.Take(bytesRead)
                     .ToArray()
@@ -127,16 +128,10 @@
                     _password = password;
                     return Conventions.OK;
                 }
-                else
-                {
-                    return Conventions.NotAuthenticated;
-                }
+                return Conventions.NotAuthenticated;
             }
-            else
-            {
-                Console.Out.WriteLine("Error. Can't receive response from server.");
-                _client.Close();
-            }
+            Console.Out.WriteLine("Error. Can't receive response from server.");
+            _client.Close();
 
 
             return Conventions.OK;
@@ -196,6 +191,16 @@
         public void Dispose()
         {
             ((IDisposable) _client)?.Dispose();
+        }
+
+        public byte[] ProcessResponseGetImageBytes(string response)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsAuthenticated(string response)
+        {
+            throw new NotImplementedException();
         }
 
         public void Init(string ipAddress, int port)

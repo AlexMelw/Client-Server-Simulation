@@ -1,4 +1,4 @@
-﻿namespace Protocol.Interfaces.Common
+﻿namespace FlowProtocol.Interfaces.Common
 {
     public interface IFlowProtocol
     {

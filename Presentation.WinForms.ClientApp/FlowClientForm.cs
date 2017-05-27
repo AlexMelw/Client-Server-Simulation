@@ -3,14 +3,15 @@
     using System;
     using System.Net;
     using System.Windows.Forms;
-    using Protocol.Implementation.Response;
-    using Protocol.Implementation.Workers;
-    using Protocol.Interfaces;
-    using Protocol.Interfaces.CommonConventions;
+    using FlowProtocol.Implementation.Response;
+    using FlowProtocol.Implementation.Workers;
+    using FlowProtocol.Implementation.Workers.Clients;
+    using FlowProtocol.Interfaces;
+    using FlowProtocol.Interfaces.CommonConventions;
 
     public partial class FlowClientForm : Form
     {
-        private IClientWorker _clientWorker;
+        private IFlowClientWorker _flowClientWorker;
 
         public string ClientType { get; set; }
 
@@ -32,17 +33,17 @@
 
         private void InitializeFlowClientWorker()
         {
-            if (ClientType.Equals(Conventions.DataTransmissionType.Tcp, StringComparison.OrdinalIgnoreCase))
+            if (ClientType.Equals(Conventions.TransportType.Tcp, StringComparison.OrdinalIgnoreCase))
             {
-                //_clientWorker = IoC.Resolve<TcpClientWorker>();
-                _clientWorker = new TcpClientWorker(new ResponseProcessor(new ResponseParser()));
+                //_flowClientWorker = IoC.Resolve<TcpClientWorker>();
+                _flowClientWorker = new TcpClientWorker();
                 serverPortTextBox.Text = Conventions.TcpServerListeningPort.ToString();
             }
 
-            if (ClientType.Equals(Conventions.DataTransmissionType.Udp, StringComparison.OrdinalIgnoreCase))
+            if (ClientType.Equals(Conventions.TransportType.Udp, StringComparison.OrdinalIgnoreCase))
             {
-                //_clientWorker = IoC.Resolve<UdpClientWorker>();s
-                _clientWorker = new UdpClientWorker(new ResponseProcessor(new ResponseParser()));
+                //_flowClientWorker = IoC.Resolve<UdpClientWorker>();s
+                _flowClientWorker = new UdpClientWorker(new ResponseProcessor(new ResponseParser()));
                 serverPortTextBox.Text = Conventions.UdpServerListeningPort.ToString();
             }
         }
@@ -56,14 +57,14 @@
         {
             connectToServerButton.Click += (sender, args) =>
             {
-                _clientWorker.Init(
+                _flowClientWorker.Init(
                     ipAddress: IPAddress.Parse(serverIpAddressTextBox.Text.Trim()),
                     port: int.Parse(serverPortTextBox.Text.Trim()));
             };
 
             authButton.Click += (sender, args) =>
             {
-                _clientWorker.Authenticate(
+                _flowClientWorker.Authenticate(
                     authLoginTextBox.Text,
                     authPassTextBox.Text);
             }

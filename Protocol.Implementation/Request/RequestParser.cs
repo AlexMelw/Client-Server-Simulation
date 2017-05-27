@@ -1,4 +1,4 @@
-﻿namespace Protocol.Implementation.Request
+﻿namespace FlowProtocol.Implementation.Request
 {
     using System.Collections.Concurrent;
     using System.Text.RegularExpressions;
@@ -17,29 +17,29 @@
         private const string TargetLang = "targetlang";
 
         private const long Size10MB = 10 * 1024 * 1024L;
-        private const string StatusCode = "StatusCode";
-        private const string ObjectType = "objectType";
-        private const string ObjectValue = "objectValue";
-        private const string StatusDescription = "StatusDescription";
+        private const string StatusCode = "statuscode";
+        private const string ObjectType = "objecttype";
+        private const string ObjectValue = "objectvalue";
+        private const string StatusDescription = "statusdescription";
         private const int FromBeginning = 0;
 
-        private readonly string AuthenticationPattern =
+        private readonly string _authenticationPattern =
                 @"(?:(?<cmd>AUTH)\s+--clienttype='(?<clienttype>(?:udp|tcp))'\s+--listenport='(?<listenport>\d{1,5})'(\s+securepassword\s+protectiontype='(?<passprotectiontype>\w+)')?\s+--login='(?<login>\w+)'\s+--pass='(?<pass>.+)')"
             ;
 
-        private readonly string GimmeImgPattern =
+        private readonly string _gimmeImgPattern =
                 @"(?:(?<cmd>GIMMEIMG)\s+--clienttype='(?<clienttype>(?:udp|tcp))'\s+--listenport='(?<listenport>\d{1,5})'\s+--tags='(?<tags>((\w+,)*\w+))'\s+--tagmode='(?<tagmode>any|all)'\s+--lang='(?<lang>en|ro|ru|unknown)'\s+--format='json')"
             ;
 
-        private readonly string RegistrationPattern =
+        private readonly string _registrationPattern =
                 @"(?:(?<cmd>REGISTER)\s+--clienttype='(?<clienttype>(?:udp|tcp))'\s+--listenport='(?<listenport>\d{1,5})'\s+--login='(?<login>[\w]+)'\s+--pass='(?<pass>.+)'\s+--name='(?<name>(?:\w|\s)+)')"
             ;
 
-        private readonly string SendMessagePattern =
+        private readonly string _sendMessagePattern =
                 @"(?:(?<cmd>SENDMSG)\s+--clienttype='(?<clienttype>(?:udp|tcp))'\s+--listenport='(?<listenport>\d{1,5})'\s+--from='(?<sender>\w+)'\s+--to='(?<recipient>\w+)'\s+--message='(?<message>.*)'\s+--sourcelang='(?<sourcelang>en|ro|ru|unknown)')"
             ;
 
-        private readonly string TranslateCmdPattern =
+        private readonly string _translateCmdPattern =
                 $@"(?:(?<cmd>TRANSLATE){
                         ClientTypeListenPortPattern
                     }\s+--sourcetext='(?<sourcetext>.*)'\s+--sourcelang='(?<sourcelang>ro|ru|en|unknown)'\s+--targetlang='(?<targetlang>ro|ru|en)')"
@@ -49,7 +49,7 @@
         {
             var responseComponents = new ConcurrentDictionary<string, string>();
 
-            Regex parser = new Regex(TranslateCmdPattern);
+            Regex parser = new Regex(_translateCmdPattern);
             Match match = parser.Match(response);
 
             if (match.Success)

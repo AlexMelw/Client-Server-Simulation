@@ -7,8 +7,8 @@
     <ProjectGuid>{6FA0AB1A-03E8-4C70-B628-8507CAA15247}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Protocol.Interfaces</RootNamespace>
-    <AssemblyName>Protocol.Interfaces</AssemblyName>
+    <RootNamespace>FlowProtocol.Interfaces</RootNamespace>
+    <AssemblyName>FlowProtocol.Interfaces</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -47,8 +47,8 @@
     <Compile Include="Request\IFlowProtocolRequestProcessor.cs" />
     <Compile Include="Response\IFlowProtocolResponseParser.cs" />
     <Compile Include="Response\IFlowProtocolResponseProcessor.cs" />
-    <Compile Include="IServerWorker.cs" />
-    <Compile Include="IClientWorker.cs" />
+    <Compile Include="IFlowServerWorker.cs" />
+    <Compile Include="IFlowClientWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

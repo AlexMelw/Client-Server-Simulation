@@ -1,11 +1,12 @@
-﻿namespace Protocol.Interfaces
+﻿namespace FlowProtocol.Interfaces
 {
     using System;
     using System.Net;
     using Common;
+    using Response;
 
     /* TCP/UDP Client */
-    public interface IClientWorker : IFlowProtocol, IDisposable
+    public interface IFlowClientWorker : IFlowProtocol, IFlowProtocolResponseProcessor, IDisposable
     {
         void Init(IPAddress ipAddress, int port);
         void StartCommunication();

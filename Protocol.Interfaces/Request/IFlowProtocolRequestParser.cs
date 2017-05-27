@@ -1,4 +1,4 @@
-﻿namespace Protocol.Interfaces.Request
+﻿namespace FlowProtocol.Interfaces.Request
 {
     using System.Collections.Concurrent;
 

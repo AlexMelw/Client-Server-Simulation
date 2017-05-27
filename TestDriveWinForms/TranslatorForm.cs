@@ -5,11 +5,11 @@
     using System.Windows.Forms;
     using TranslatorService;
 
-    public partial class Form1 : Form
+    public partial class TranslatorForm : Form
     {
         #region CONSTRUCTORS
 
-        public Form1()
+        public TranslatorForm()
         {
             InitializeComponent();
             RegisterEvents();

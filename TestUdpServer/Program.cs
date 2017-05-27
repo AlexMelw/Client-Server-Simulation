@@ -9,17 +9,16 @@ namespace TestUdpServer
     using System.Net;
     using System.Net.Sockets;
     using EasySharp.NHelpers;
+    using FlowProtocol.Interfaces.CommonConventions;
 
     class Program
     {
-        private const int ServerUdpListeningPort = 6401;
-
         static void Main(string[] args)
         {
             // Server --------------------------
             Console.Out.WriteLine("Server...");
-            IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Any, ServerUdpListeningPort);
-            UdpClient udpServer = new UdpClient(ServerUdpListeningPort);
+            IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Any, Conventions.UdpServerListeningPort);
+            UdpClient udpServer = new UdpClient(Conventions.UdpServerListeningPort);
 
             for (
                 string cmdLine = string.Empty;

@@ -53,9 +53,9 @@
       <Project>{CAC83CF1-E5D4-45F6-85CC-E0AD29B55A8E}</Project>
       <Name>NHelpers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Protocol.Interfaces\Protocol.Interfaces.csproj">
+    <ProjectReference Include="..\Protocol.Interfaces\FlowProtocol.Interfaces.csproj">
       <Project>{6FA0AB1A-03E8-4C70-B628-8507CAA15247}</Project>
-      <Name>Protocol.Interfaces</Name>
+      <Name>FlowProtocol.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

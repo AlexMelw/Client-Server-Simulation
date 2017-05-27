@@ -1,19 +1,19 @@
-﻿namespace Protocol.Implementation.Workers
+﻿namespace FlowProtocol.Implementation.Workers.Clients
 {
     using System;
     using System.Net;
     using Interfaces;
     using Interfaces.Response;
 
-    public class UdpClientWorker : IClientWorker
+    public class UdpClientWorker : IFlowClientWorker
     {
-        private IFlowProtocolResponseProcessor _responseProcessor;
+        private readonly IFlowProtocolResponseParser _responseParser;
 
         #region CONSTRUCTORS
 
-        public UdpClientWorker(IFlowProtocolResponseProcessor responseProcessor)
+        public UdpClientWorker(IFlowProtocolResponseParser responseParser)
         {
-            _responseProcessor = responseProcessor;
+            _responseParser = responseParser;
         }
 
         #endregion
@@ -33,6 +33,23 @@
             throw new NotImplementedException();
         }
 
+        string IFlowClientWorker.Authenticate(string login, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Dispose() { }
+
+        public byte[] ProcessResponseGetImageBytes(string response)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsAuthenticated(string response)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Register(string login, string password)
         {
             throw new NotImplementedException();
@@ -47,7 +64,5 @@
         {
             throw new NotImplementedException();
         }
-
-        public void Dispose() { }
     }
 }

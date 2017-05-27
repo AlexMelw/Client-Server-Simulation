@@ -1,33 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TestTcpServer
+﻿namespace Presentation.Console.ServerApp
 {
+    using System;
     using System.Diagnostics;
+    using System.Linq;
     using System.Net;
     using System.Net.Sockets;
-    using System.Threading;
     using EasySharp.NHelpers;
     using FlowProtocol.Interfaces.ProtocolHelpers;
+    using static FlowProtocol.Interfaces.CommonConventions.Conventions;
 
-    class ProgramServer
+    internal class Server
     {
-        private const string CloseConnection = "close connection";
-
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            const int port = 5150;
-            IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
-            TcpListener tcpListener = new TcpListener(ipAddress, port);
+            StartListeningUdpPort(Localhost, UdpServerListeningPort);
+            StartListeningTcpPort(Localhost, TcpServerListeningPort);
+        }
+
+        private static void StartListeningUdpPort(string host, int udpServerListeningPort)
+        {
+            // Server --------------------------
+            Console.Out.WriteLine("[ UDP ] SERVER IS RUNNING");
+            IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Any, udpServerListeningPort);
+
+            for (
+                string cmdLine = string.Empty;
+                cmdLine != QuitServerCmd;)
+            {
+                var udpServer = new UdpClient(UdpServerListeningPort);
+
+                byte[] bufferBytesArray = udpServer.Receive(ref serverEndPoint);
+                cmdLine = bufferBytesArray.ToAsciiString();
+                Console.Out.WriteLine($"Remote Message: {cmdLine}");
+
+                bufferBytesArray = "OK 200 [ Message Received ]".ToAsciiEncodedByteArray();
+                udpServer.Send(bufferBytesArray, bufferBytesArray.Length, serverEndPoint);
+            }
+        }
+
+        private static void StartListeningTcpPort(string host, int tcpServerListeningPort)
+        {
+            IPAddress ipAddress = IPAddress.Parse(host);
+            TcpListener tcpListener = new TcpListener(ipAddress, tcpServerListeningPort);
 
             try
             {
                 tcpListener.Start();
 
-                Console.WriteLine($" The server is running at port {port}...");
+                Console.WriteLine($" The server is running at port {tcpServerListeningPort}...");
                 Console.WriteLine(" The local End point is  :" + tcpListener.LocalEndpoint);
                 Console.WriteLine(" Waiting for a connection.....");
                 Console.Out.WriteLine();
@@ -94,7 +114,6 @@ namespace TestTcpServer
             }
             catch (Exception e)
             {
-                
                 Console.Out.WriteLine("Grave error occured. Searver is dead.");
                 Console.Out.WriteLine($"e = {e}");
                 Debug.WriteLine("Grave error occured. Searver is dead.");
@@ -106,6 +125,7 @@ namespace TestTcpServer
             {
                 tcpListener.Stop();
             }
+            ;
         }
     }
 }

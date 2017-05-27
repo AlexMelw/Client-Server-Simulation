@@ -1,4 +1,4 @@
-﻿namespace Protocol.Interfaces.CommonConventions
+﻿namespace FlowProtocol.Interfaces.CommonConventions
 {
     public class Conventions
     {
@@ -7,17 +7,17 @@
         public const string Cmd = "cmd";
         public const string Res = "resvalue";
         public const string StatusDesc = "statusdesc";
-        public const string CloseConnection = "CLOSECONNECTION";
-        public const string CloseConnectionAccepted = "CLOSECONNECTIONACCEPTED";
-        public const string ServerHalted = "SERVERHALTED";
+        public const string CloseConnection = "CLOSE_CONNECTION";
+        public const string CloseConnectionAccepted = "CLOSE_CONNECTION_ACCEPTED";
+        public const string ServerHalted = "SERVER_HALTED";
         public const string Localhost = "127.0.0.1";
         public const int TcpServerListeningPort = 6418;
         public const int UdpServerListeningPort = 8146;
         public const int FromBeginning = 0;
         public const int EthernetTcpUdpPacketSize = 1472;
-
+        public const string QuitServerCmd = "QUIT_SERVER";
         public const string Error = "ERROR";
-        public const string NotAuthenticated = "NOTAUTHENTICATED";
+        public const string NotAuthenticated = "NOT_AUTHENTICATED";
 
 
         public class Lang
@@ -28,7 +28,7 @@
             public const string Unknown = "unknown";
         }
 
-        public class DataTransmissionType
+        public class TransportType
         {
             public const string Udp = "udp";
             public const string Tcp = "tcp";

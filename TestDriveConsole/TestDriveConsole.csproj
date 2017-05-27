@@ -53,9 +53,9 @@
       <Project>{cac83cf1-e5d4-45f6-85cc-e0ad29b55a8e}</Project>
       <Name>NHelpers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Protocol.Implementation\Protocol.Implementation.csproj">
+    <ProjectReference Include="..\Protocol.Implementation\FlowProtocol.Implementation.csproj">
       <Project>{3F542A4D-7CF7-4193-AAC8-42351F395AA5}</Project>
-      <Name>Protocol.Implementation</Name>
+      <Name>FlowProtocol.Implementation</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

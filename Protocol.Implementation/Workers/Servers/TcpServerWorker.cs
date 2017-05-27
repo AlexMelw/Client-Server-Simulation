@@ -1,23 +1,13 @@
-﻿namespace Protocol.Implementation.Request
+﻿namespace FlowProtocol.Implementation.Workers.Servers
 {
     using System;
     using System.Diagnostics;
-    using Interfaces.Request;
+    using System.Net;
+    using Interfaces;
     using TranslatorService;
 
-    public class RequestProcessor : IFlowProtocolRequestProcessor
+    public class TcpServerWorker : IFlowServerWorker
     {
-        private readonly RequestParser _requestParser;
-
-        #region CONSTRUCTORS
-
-        public RequestProcessor(RequestParser requestParser)
-        {
-            _requestParser = requestParser;
-        }
-
-        #endregion
-
         public void ProcessRequest(string response)
         {
             throw new NotImplementedException();
@@ -44,6 +34,26 @@
                 Debug.WriteLine(e);
                 throw;
             }
+        }
+
+        public void Send(string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Init(IPAddress ipAddress, int port)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StartServing()
+        {
+            throw new NotImplementedException();
         }
     }
 }

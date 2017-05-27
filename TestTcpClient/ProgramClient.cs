@@ -9,7 +9,7 @@ namespace TestTcpClient
     using System.Net;
     using System.Net.Sockets;
     using EasySharp.NHelpers;
-    using Protocol.Interfaces.ProtocolHelpers;
+    using FlowProtocol.Interfaces.ProtocolHelpers;
 
     class ProgramClient
     {

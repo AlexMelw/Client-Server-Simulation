@@ -50,13 +50,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Protocol.Implementation\Protocol.Implementation.csproj">
+    <ProjectReference Include="..\Protocol.Implementation\FlowProtocol.Implementation.csproj">
       <Project>{3F542A4D-7CF7-4193-AAC8-42351F395AA5}</Project>
-      <Name>Protocol.Implementation</Name>
+      <Name>FlowProtocol.Implementation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Protocol.Interfaces\Protocol.Interfaces.csproj">
+    <ProjectReference Include="..\Protocol.Interfaces\FlowProtocol.Interfaces.csproj">
       <Project>{6FA0AB1A-03E8-4C70-B628-8507CAA15247}</Project>
-      <Name>Protocol.Interfaces</Name>
+      <Name>FlowProtocol.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

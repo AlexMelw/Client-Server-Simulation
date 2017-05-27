@@ -1,4 +1,4 @@
-﻿namespace Protocol.Interfaces.ProtocolHelpers
+﻿namespace FlowProtocol.Interfaces.ProtocolHelpers
 {
     using EasySharp.NHelpers;
 
