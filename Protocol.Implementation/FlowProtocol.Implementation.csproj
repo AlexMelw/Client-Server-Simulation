@@ -69,7 +69,7 @@
     <Compile Include="Entities\ChatMessage.cs" />
     <Compile Include="Storage\RegisteredUsers.cs" />
     <Compile Include="Entities\User.cs" />
-    <Compile Include="Storage\Correspondence.cs" />
+    <Compile Include="Storage\CorrespondenceManagement.cs" />
     <Compile Include="Trash\ResponseProcessorTrash.cs" />
     <Compile Include="Web References\MSTranslatorService\Reference.cs">
       <AutoGen>True</AutoGen>

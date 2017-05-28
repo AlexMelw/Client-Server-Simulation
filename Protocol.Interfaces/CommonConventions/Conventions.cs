@@ -22,6 +22,17 @@
         public const string NotAuthenticated = "NOT_AUTHENTICATED";
         public const string BadRequest = "400 Bad Request UNKNOWN --RES='Not applicable'";
 
+        // GET MESSAGE
+        public const string TranslationMode = "translationmode";
+        public const string DoNotTranslate = "donottranslate";
+        public const string DoTranslate = "translateto";
+
+        // SEND MESSAGE
+        public const string Sender = "sender";
+        public const string Recipient = "recipient";
+        public const string Message = "message";
+        public const string SessionToken = "sessiontoken";
+
         // REGISTER
         public const string Name = "name";
         public const string Pass = "pass";
@@ -54,6 +65,7 @@
 
         public class Commands
         {
+            public const string GetMessage = "GETMSG";
             public const string SendMessage = "SENDMSG";
             public const string Translate = "TRANSLATE";
             public const string Register = "REGISTER";

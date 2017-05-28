@@ -21,12 +21,12 @@
         {
             Users = new ConcurrentDictionary<string, User>();
 
-            Users.TryAdd("Admin", new User
-            {
-                Login = "Admin",
-                Name = "Veaceslav Barbarii",
-                Pass = "qwerty123"
-            });
+            //Users.TryAdd("Admin", new User
+            //{
+            //    Login = "Admin",
+            //    Name = "Veaceslav Barbarii",
+            //    Pass = "qwerty123"
+            //});
         }
 
         #endregion

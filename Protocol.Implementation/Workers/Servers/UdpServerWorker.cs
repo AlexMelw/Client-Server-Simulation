@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Concurrent;
     using System.Diagnostics;
+    using System.Linq;
     using System.Net;
     using System.Net.Sockets;
     using System.Threading;
@@ -19,6 +20,9 @@
     public class UdpServerWorker : IFlowServerWorker
     {
         private const string AppId = "6CE9C85A41571C050C379F60DA173D286384E0F2";
+
+        // TODO From IFlowProtocolRequestParser to IFlowProtocolRequestProcessor to avoid code copy-paste (UDP & TCP workers)
+
         private readonly IFlowProtocolRequestParser _parser;
         private IPEndPoint _remoteClientEndPoint;
         private UdpClient _udpServer;
@@ -107,20 +111,95 @@
                 }
                 if (cmd == Commands.SendMessage)
                 {
-                    requestMembers.TryGetValue(Login, out string login);
-                    requestMembers.TryGetValue(Pass, out string pass);
+                    requestMembers.TryGetValue(SessionToken, out string sessionToken);
 
-                    Guid authToken = CreateNewSessionForUserWithCredentials(login, pass);
+                    User senderUser = AuthenticateUser(sessionToken);
 
-                    if (authToken != Guid.Empty)
+                    if (senderUser != null)
                     {
-                        return $@"200 OK AUTH --RES='User authenticated successfully' AuthToken='{authToken}'";
-                    }
+                        requestMembers.TryGetValue(Recipient, out string recipient);
 
-                    return $@"530 ERR AUTH --RES='login or password incorrect'";
+                        if (AuthenticateRecipient(recipient))
+                        {
+                            requestMembers.TryGetValue(Message, out string message);
+                            requestMembers.TryGetValue(SourceLang, out string sourceLang);
+
+                            Debug.Assert(recipient != null, "recipient != null");
+                            CorrespondenceManagement.Instance.ClientChatMessageQueues[recipient]
+                                .Enqueue(new ChatMessage
+                                {
+                                    SourceLang = sourceLang,
+                                    TextBody = message,
+                                    SenderId = senderUser.Login,
+                                    SenderName = senderUser.Name
+                                });
+
+                            return $@"200 OK SENDMSG --RES='Message sent successfully'";
+                        }
+                        return $@"512 ERR SENDMSG --RES='Inexistent recipient'";
+                    }
+                    return $@"511 ERR SENDMSG --RES='Athentication required'";
+                }
+                if (cmd == Commands.GetMessage)
+                {
+                    requestMembers.TryGetValue(SessionToken, out string sessionToken);
+
+                    User user = AuthenticateUser(sessionToken);
+
+                    if (user != null)
+                    {
+                        requestMembers.TryGetValue(TranslationMode, out string translationMode);
+
+                        if (translationMode == DoNotTranslate)
+                        {
+                            if (CorrespondenceManagement.Instance.ClientChatMessageQueues[user.Login]
+                                .TryDequeue(out ChatMessage msg))
+                            {
+                                return
+                                    $"200 OK GETMSG --senderid='{msg.SenderId}' --sendername='{msg.SenderName}' --text='{msg.TextBody}'";
+                            }
+                            return $@"513 ERR GETMSG --RES='Message Box is empty'";
+                        }
+
+                        if (translationMode == DoTranslate)
+                        {
+                            if (CorrespondenceManagement.Instance.ClientChatMessageQueues[user.Login]
+                                .TryDequeue(out ChatMessage msg))
+                            {
+                                requestMembers.TryGetValue(TargetLang, out string targetLang);
+
+                                string translatedText = Translate(
+                                    sourceText: msg.TextBody,
+                                    sourceLang: msg.SourceLang,
+                                    targetLang: targetLang);
+
+                                return
+                                    $"200 OK GETMSG --senderid='{msg.SenderId}' --sendername='{msg.SenderName}' --text='{translatedText}'";
+                            }
+                            return $@"513 ERR GETMSG --RES='Message Box is empty'";
+                        }
+                    }
+                    return $"511 ERR GETMSG --RES='Athentication required'";
                 }
             }
             return BadRequest;
+        }
+
+        private bool AuthenticateRecipient(string recipient)
+        {
+            bool found = RegisteredUsers.Instance.Users.ContainsKey(recipient);
+
+            return found;
+        }
+
+        private User AuthenticateUser(string sessionToken)
+        {
+            Guid token = Guid.Parse(sessionToken);
+
+            AuthClient authClient = AuthenticatedClients.Instance.Clients.Values
+                .FirstOrDefault(client => client.AuthToken.Equals(token));
+
+            return authClient?.User;
         }
 
         private Guid CreateNewSessionForUserWithCredentials(string login, string pass)
@@ -128,13 +207,13 @@
             if (RegisteredUsers.Instance.Users.TryGetValue(login, out User user))
             {
                 AuthenticatedClients.Instance.Clients.AddOrUpdate(
-                    login,
-                    new AuthClient
+                    key: login,
+                    addValue: new AuthClient
                     {
                         User = user,
                         AuthToken = Guid.NewGuid()
                     },
-                    (keyLogin, authClient) =>
+                    updateValueFactory: (keyLogin, authClient) =>
                     {
                         authClient.AuthToken = Guid.NewGuid();
                         return authClient;
@@ -167,11 +246,10 @@
                 string to = targetLang == Lang.Unknown ? Lang.English : targetLang;
 
                 string translatedText = translatorClient.Translate(
-                    "6CE9C85A41571C050C379F60DA173D286384E0F2",
-                    sourceText,
-                    $"{from}",
-                    $"{to}");
-
+                    appId: "6CE9C85A41571C050C379F60DA173D286384E0F2",
+                    text: sourceText,
+                    from: $"{from}",
+                    to: $"{to}");
 
                 return translatedText;
             }
