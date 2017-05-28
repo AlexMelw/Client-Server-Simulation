@@ -7,15 +7,15 @@
 
     public class RequestParser : IFlowProtocolRequestParser
     {
-        private const string ClientTypeListenPortPattern =
-            @"\s+--clienttype='(?<clienttype>(?:udp|tcp))'\s+--listenport='(?<listenport>\d{1,5})'";
-
         private const long Size10MB = 10 * 1024 * 1024L;
         private const string StatusCode = "statuscode";
         private const string ObjectType = "objecttype";
         private const string ObjectValue = "objectvalue";
         private const string StatusDescription = "statusdescription";
         private const int FromBeginning = 0;
+
+        private readonly string _registerPattern =
+            @"(?:(?<cmd>REGISTER)\s+--login='(?<login>[\w]+)'\s+--pass='(?<pass>.+)'\s+--name='(?<name>(?:\w|\s)+)')";
 
         private readonly string _translatePattern =
                 @"(?:(?<cmd>TRANSLATE)\s+--sourcetext='(?<sourcetext>.*)'\s+--sourcelang='(?<sourcelang>ro|ru|en|unknown)'\s+--targetlang='(?<targetlang>ro|ru|en)')"
@@ -25,6 +25,8 @@
         {
             var responseComponents = new ConcurrentDictionary<string, string>();
 
+
+            // <TRANSLATE> REQUEST
             Regex parser = new Regex(_translatePattern);
             Match match = parser.Match(request);
 
@@ -34,6 +36,20 @@
                 responseComponents.TryAdd(SourceText, match.Groups[SourceText].Value);
                 responseComponents.TryAdd(SourceLang, match.Groups[SourceLang].Value);
                 responseComponents.TryAdd(TargetLang, match.Groups[TargetLang].Value);
+
+                return responseComponents;
+            }
+
+            // <REGISTER> REQUEST
+            parser = new Regex(_registerPattern);
+            match = parser.Match(request);
+
+            if (match.Success)
+            {
+                responseComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
+                responseComponents.TryAdd(Login, match.Groups[Login].Value);
+                responseComponents.TryAdd(Pass, match.Groups[Pass].Value);
+                responseComponents.TryAdd(Name, match.Groups[Name].Value);
 
                 return responseComponents;
             }

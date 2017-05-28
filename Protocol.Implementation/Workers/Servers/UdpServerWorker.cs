@@ -7,11 +7,13 @@
     using System.Net.Sockets;
     using System.Threading;
     using EasySharp.NHelpers;
+    using Entities;
     using Interfaces;
     using Interfaces.Request;
     using MSTranslatorService;
     using Ninject;
     using Request;
+    using Storage;
     using static Interfaces.CommonConventions.Conventions;
 
     public class UdpServerWorker : IFlowServerWorker
@@ -41,6 +43,7 @@
                 string result = ExecuteRequest(request);
 
                 byte[] bufferByteArray = result.ToAsciiEncodedByteArray();
+
                 _udpServer.Send(bufferByteArray, bufferByteArray.Length, _remoteClientEndPoint);
 
                 Console.Out.WriteLine($"[ UDP ] SERVER WORKER for {_remoteClientEndPoint} finished job");
@@ -75,10 +78,83 @@
                     );
                     return $@"200 OK TRANSLATE --TEXT='{translatedText}'";
                 }
-                if (cmd == Commands.Auth) { }
-                if (cmd == Commands.Register) { }
+                if (cmd == Commands.Register)
+                {
+                    requestMembers.TryGetValue(Login, out string login);
+                    requestMembers.TryGetValue(Pass, out string pass);
+                    requestMembers.TryGetValue(Name, out string name);
+
+                    if (RegisterUser(login, pass, name))
+                    {
+                        return $@"200 OK REGISTER --RES='User registered successfully'";
+                    }
+
+                    return $@"502 ERR REGISTER --RES='User already exists'";
+                }
+                if (cmd == Commands.Auth)
+                {
+                    requestMembers.TryGetValue(Login, out string login);
+                    requestMembers.TryGetValue(Pass, out string pass);
+
+                    Guid authToken = CreateNewSessionForUserWithCredentials(login, pass);
+
+                    if (authToken != Guid.Empty)
+                    {
+                        return $@"200 OK AUTH --RES='User authenticated successfully' AuthToken='{authToken}'";
+                    }
+
+                    return $@"530 ERR AUTH --RES='login or password incorrect'";
+                }
+                if (cmd == Commands.SendMessage)
+                {
+                    requestMembers.TryGetValue(Login, out string login);
+                    requestMembers.TryGetValue(Pass, out string pass);
+
+                    Guid authToken = CreateNewSessionForUserWithCredentials(login, pass);
+
+                    if (authToken != Guid.Empty)
+                    {
+                        return $@"200 OK AUTH --RES='User authenticated successfully' AuthToken='{authToken}'";
+                    }
+
+                    return $@"530 ERR AUTH --RES='login or password incorrect'";
+                }
             }
             return BadRequest;
+        }
+
+        private Guid CreateNewSessionForUserWithCredentials(string login, string pass)
+        {
+            if (RegisteredUsers.Instance.Users.TryGetValue(login, out User user))
+            {
+                AuthenticatedClients.Instance.Clients.AddOrUpdate(
+                    login,
+                    new AuthClient
+                    {
+                        User = user,
+                        AuthToken = Guid.NewGuid()
+                    },
+                    (keyLogin, authClient) =>
+                    {
+                        authClient.AuthToken = Guid.NewGuid();
+                        return authClient;
+                    }
+                );
+
+                return AuthenticatedClients.Instance.Clients.GetOrAdd(login, AuthClient.Empty).AuthToken;
+            }
+
+            return Guid.Empty;
+        }
+
+        private bool RegisterUser(string login, string pass, string name)
+        {
+            return RegisteredUsers.Instance.Users.TryAdd(login, new User
+            {
+                Login = login,
+                Pass = pass,
+                Name = name
+            });
         }
 
         public string Translate(string sourceText, string sourceLang, string targetLang)
@@ -121,123 +197,6 @@
             _remoteClientEndPoint = remoteClientEndPoint;
             _udpServer = udpServer;
             return this;
-        }
-    }
-}
-
-namespace FlowProtocol.Implementation.GoGoService
-{
-    using System.CodeDom.Compiler;
-    using System.Diagnostics;
-    using System.ServiceModel;
-    using System.ServiceModel.Channels;
-    using System.Threading.Tasks;
-
-    [GeneratedCode("System.ServiceModel", "4.0.0.0")]
-    [ServiceContract(Namespace = "http://api.microsofttranslator.com/v1/soap.svc",
-        ConfigurationName = "GoGoService.LanguageService")]
-    public interface LanguageService
-    {
-        [OperationContract(Action = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguages",
-            ReplyAction = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguagesRespon" +
-                          "se")]
-        string[] GetLanguages(string appId);
-
-        [OperationContract(Action = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguages",
-            ReplyAction = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguagesRespon" +
-                          "se")]
-        Task<string[]> GetLanguagesAsync(string appId);
-
-        [OperationContract(Action = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguageNames",
-            ReplyAction = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguageNamesRe" +
-                          "sponse")]
-        string[] GetLanguageNames(string appId, string locale);
-
-        [OperationContract(Action = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguageNames",
-            ReplyAction = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguageNamesRe" +
-                          "sponse")]
-        Task<string[]> GetLanguageNamesAsync(string appId, string locale);
-
-        [OperationContract(Action = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/Detect",
-            ReplyAction = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/DetectResponse")]
-        string Detect(string appId, string text);
-
-        [OperationContract(Action = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/Detect",
-            ReplyAction = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/DetectResponse")]
-        Task<string> DetectAsync(string appId, string text);
-
-        [OperationContract(Action = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/Translate",
-            ReplyAction = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/TranslateResponse")]
-        string Translate(string appId, string text, string from, string to);
-
-        [OperationContract(Action = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/Translate",
-            ReplyAction = "http://api.microsofttranslator.com/v1/soap.svc/LanguageService/TranslateResponse")]
-        Task<string> TranslateAsync(string appId, string text, string from, string to);
-    }
-
-    [GeneratedCode("System.ServiceModel", "4.0.0.0")]
-    public interface LanguageServiceChannel : LanguageService, IClientChannel { }
-
-    [DebuggerStepThrough]
-    [GeneratedCode("System.ServiceModel", "4.0.0.0")]
-    public class LanguageServiceClient : ClientBase<LanguageService>, LanguageService
-    {
-        #region CONSTRUCTORS
-
-        public LanguageServiceClient() { }
-
-        public LanguageServiceClient(string endpointConfigurationName) :
-            base(endpointConfigurationName) { }
-
-        public LanguageServiceClient(string endpointConfigurationName, string remoteAddress) :
-            base(endpointConfigurationName, remoteAddress) { }
-
-        public LanguageServiceClient(string endpointConfigurationName, EndpointAddress remoteAddress) :
-            base(endpointConfigurationName, remoteAddress) { }
-
-        public LanguageServiceClient(Binding binding, EndpointAddress remoteAddress) :
-            base(binding, remoteAddress) { }
-
-        #endregion
-
-        public string[] GetLanguages(string appId)
-        {
-            return Channel.GetLanguages(appId);
-        }
-
-        public Task<string[]> GetLanguagesAsync(string appId)
-        {
-            return Channel.GetLanguagesAsync(appId);
-        }
-
-        public string[] GetLanguageNames(string appId, string locale)
-        {
-            return Channel.GetLanguageNames(appId, locale);
-        }
-
-        public Task<string[]> GetLanguageNamesAsync(string appId, string locale)
-        {
-            return Channel.GetLanguageNamesAsync(appId, locale);
-        }
-
-        public string Detect(string appId, string text)
-        {
-            return Channel.Detect(appId, text);
-        }
-
-        public Task<string> DetectAsync(string appId, string text)
-        {
-            return Channel.DetectAsync(appId, text);
-        }
-
-        public string Translate(string appId, string text, string from, string to)
-        {
-            return Channel.Translate(appId, text, from, to);
-        }
-
-        public Task<string> TranslateAsync(string appId, string text, string from, string to)
-        {
-            return Channel.TranslateAsync(appId, text, from, to);
         }
     }
 }

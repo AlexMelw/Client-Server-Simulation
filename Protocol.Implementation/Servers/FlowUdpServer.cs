@@ -6,11 +6,13 @@
     using System.Threading;
     using EasySharp.NHelpers;
     using Interfaces;
-    using Interfaces.CommonConventions;
     using Workers.Servers;
+    using static Interfaces.CommonConventions.Conventions;
 
     public class FlowUdpServer : IServer
     {
+        private IPEndPoint EmptyEndPointInstance => new IPEndPoint(IPAddress.Any, 0);
+
         public void StartListeningToPort(int port)
         {
             new Thread(() =>
@@ -21,16 +23,15 @@
 
                 for (;;)
                 {
-                    string request = string.Empty;
-                    IPEndPoint remoteClientEndPoint = GetEmptyEndPoint();
+                    IPEndPoint remoteClientEndPoint = EmptyEndPointInstance;
 
                     byte[] bufferByteArray = udpServer.Receive(ref remoteClientEndPoint);
                     Console.Out.WriteLine($"remoteClientEndPoint = {remoteClientEndPoint}");
 
-                    request = bufferByteArray.ToAsciiString();
+                    string request = bufferByteArray.ToAsciiString();
                     Console.Out.WriteLine($"Remote Message: {request}");
 
-                    if (request == Conventions.QuitServerCmd)
+                    if (request == QuitServerCmd)
                     {
                         bufferByteArray = "OK 200 [ UDP SERVER HALTED ]".ToAsciiEncodedByteArray();
                         udpServer.Send(bufferByteArray, bufferByteArray.Length, remoteClientEndPoint);
@@ -45,7 +46,5 @@
                 udpServer?.Close();
             }).Start();
         }
-
-        private IPEndPoint GetEmptyEndPoint() => new IPEndPoint(IPAddress.Any, 0);
     }
 }

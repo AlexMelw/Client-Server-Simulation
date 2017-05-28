@@ -2,7 +2,12 @@
 {
     public class Conventions
     {
-        public const string OK = "OK";
+        public const int TcpServerListeningPort = 46418;
+        public const int UdpServerListeningPort = 48146;
+        public const int FromBeginning = 0;
+        public const int EthernetTcpUdpPacketSize = 1472;
+
+        public const string Ok = "OK";
         public const string StatusCode = "statuscode";
         public const string Cmd = "cmd";
         public const string Res = "resvalue";
@@ -11,16 +16,18 @@
         public const string ConnectionClosed = "CONNECTION_CLOSED";
         public const string ServerHalted = "SERVER_HALTED";
         public const string Localhost = "127.0.0.1";
-        public const int TcpServerListeningPort = 46418;
-        public const int UdpServerListeningPort = 48146;
-        public const int FromBeginning = 0;
-        public const int EthernetTcpUdpPacketSize = 1472;
         public const string QuitServerCmd = "QUIT_SERVER";
         public const string Quit = "QUIT";
         public const string Error = "ERROR";
         public const string NotAuthenticated = "NOT_AUTHENTICATED";
         public const string BadRequest = "400 Bad Request UNKNOWN --RES='Not applicable'";
 
+        // REGISTER
+        public const string Name = "name";
+        public const string Pass = "pass";
+        public const string Login = "login";
+
+        // TRANSLATE
         public const string SourceText = "sourcetext";
         public const string SourceLang = "sourcelang";
         public const string TargetLang = "targetlang";
@@ -47,6 +54,7 @@
 
         public class Commands
         {
+            public const string SendMessage = "SENDMSG";
             public const string Translate = "TRANSLATE";
             public const string Register = "REGISTER";
             public const string Auth = "AUTH";
