@@ -7,8 +7,8 @@
     using Request;
 
     /* TCP/UDP Server */
-    public interface IFlowServerWorker : IFlowProtocol, IDisposable
+    public interface IFlowServerWorker : IFlowProtocol
     {
-        void ProcessRequest(string request);
+        void ExecuteRequest(string request);
     }
 }

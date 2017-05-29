@@ -61,6 +61,7 @@
     </Compile>
     <Compile Include="ProtocolHelpers\FlowProtocolEncodingHelper.cs" />
     <Compile Include="Request\RequestParser.cs" />
+    <Compile Include="Request\RequestProcessor.cs" />
     <Compile Include="Response\ResponseParser.cs" />
     <Compile Include="Servers\FlowTcpServer.cs" />
     <Compile Include="Servers\FlowUdpServer.cs" />
@@ -76,6 +77,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Workers\Servers\IFlowProtocolRequestProcessor.cs" />
     <Compile Include="Workers\Servers\TcpServerWorker.cs" />
     <Compile Include="Workers\Servers\UdpServerWorker.cs" />
     <Compile Include="Workers\Clients\TcpClientWorker.cs" />

@@ -23,7 +23,7 @@
 
                 for (;;)
                 {
-                    IPEndPoint remoteClientEndPoint = EmptyEndPointInstance;
+                    IPEndPoint remoteClientEndPoint = this.EmptyEndPointInstance;
 
                     byte[] bufferByteArray = udpServer.Receive(ref remoteClientEndPoint);
                     Console.Out.WriteLine($"remoteClientEndPoint = {remoteClientEndPoint}");
@@ -40,7 +40,7 @@
 
                     UdpServerWorker.Instance
                         .Init(remoteClientEndPoint, udpServer)
-                        .ProcessRequest(request);
+                        .ExecuteRequest(request);
                 }
 
                 udpServer?.Close();

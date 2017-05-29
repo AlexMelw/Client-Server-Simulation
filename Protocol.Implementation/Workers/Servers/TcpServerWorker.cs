@@ -43,7 +43,7 @@
             GC.SuppressFinalize(this);
         }
 
-        public void ProcessRequest(string request)
+        public void ExecuteRequest(string request)
         {
             throw new NotImplementedException();
         }
