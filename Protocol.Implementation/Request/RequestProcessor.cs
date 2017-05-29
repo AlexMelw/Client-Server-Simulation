@@ -26,67 +26,67 @@
 
         public string ProcessRequest(string request)
         {
-            ConcurrentDictionary<string, string> requestMembers = _parser.ParseRequest(request);
+            ConcurrentDictionary<string, string> requestComponents = _parser.ParseRequest(request);
 
-            if (requestMembers == null)
+            if (requestComponents == null)
                 return BadRequest;
 
-            if (requestMembers.TryGetValue(Cmd, out string cmd))
+            if (requestComponents.TryGetValue(Cmd, out string cmd))
             {
                 if (cmd == Commands.Translate)
                 {
-                    requestMembers.TryGetValue(SourceText, out string sourceText);
-                    requestMembers.TryGetValue(SourceLang, out string sourceLang);
-                    requestMembers.TryGetValue(TargetLang, out string targetLang);
+                    requestComponents.TryGetValue(SourceText, out string sourceText);
+                    requestComponents.TryGetValue(SourceLang, out string sourceLang);
+                    requestComponents.TryGetValue(TargetLang, out string targetLang);
 
                     string translatedText = Translate(
                         sourceText,
                         sourceLang,
                         targetLang
                     );
-                    return $@"200 OK TRANSLATE --TEXT='{translatedText}'";
+                    return $@"200 OK TRANSLATE --res='{translatedText}'";
                 }
                 if (cmd == Commands.Register)
                 {
-                    requestMembers.TryGetValue(Login, out string login);
-                    requestMembers.TryGetValue(Pass, out string pass);
-                    requestMembers.TryGetValue(Name, out string name);
+                    requestComponents.TryGetValue(Login, out string login);
+                    requestComponents.TryGetValue(Pass, out string pass);
+                    requestComponents.TryGetValue(Name, out string name);
 
                     if (RegisterUser(login, pass, name))
                     {
-                        return $@"200 OK REGISTER --RES='User registered successfully'";
+                        return $@"200 OK REGISTER --res='User registered successfully'";
                     }
 
-                    return $@"502 ERR REGISTER --RES='User already exists'";
+                    return $@"502 ERR REGISTER --res='User already exists'";
                 }
                 if (cmd == Commands.Auth)
                 {
-                    requestMembers.TryGetValue(Login, out string login);
-                    requestMembers.TryGetValue(Pass, out string pass);
+                    requestComponents.TryGetValue(Login, out string login);
+                    requestComponents.TryGetValue(Pass, out string pass);
 
                     Guid authToken = CreateNewSessionForUserWithCredentials(login, pass);
 
                     if (authToken != Guid.Empty)
                     {
-                        return $@"200 OK AUTH --RES='User authenticated successfully' AuthToken='{authToken}'";
+                        return $@"200 OK AUTH --res='User authenticated successfully' sessiontoken='{authToken}'";
                     }
 
-                    return $@"530 ERR AUTH --RES='login or password incorrect'";
+                    return $@"530 ERR AUTH --res='login or password incorrect'";
                 }
                 if (cmd == Commands.SendMessage)
                 {
-                    requestMembers.TryGetValue(SessionToken, out string sessionToken);
+                    requestComponents.TryGetValue(SessionToken, out string sessionToken);
 
                     User senderUser = AuthenticateUser(sessionToken);
 
                     if (senderUser != null)
                     {
-                        requestMembers.TryGetValue(Recipient, out string recipient);
+                        requestComponents.TryGetValue(Recipient, out string recipient);
 
                         if (AuthenticateRecipient(recipient))
                         {
-                            requestMembers.TryGetValue(Message, out string message);
-                            requestMembers.TryGetValue(SourceLang, out string sourceLang);
+                            requestComponents.TryGetValue(Message, out string message);
+                            requestComponents.TryGetValue(SourceLang, out string sourceLang);
 
                             Debug.Assert(recipient != null, "recipient != null");
                             CorrespondenceManagement.Instance.ClientChatMessageQueues[recipient]
@@ -98,21 +98,21 @@
                                     SenderName = senderUser.Name
                                 });
 
-                            return $@"200 OK SENDMSG --RES='Message sent successfully'";
+                            return $@"200 OK SENDMSG --res='Message sent successfully'";
                         }
-                        return $@"512 ERR SENDMSG --RES='Inexistent recipient'";
+                        return $@"512 ERR SENDMSG --res='Inexistent recipient'";
                     }
-                    return $@"511 ERR SENDMSG --RES='Athentication required'";
+                    return $@"511 ERR SENDMSG --res='Athentication required'";
                 }
                 if (cmd == Commands.GetMessage)
                 {
-                    requestMembers.TryGetValue(SessionToken, out string sessionToken);
+                    requestComponents.TryGetValue(SessionToken, out string sessionToken);
 
                     User user = AuthenticateUser(sessionToken);
 
                     if (user != null)
                     {
-                        requestMembers.TryGetValue(TranslationMode, out string translationMode);
+                        requestComponents.TryGetValue(TranslationMode, out string translationMode);
 
                         if (translationMode == DoNotTranslate)
                         {
@@ -120,9 +120,9 @@
                                 .TryDequeue(out ChatMessage msg))
                             {
                                 return
-                                    $"200 OK GETMSG --senderid='{msg.SenderId}' --sendername='{msg.SenderName}' --text='{msg.TextBody}'";
+                                    $"200 OK GETMSG --senderid='{msg.SenderId}' --sendername='{msg.SenderName}' --msg='{msg.TextBody}'";
                             }
-                            return $@"513 ERR GETMSG --RES='Message Box is empty'";
+                            return $@"513 ERR GETMSG --res='Message Box is empty'";
                         }
 
                         if (translationMode == DoTranslate)
@@ -130,7 +130,7 @@
                             if (CorrespondenceManagement.Instance.ClientChatMessageQueues[user.Login]
                                 .TryDequeue(out ChatMessage msg))
                             {
-                                requestMembers.TryGetValue(TargetLang, out string targetLang);
+                                requestComponents.TryGetValue(TargetLang, out string targetLang);
 
                                 string fromLang = msg.SourceLang == Lang.Unknown ? "" : msg.SourceLang;
                                 string toLang = targetLang == Lang.Unknown
@@ -143,12 +143,12 @@
                                     targetLang: toLang);
 
                                 return
-                                    $"200 OK GETMSG --senderid='{msg.SenderId}' --sendername='{msg.SenderName}' --text='{translatedText}'";
+                                    $"200 OK GETMSG --senderid='{msg.SenderId}' --sendername='{msg.SenderName}' --msg='{translatedText}'";
                             }
-                            return $@"513 ERR GETMSG --RES='Message Box is empty'";
+                            return $@"513 ERR GETMSG --res='Message Box is empty'";
                         }
                     }
-                    return $"511 ERR GETMSG --RES='Athentication required'";
+                    return $"511 ERR GETMSG --res='Athentication required'";
                 }
             }
             return BadRequest;

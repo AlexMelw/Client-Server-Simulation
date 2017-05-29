@@ -42,11 +42,13 @@
   <ItemGroup>
     <Compile Include="CommonConventions\Conventions.cs" />
     <Compile Include="Common\IFlowProtocol.cs" />
-    <Compile Include="IServer.cs" />
+    <Compile Include="Servers\IServer.cs" />
     <Compile Include="Request\IFlowProtocolRequestParser.cs" />
+    <Compile Include="Request\IFlowProtocolRequestProcessor.cs" />
+    <Compile Include="Response\IFlowProtocolResponseProcessor.cs" />
     <Compile Include="Response\IFlowProtocolResponseParser.cs" />
-    <Compile Include="IFlowServerWorker.cs" />
-    <Compile Include="IFlowClientWorker.cs" />
+    <Compile Include="Workers\IFlowServerWorker.cs" />
+    <Compile Include="Workers\IFlowClientWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +56,10 @@
       <Project>{CAC83CF1-E5D4-45F6-85CC-E0AD29B55A8E}</Project>
       <Name>NHelpers</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Protocol\RegExRequest.sh" />
+    <None Include="Protocol\RegExResponse.sh" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

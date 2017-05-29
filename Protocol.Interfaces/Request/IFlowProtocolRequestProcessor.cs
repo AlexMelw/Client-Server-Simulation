@@ -1,4 +1,4 @@
-﻿namespace FlowProtocol.Implementation.Workers.Servers
+﻿namespace FlowProtocol.Interfaces.Request
 {
     public interface IFlowProtocolRequestProcessor
     {

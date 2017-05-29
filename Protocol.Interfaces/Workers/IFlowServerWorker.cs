@@ -1,10 +1,6 @@
-﻿namespace FlowProtocol.Interfaces
+﻿namespace FlowProtocol.Interfaces.Workers
 {
-    using System;
-    using System.Net;
-    using System.Net.Sockets;
     using Common;
-    using Request;
 
     /* TCP/UDP Server */
     public interface IFlowServerWorker : IFlowProtocol

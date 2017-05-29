@@ -6,6 +6,8 @@
     using System.Threading;
     using EasySharp.NHelpers;
     using Interfaces;
+    using Interfaces.Servers;
+    using ProtocolHelpers;
     using Workers.Servers;
     using static Interfaces.CommonConventions.Conventions;
 
@@ -28,12 +30,12 @@
                     byte[] bufferByteArray = udpServer.Receive(ref remoteClientEndPoint);
                     Console.Out.WriteLine($"remoteClientEndPoint = {remoteClientEndPoint}");
 
-                    string request = bufferByteArray.ToAsciiString();
+                    string request = bufferByteArray.ToFlowProtocolAsciiDecodedString();
                     Console.Out.WriteLine($"Remote Message: {request}");
 
                     if (request == QuitServerCmd)
                     {
-                        bufferByteArray = "OK 200 [ UDP SERVER HALTED ]".ToAsciiEncodedByteArray();
+                        bufferByteArray = "OK 200 [ UDP SERVER HALTED ]".ToFlowProtocolAsciiEncodedBytesArray();
                         udpServer.Send(bufferByteArray, bufferByteArray.Length, remoteClientEndPoint);
                         break;
                     }

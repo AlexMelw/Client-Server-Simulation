@@ -5,6 +5,8 @@
     using FlowProtocol.Implementation.Workers.Servers;
     using FlowProtocol.Interfaces;
     using FlowProtocol.Interfaces.Request;
+    using FlowProtocol.Interfaces.Servers;
+    using FlowProtocol.Interfaces.Workers;
     using Ninject;
 
     public class IoC

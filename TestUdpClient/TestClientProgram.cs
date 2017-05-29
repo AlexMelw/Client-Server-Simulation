@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TestUdpClient
+﻿namespace TestUdpClient
 {
+    using System;
     using System.Net;
     using System.Net.Sockets;
-    using EasySharp.NHelpers;
+    using FlowProtocol.Implementation.ProtocolHelpers;
     using static FlowProtocol.Interfaces.CommonConventions.Conventions;
 
-    class TestClientProgram
+    public class TestClientProgram
     {
-        static void Main(string[] args)
+        internal static void Main(string[] args)
         {
             Console.Out.WriteLine("Client...");
 
@@ -30,11 +25,11 @@ namespace TestUdpClient
                 cmdLine != Quit;
                 cmdLine = Console.ReadLine())
             {
-                byte[] bufferByteArray = cmdLine.ToAsciiEncodedByteArray();
+                byte[] bufferByteArray = cmdLine.ToFlowProtocolAsciiEncodedBytesArray();
                 udpClient.Send(bufferByteArray, bufferByteArray.Length);
 
                 bufferByteArray = udpClient.Receive(ref serverEndPoint);
-                Console.Out.WriteLine($"{bufferByteArray.ToAsciiString()}");
+                Console.Out.WriteLine($"{bufferByteArray.ToFlowProtocolAsciiDecodedString()}");
             }
         }
     }

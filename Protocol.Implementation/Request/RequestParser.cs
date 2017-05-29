@@ -7,99 +7,97 @@
 
     public class RequestParser : IFlowProtocolRequestParser
     {
-        private readonly string _registerPattern =
-            @"(?:(?<cmd>REGISTER)\s+--login='(?<login>[\w]+)'\s+--pass='(?<pass>.+)'\s+--name='(?<name>(?:\w|\s)+)')";
-
-        private readonly string _authenticationPattern =
+        private readonly string _authenticationRequestPattern =
                 @"(?:(?<cmd>AUTH)\s+(\s+securepassword\s+protectiontype='(?<passprotectiontype>\w+)')?\s+--login='(?<login>\w+)'\s+--pass='(?<pass>.+)')"
             ;
 
-        private readonly string _sendMessagePattern =
-                @"(?:(?<cmd>SENDMSG)\s+--to='(?<recipient>\w+)'\s+--msg='(?<message>.*)'\s+--sourcelang='(?<sourcelang>en|ro|ru|unknown)'\s+sessiontoken='(?<sessiontoken>[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?)')"
+        private readonly string _getMessageRequestPattern =
+                @"(?:(?<cmd>GETMSG)\s+sessiontoken='(?<sessiontoken>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))'\s+(?:(?<translationmode>donottranslate)|(?:(?<translationmode>translateto)='(?<targetlang>en|ro|ru)')))"
             ;
 
-        private readonly string _getMessagePattern =
-                @"(?:(?<cmd>GETMSG)\s+sessiontoken='(?<sessiontoken>[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?)'\s+(?:(?<translationmode>donottranslate)|(?:(?<translationmode>translateto)='(?<targetlang>en|ro|ru)')))"
+        private readonly string _registerRequestPattern =
+            @"(?:(?<cmd>REGISTER)\s+--login='(?<login>[\w]+)'\s+--pass='(?<pass>.+)'\s+--name='(?<name>(?:\w|\s)+)')";
+
+        private readonly string _sendMessageRequestPattern =
+                @"(?:(?<cmd>SENDMSG)\s+--to='(?<recipient>\w+)'\s+--msg='(?<message>.*)'\s+--sourcelang='(?<sourcelang>en|ro|ru|unknown)'\s+sessiontoken='(?<sessiontoken>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))')"
             ;
 
-        // TODO To be reviewed (add sessiontoken)
-        private readonly string _translatePattern =
+        private readonly string _translateRequestPattern =
                 @"(?:(?<cmd>TRANSLATE)\s+--sourcetext='(?<sourcetext>.*)'\s+--sourcelang='(?<sourcelang>ro|ru|en|unknown)'\s+--targetlang='(?<targetlang>ro|ru|en)')"
             ;
 
         public ConcurrentDictionary<string, string> ParseRequest(string request)
         {
-            var responseComponents = new ConcurrentDictionary<string, string>();
+            var requestComponents = new ConcurrentDictionary<string, string>();
 
             // <REGISTER> REQUEST
-            Regex parser = new Regex(_registerPattern);
+            Regex parser = new Regex(_registerRequestPattern);
             Match match = parser.Match(request);
 
             if (match.Success)
             {
-                responseComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
-                responseComponents.TryAdd(Login, match.Groups[Login].Value);
-                responseComponents.TryAdd(Pass, match.Groups[Pass].Value);
-                responseComponents.TryAdd(Name, match.Groups[Name].Value);
+                requestComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
+                requestComponents.TryAdd(Login, match.Groups[Login].Value);
+                requestComponents.TryAdd(Pass, match.Groups[Pass].Value);
+                requestComponents.TryAdd(Name, match.Groups[Name].Value);
 
-                return responseComponents;
+                return requestComponents;
             }
 
             // <AUTHENTICATION> REQUEST
-            parser = new Regex(_authenticationPattern);
+            parser = new Regex(_authenticationRequestPattern);
             match = parser.Match(request);
 
             if (match.Success)
             {
-                responseComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
-                responseComponents.TryAdd(Login, match.Groups[Login].Value);
-                responseComponents.TryAdd(Pass, match.Groups[Pass].Value);
+                requestComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
+                requestComponents.TryAdd(Login, match.Groups[Login].Value);
+                requestComponents.TryAdd(Pass, match.Groups[Pass].Value);
 
-                return responseComponents;
+                return requestComponents;
             }
 
             // <SEND MESSAGE> REQUEST
-            parser = new Regex(_sendMessagePattern);
+            parser = new Regex(_sendMessageRequestPattern);
             match = parser.Match(request);
 
             if (match.Success)
             {
-                responseComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
-                responseComponents.TryAdd(SessionToken, match.Groups[SessionToken].Value);
-                responseComponents.TryAdd(Recipient, match.Groups[Recipient].Value);
-                responseComponents.TryAdd(Message, match.Groups[Message].Value);
-                responseComponents.TryAdd(SourceLang, match.Groups[SourceLang].Value);
+                requestComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
+                requestComponents.TryAdd(SessionToken, match.Groups[SessionToken].Value);
+                requestComponents.TryAdd(Recipient, match.Groups[Recipient].Value);
+                requestComponents.TryAdd(Message, match.Groups[Message].Value);
+                requestComponents.TryAdd(SourceLang, match.Groups[SourceLang].Value);
 
-                return responseComponents;
+                return requestComponents;
             }
 
             // <GET MESSAGE> REQUEST
-            parser = new Regex(_getMessagePattern);
+            parser = new Regex(_getMessageRequestPattern);
             match = parser.Match(request);
 
             if (match.Success)
             {
-                responseComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
-                responseComponents.TryAdd(SessionToken, match.Groups[SessionToken].Value);
-                responseComponents.TryAdd(TranslationMode, match.Groups[TranslationMode].Value);
-                responseComponents.TryAdd(TargetLang, match.Groups[TargetLang].Value);
+                requestComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
+                requestComponents.TryAdd(SessionToken, match.Groups[SessionToken].Value);
+                requestComponents.TryAdd(TranslationMode, match.Groups[TranslationMode].Value);
+                requestComponents.TryAdd(TargetLang, match.Groups[TargetLang].Value);
 
-                return responseComponents;
+                return requestComponents;
             }
 
             // <TRANSLATE> REQUEST
-            parser = new Regex(_translatePattern);
+            parser = new Regex(_translateRequestPattern);
             match = parser.Match(request);
 
-            // TODO To be reviewed (add sessiontoken)
             if (match.Success)
             {
-                responseComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
-                responseComponents.TryAdd(SourceText, match.Groups[SourceText].Value);
-                responseComponents.TryAdd(SourceLang, match.Groups[SourceLang].Value);
-                responseComponents.TryAdd(TargetLang, match.Groups[TargetLang].Value);
+                requestComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
+                requestComponents.TryAdd(SourceText, match.Groups[SourceText].Value);
+                requestComponents.TryAdd(SourceLang, match.Groups[SourceLang].Value);
+                requestComponents.TryAdd(TargetLang, match.Groups[TargetLang].Value);
 
-                return responseComponents;
+                return requestComponents;
             }
 
             return null;

@@ -4,9 +4,11 @@
     using System.Net;
     using System.Net.Sockets;
     using System.Threading;
-    using EasySharp.NHelpers;
     using Interfaces;
+    using Interfaces.Request;
+    using Interfaces.Workers;
     using Ninject;
+    using ProtocolHelpers;
     using Request;
 
     public class UdpServerWorker : IFlowServerWorker
@@ -36,7 +38,7 @@
 
                 string result = _requestProcessor.ProcessRequest(request);
 
-                byte[] bufferByteArray = result.ToAsciiEncodedByteArray();
+                byte[] bufferByteArray = result.ToFlowProtocolAsciiEncodedBytesArray();
 
                 _udpServer.Send(bufferByteArray, bufferByteArray.Length, _remoteClientEndPoint);
 

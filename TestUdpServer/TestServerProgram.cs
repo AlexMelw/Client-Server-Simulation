@@ -9,6 +9,7 @@ namespace TestUdpServer
     using System.Net;
     using System.Net.Sockets;
     using EasySharp.NHelpers;
+    using FlowProtocol.Implementation.ProtocolHelpers;
     using FlowProtocol.Implementation.Servers;
     using FlowProtocol.Interfaces.CommonConventions;
     using Presentation.Console.ServerApp;
@@ -28,10 +29,10 @@ namespace TestUdpServer
                 cmdLine != "quit server";)
             {
                 byte[] bufferBytesArray = udpServer.Receive(ref serverEndPoint);
-                cmdLine = bufferBytesArray.ToAsciiString();
+                cmdLine = bufferBytesArray.ToFlowProtocolAsciiDecodedString();
                 Console.Out.WriteLine($"Remote Message: {cmdLine}");
 
-                bufferBytesArray = "OK 200 [ Message Received ]".ToAsciiEncodedByteArray();
+                bufferBytesArray = "OK 200 [ Message Received ]".ToFlowProtocolAsciiEncodedBytesArray();
                 udpServer.Send(bufferBytesArray, bufferBytesArray.Length, serverEndPoint);
             }
         }

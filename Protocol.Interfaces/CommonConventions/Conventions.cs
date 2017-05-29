@@ -8,10 +8,10 @@
         public const int EthernetTcpUdpPacketSize = 1472;
 
         public const string Ok = "OK";
-        public const string StatusCode = "statuscode";
         public const string Cmd = "cmd";
-        public const string Res = "resvalue";
-        public const string StatusDesc = "statusdesc";
+        public const string ResultValue = "res";
+        public const string StatusCode = "statuscode";
+        public const string StatusDescription = "statusdesc";
         public const string CloseConnection = "CLOSE_CONNECTION";
         public const string ConnectionClosed = "CONNECTION_CLOSED";
         public const string ServerHalted = "SERVER_HALTED";
@@ -26,6 +26,9 @@
         public const string TranslationMode = "translationmode";
         public const string DoNotTranslate = "donottranslate";
         public const string DoTranslate = "translateto";
+        public const string SenderName = "sendername";
+        public const string SenderId = "senderid";
+
 
         // SEND MESSAGE
         public const string Sender = "sender";

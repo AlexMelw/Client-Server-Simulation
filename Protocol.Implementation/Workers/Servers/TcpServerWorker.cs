@@ -5,6 +5,7 @@
     using System.Net;
     using System.Net.Sockets;
     using Interfaces;
+    using Interfaces.Workers;
 
     public class TcpServerWorker : IFlowServerWorker
     {

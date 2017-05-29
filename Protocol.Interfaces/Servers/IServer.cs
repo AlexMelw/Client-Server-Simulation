@@ -1,4 +1,4 @@
-﻿namespace FlowProtocol.Interfaces
+﻿namespace FlowProtocol.Interfaces.Servers
 {
     public interface IServer
     {
