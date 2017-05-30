@@ -26,6 +26,11 @@
         private string _password;
         private bool _initialized;
         private readonly string AuthenticationTemplate = @"AUTH  --login='{0}' --pass='{1}'";
+        private readonly string RegisterTemplate = @"REGISTER  --login='{0}' --pass='{1}' --name='{2}'";
+
+        private readonly string TranslateTemplate =
+                @"TRANSLATE  --sourcetext='{0}' --sourcelang='{1}' --targetlang='{2}'"
+            ;
 
         public TcpClientWorker(IFlowProtocolResponseParser parser)
         {
@@ -153,7 +158,7 @@
 
                 NetworkStream networkStream = _client.GetStream();
 
-                string textToBeSent = string.Format(AuthenticationTemplate, login, password);
+                string textToBeSent = string.Format(RegisterTemplate, login, password, name);
 
                 byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
 
@@ -183,9 +188,8 @@
                             {
                                 return false;
                             }
-                            if (responseComponents.TryGetValue(SessionToken, out string token))
+                            if (statusDesc == Ok)
                             {
-                                _sessionToken = Guid.Parse(token);
                                 return true;
                             }
                         }
@@ -205,163 +209,109 @@
 
         public string Translate(string sourceText, string sourceTextLang, string targetTextLanguage)
         {
-            throw new NotImplementedException();
-        }
-
-        public void InitZZZZZZZZZZZZZZZ(IPAddress ipAddress, int port)
-        {
-            RemoteHostIpAddress = ipAddress;
-            Port = port;
-        }
-
-        public void StartCommunicationZZZZZZZZZZZZZ()
-        {
-            if (_client == null)
+            if (_initialized == false)
             {
-                throw new Exception($"{nameof(_client)} is not initialized");
+                return string.Empty;
             }
 
-            new Thread(() =>
+            _client = new TcpClient();
+
+            try
             {
-                Console.Out.WriteLine("Connecting to server...");
                 _client.Connect(RemoteHostIpAddress, Port);
-                Console.Out.WriteLine($"Connected to {RemoteHostIpAddress} : {Port}");
 
-                while (!TextToBeSent.Equals(CloseConnection))
+                NetworkStream networkStream = _client.GetStream();
+
+                // From "English" to "en", from "Romanian" to "ro", etc.
+                ConvertToFlowLangNotations(ref sourceTextLang, ref targetTextLanguage);
+
+                string textToBeSent = string.Format(TranslateTemplate,
+                    sourceText, sourceTextLang, targetTextLanguage);
+
+                byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
+
+                if (networkStream.CanWrite)
                 {
-                    string textToBeSent = Console.ReadLine();
-                    NetworkStream networkStream = _client.GetStream();
-                    // byte[] bufferBytesArray = textToBeSent.ToAsciiEncodedByteArray();
+                    networkStream.Write(buffer, FromBeginning, buffer.Length);
+                }
 
-                    Console.Out.WriteLine($"Transmitting [ {textToBeSent} ]");
+                string response = string.Empty;
 
-                    if (networkStream.CanWrite)
+                if (networkStream.CanRead)
+                {
+                    buffer = new byte[EthernetTcpUdpPacketSize];
+                    int bytesRead = networkStream.Read(buffer, FromBeginning, EthernetTcpUdpPacketSize);
+                    response = buffer.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
+                }
+
+                var responseComponents = _parser.ParseResponse(response);
+
+                if (responseComponents.TryGetValue(Cmd, out string cmd))
+                {
+                    if (cmd == Commands.Translate)
                     {
-                        networkStream.Write(bufferBytesArray, FromBeginning, bufferBytesArray.Length);
-                    }
-
-                    string response = string.Empty;
-                    if (networkStream.CanRead)
-                    {
-                        bufferBytesArray = new byte[EthernetTcpUdpPacketSize];
-                        int bytesRead = networkStream.Read(bufferBytesArray, FromBeginning, EthernetTcpUdpPacketSize);
-                        response = bufferBytesArray.Take(bytesRead).ToArray().ToAsciiString();
+                        if (responseComponents.TryGetValue(Conventions.ResultValue, out string resultValue))
+                        {
+                            return resultValue;
+                        }
                     }
                 }
-                _client.Close();
-            }).Start();
-        }
-
-        public string AuthenticateZZZZZZZZZZZZZZZZ(string login, string password)
-        {
-            _client = _client ?? new TcpClient();
-
-            Console.Out.WriteLine($"Connecting to server {RemoteHostIpAddress} : {Port}");
-
-            _client.Connect(RemoteHostIpAddress, Port);
-
-            if (!_client.Connected)
-            {
-                Console.Out.WriteLine("Client is not connected to server");
-                _client.Close();
-                return $"Registration failed. No connection to server.";
             }
-
-            Console.Out.WriteLine($"Connected successfully");
-
-            NetworkStream tcpStream = _client.GetStream();
-            string authenticationRequest = string.Format(AuthenticationFormat, _login, _password);
-            byte[] bufferBytesArray = authenticationRequest.ToFlowProtocolAsciiEncodedBytesArray();
-
-            if (tcpStream.CanWrite)
+            catch (Exception exception)
             {
-                Console.WriteLine(" Transmitting.....");
-                tcpStream.Write(bufferBytesArray, FromBeginning, bufferBytesArray.Length);
-                tcpStream.Flush(); // ???
+                Debug.WriteLine(exception);
             }
-
-            bufferBytesArray = new byte[EthernetTcpUdpPacketSize];
-
-            if (tcpStream.CanRead)
-            {
-                int bytesRead = tcpStream.Read(
-                    bufferBytesArray,
-                    FromBeginning,
-                    EthernetTcpUdpPacketSize);
-
-                string serverResponse = bufferBytesArray.Take(bytesRead)
-                    .ToArray()
-                    .ToFlowProtocolAsciiDecodedString();
-
-                if (_responseProcessor.IsAuthenticated(serverResponse))
-                {
-                    _login = login;
-                    _password = password;
-                    return Conventions.OK;
-                }
-                return NotAuthenticated;
-            }
-            Console.Out.WriteLine("Error. Can't receive response from server.");
-            _client.Close();
-
-
-            return Conventions.OK;
-        }
-
-        public void SendZZZZZZZZZZZZZZZZZ(string message)
-        {
-            _client = _client ?? new TcpClient();
-
-            Console.Out.WriteLine($"Connecting to server {RemoteHostIpAddress} : {Port}");
-
-            _client.Connect(RemoteHostIpAddress, Port);
-
-            if (!_client.Connected)
-            {
-                Console.Out.WriteLine("Client is not connected to server");
-                _client.Close();
-                return $"Registration failed. No connection to server.";
-            }
-
-            Console.Out.WriteLine($"Connected successfully");
-
-            NetworkStream tcpStream = _client.GetStream();
-            string authenticationRequest = string.Format(AuthenticationFormat, _login, _password);
-            byte[] bufferBytesArray = authenticationRequest.ToFlowProtocolAsciiEncodedBytesArray();
-
-            if (tcpStream.CanWrite)
-            {
-                Console.WriteLine(" Transmitting.....");
-                tcpStream.Write(bufferBytesArray, FromBeginning, bufferBytesArray.Length);
-                tcpStream.Flush(); // ???
-            }
-
-
-            bufferBytesArray = new byte[EthernetTcpUdpPacketSize];
-
-            if (tcpStream.CanRead)
-            {
-                int bytesRead = tcpStream.Read(
-                    bufferBytesArray,
-                    FromBeginning,
-                    EthernetTcpUdpPacketSize);
-
-                string serverResponse = bufferBytesArray.Take(bytesRead)
-                    .ToArray()
-                    .ToFlowProtocolAsciiDecodedString();
-            }
-            else
+            finally
             {
                 _client.Close();
             }
-
-
-            //_responseProcessor
+            return string.Empty;
         }
 
         public void Dispose()
         {
             ((IDisposable) _client)?.Dispose();
+        }
+
+        public void ConvertToFlowLangNotations(ref string sourceTextLang, ref string targetTextLanguage)
+        {
+            const string english = "English";
+            const string romanian = "Romanian";
+            const string russian = "Russian";
+            const string autoDetection = "Auto Detection";
+
+            const string ro = "ro";
+            const string ru = "ru";
+            const string en = "en";
+            const string unknown = "unknown";
+
+            switch (sourceTextLang)
+            {
+                case english:
+                    sourceTextLang = en;
+                    break;
+                case romanian:
+                    sourceTextLang = ro;
+                    break;
+                case russian:
+                    sourceTextLang = ru;
+                    break;
+                case autoDetection:
+                    sourceTextLang = unknown;
+                    break;
+            }
+            switch (targetTextLanguage)
+            {
+                case english:
+                    targetTextLanguage = en;
+                    break;
+                case romanian:
+                    targetTextLanguage = ro;
+                    break;
+                case russian:
+                    targetTextLanguage = ru;
+                    break;
+            }
         }
     }
 }

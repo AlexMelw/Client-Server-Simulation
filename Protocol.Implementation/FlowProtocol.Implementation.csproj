@@ -63,7 +63,6 @@
     <Compile Include="Request\RequestParser.cs" />
     <Compile Include="Request\RequestProcessor.cs" />
     <Compile Include="Response\ResponseParser.cs" />
-    <Compile Include="Response\ResponseProcessor.cs" />
     <Compile Include="Servers\FlowTcpServer.cs" />
     <Compile Include="Servers\FlowUdpServer.cs" />
     <Compile Include="Entities\AuthClient.cs" />
