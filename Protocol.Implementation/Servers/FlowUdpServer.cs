@@ -4,8 +4,6 @@
     using System.Net;
     using System.Net.Sockets;
     using System.Threading;
-    using EasySharp.NHelpers;
-    using Interfaces;
     using Interfaces.Servers;
     using ProtocolHelpers;
     using Workers.Servers;
@@ -14,6 +12,13 @@
     public class FlowUdpServer : IServer
     {
         private IPEndPoint EmptyEndPointInstance => new IPEndPoint(IPAddress.Any, 0);
+        public static FlowUdpServer Instance => new FlowUdpServer();
+
+        #region CONSTRUCTORS
+
+        private FlowUdpServer() { }
+
+        #endregion
 
         public void StartListeningToPort(int port)
         {
@@ -21,31 +26,33 @@
             {
                 Console.Out.WriteLine("[ UDP ] SERVER IS RUNNING");
 
-                var udpServer = new UdpClient(new IPEndPoint(IPAddress.Any, port));
-
-                for (;;)
+                using (var udpServer = new UdpClient(new IPEndPoint(IPAddress.Any, port)))
                 {
-                    IPEndPoint remoteClientEndPoint = this.EmptyEndPointInstance;
+                    bool isServingRequests = true;
 
-                    byte[] bufferByteArray = udpServer.Receive(ref remoteClientEndPoint);
-                    Console.Out.WriteLine($"remoteClientEndPoint = {remoteClientEndPoint}");
-
-                    string request = bufferByteArray.ToFlowProtocolAsciiDecodedString();
-                    Console.Out.WriteLine($"Remote Message: {request}");
-
-                    if (request == QuitServerCmd)
+                    while(isServingRequests)
                     {
-                        bufferByteArray = "OK 200 [ UDP SERVER HALTED ]".ToFlowProtocolAsciiEncodedBytesArray();
-                        udpServer.Send(bufferByteArray, bufferByteArray.Length, remoteClientEndPoint);
-                        break;
+                        IPEndPoint remoteClientEndPoint = EmptyEndPointInstance;
+
+                        byte[] bufferByteArray = udpServer.Receive(ref remoteClientEndPoint);
+                        Console.Out.WriteLine($"remoteClientEndPoint = {remoteClientEndPoint}");
+
+                        string request = bufferByteArray.ToFlowProtocolAsciiDecodedString();
+                        Console.Out.WriteLine($"[UDP] Remote Message: {request}");
+
+                        if (request == QuitServerCmd)
+                        {
+                            bufferByteArray = "OK 200 [ UDP SERVER HALTED ]".ToFlowProtocolAsciiEncodedBytesArray();
+                            udpServer.Send(bufferByteArray, bufferByteArray.Length, remoteClientEndPoint);
+                            isServingRequests = false;
+                            continue;
+                        }
+
+                        UdpServerWorker.Instance
+                            .Init(remoteClientEndPoint, udpServer)
+                            .ExecuteRequest(request);
                     }
-
-                    UdpServerWorker.Instance
-                        .Init(remoteClientEndPoint, udpServer)
-                        .ExecuteRequest(request);
                 }
-
-                udpServer?.Close();
             }).Start();
         }
     }

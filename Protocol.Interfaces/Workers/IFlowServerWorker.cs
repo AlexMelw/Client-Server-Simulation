@@ -5,6 +5,6 @@
     /* TCP/UDP Server */
     public interface IFlowServerWorker : IFlowProtocol
     {
-        void ExecuteRequest(string request);
+        //void ExecuteRequest(string request);
     }
 }

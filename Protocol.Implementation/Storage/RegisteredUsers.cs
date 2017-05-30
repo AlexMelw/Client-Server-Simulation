@@ -1,4 +1,5 @@
-﻿namespace FlowProtocol.Implementation.Storage {
+﻿namespace FlowProtocol.Implementation.Storage
+{
     using System;
     using System.Collections.Concurrent;
     using Entities;
@@ -20,13 +21,6 @@
         private RegisteredUsers()
         {
             Users = new ConcurrentDictionary<string, User>();
-
-            //Users.TryAdd("Admin", new User
-            //{
-            //    Login = "Admin",
-            //    Name = "Veaceslav Barbarii",
-            //    Pass = "qwerty123"
-            //});
         }
 
         #endregion

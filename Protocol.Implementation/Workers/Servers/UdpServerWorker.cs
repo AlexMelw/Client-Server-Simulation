@@ -4,7 +4,6 @@
     using System.Net;
     using System.Net.Sockets;
     using System.Threading;
-    using Interfaces;
     using Interfaces.Request;
     using Interfaces.Workers;
     using Ninject;
@@ -16,31 +15,30 @@
         private readonly IFlowProtocolRequestProcessor _requestProcessor;
 
         private IPEndPoint _remoteClientEndPoint;
-        private UdpClient _udpServer;
+        private UdpClient _server;
 
         public static UdpServerWorker Instance => new UdpServerWorker(new RequestProcessor(new RequestParser()));
 
         #region CONSTRUCTORS
 
-        [Inject]
-        public UdpServerWorker(IFlowProtocolRequestProcessor requestProcessor)
+        private UdpServerWorker(IFlowProtocolRequestProcessor requestProcessor)
         {
             _requestProcessor = requestProcessor;
         }
 
         #endregion
 
-        public void ExecuteRequest(string request)
+        public void ExecuteRequest(string requestString)
         {
             new Thread(() =>
             {
                 Console.Out.WriteLine($"[ UDP ] SERVER WORKER IS TALKING TO {_remoteClientEndPoint}");
 
-                string result = _requestProcessor.ProcessRequest(request);
+                string result = _requestProcessor.ProcessRequest(requestString);
 
-                byte[] bufferByteArray = result.ToFlowProtocolAsciiEncodedBytesArray();
+                byte[] buffer = result.ToFlowProtocolAsciiEncodedBytesArray();
 
-                _udpServer.Send(bufferByteArray, bufferByteArray.Length, _remoteClientEndPoint);
+                _server.Send(buffer, buffer.Length, _remoteClientEndPoint);
 
                 Console.Out.WriteLine($"[ UDP ] SERVER WORKER for {_remoteClientEndPoint} finished job");
             }).Start();
@@ -49,7 +47,7 @@
         public UdpServerWorker Init(IPEndPoint remoteClientEndPoint, UdpClient udpServer)
         {
             _remoteClientEndPoint = remoteClientEndPoint;
-            _udpServer = udpServer;
+            _server = udpServer;
             return this;
         }
     }

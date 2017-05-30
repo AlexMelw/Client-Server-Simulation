@@ -173,7 +173,9 @@
 
         private Guid CreateNewSessionForUserWithCredentials(string login, string pass)
         {
-            if (RegisteredUsers.Instance.Users.TryGetValue(login, out User user))
+            bool userFound = RegisteredUsers.Instance.Users.TryGetValue(login, out User user);
+
+            if (userFound && user.Pass.Equals(pass))
             {
                 AuthenticatedClients.Instance.Clients.AddOrUpdate(
                     key: login,

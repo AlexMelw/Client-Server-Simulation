@@ -11,11 +11,8 @@
         {
             //var flowServer = IoC.Resolve<IServer>();
 
-            var flowUdpServer = new FlowUdpServer();
-            var flowTcpServer = new FlowTcpServer();
-
-            flowUdpServer.StartListeningToPort(UdpServerListeningPort);
-            flowTcpServer.StartListeningToPort(TcpServerListeningPort);
+            FlowUdpServer.Instance.StartListeningToPort(UdpServerListeningPort);
+            FlowTcpServer.Instance.StartListeningToPort(TcpServerListeningPort);
         }
     }
 }
