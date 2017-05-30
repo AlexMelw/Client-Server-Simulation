@@ -98,7 +98,7 @@
         {
             if (_initialized == false)
             {
-                return false;
+                throw new Exception("No connection to server");
             }
 
             _login = login;
@@ -166,7 +166,7 @@
         {
             if (_initialized == false)
             {
-                return false;
+                throw new Exception("No connection to server");
             }
 
             _client = new TcpClient();
@@ -230,7 +230,7 @@
         {
             if (_initialized == false)
             {
-                return string.Empty;
+                throw new Exception("No connection to server");
             }
 
             _client = new TcpClient();

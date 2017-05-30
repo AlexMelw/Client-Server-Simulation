@@ -1,6 +1,7 @@
 ﻿namespace Presentation.WinForms.ClientApp
 {
     using System;
+    using System.Diagnostics;
     using System.Net;
     using System.Windows.Forms;
     using FlowProtocol.Implementation.Response;
@@ -78,36 +79,60 @@
 
             authButton.Click += (sender, args) =>
             {
-                bool authenticated = _flowClientWorker.TryAuthenticate(
-                    login: authLoginTextBox.Text,
-                    password: authPassTextBox.Text);
+                try
+                {
+                    bool authenticated = _flowClientWorker.TryAuthenticate(
+                        login: authLoginTextBox.Text,
+                        password: authPassTextBox.Text);
 
-                MessageBox.Show($@"Authenticated: {authenticated}");
+                    MessageBox.Show($@"Authenticated: {authenticated}");
+                }
+                catch (Exception exception)
+                {
+                    Debug.WriteLine(exception);
+                    MessageBox.Show($@"{exception.Message}");
+                }
             };
 
             registerButton.Click += (sender, args) =>
             {
-                bool registered = _flowClientWorker.TryRegister(
-                    login: registerLoginTextBox.Text,
-                    password: registerPassTextBox.Text,
-                    name: registerNameTextBox.Text);
+                try
+                {
+                    bool registered = _flowClientWorker.TryRegister(
+                        login: registerLoginTextBox.Text,
+                        password: registerPassTextBox.Text,
+                        name: registerNameTextBox.Text);
 
-                MessageBox.Show(registered
-                    ? @"Registered successfully"
-                    : @"Registration failed");
+                    MessageBox.Show(registered
+                        ? @"Registered successfully"
+                        : @"Registration failed");
+                }
+                catch (Exception exception)
+                {
+                    Debug.WriteLine(exception);
+                    MessageBox.Show($@"{exception.Message}");
+                }
             };
 
             translateButton.Click += (sender, args) =>
             {
-                string inputTextLang = (string) fromLangComboBox.Text;
-                string outputTextLang = (string) toLangComboBox.Text;
+                try
+                {
+                    string inputTextLang = (string) fromLangComboBox.Text;
+                    string outputTextLang = (string) toLangComboBox.Text;
 
-                string translatedText = _flowClientWorker.Translate(
-                    sourceText: translateInputRichTextBox.Text,
-                    sourceTextLang: inputTextLang,
-                    targetTextLanguage: outputTextLang);
+                    string translatedText = _flowClientWorker.Translate(
+                        sourceText: translateInputRichTextBox.Text,
+                        sourceTextLang: inputTextLang,
+                        targetTextLanguage: outputTextLang);
 
-                translateOutputRichTextBox.Text = translatedText;
+                    translateOutputRichTextBox.Text = translatedText;
+                }
+                catch (Exception exception)
+                {
+                    Debug.WriteLine(exception);
+                    MessageBox.Show($@"{exception.Message}");
+                }
             };
         }
     }
