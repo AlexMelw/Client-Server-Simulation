@@ -7,6 +7,7 @@
         public const int FromBeginning = 0;
         public const int EthernetTcpUdpPacketSize = 1472;
 
+        public const string Error = "ERR";
         public const string Ok = "OK";
         public const string Cmd = "cmd";
         public const string ResultValue = "res";
@@ -18,12 +19,12 @@
         public const string Localhost = "127.0.0.1";
         public const string QuitServerCmd = "QUIT_SERVER";
         public const string Quit = "QUIT";
-        public const string Error = "ERROR";
         public const string NotAuthenticated = "NOT_AUTHENTICATED";
         public const string BadRequest = "400 Bad Request UNKNOWN --RES='Not applicable'";
 
         // GET MESSAGE
         public const string TranslationMode = "translationmode";
+
         public const string DoNotTranslate = "donottranslate";
         public const string DoTranslate = "translateto";
         public const string SenderName = "sendername";
@@ -32,19 +33,25 @@
 
         // SEND MESSAGE
         public const string Sender = "sender";
+
         public const string Recipient = "recipient";
         public const string Message = "message";
         public const string SessionToken = "sessiontoken";
 
         // REGISTER
         public const string Name = "name";
+
         public const string Pass = "pass";
         public const string Login = "login";
 
         // TRANSLATE
         public const string SourceText = "sourcetext";
+
         public const string SourceLang = "sourcelang";
         public const string TargetLang = "targetlang";
+
+        // Hello
+        public const string Hello = "HELLO";
 
         public class Lang
         {

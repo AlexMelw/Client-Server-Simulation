@@ -1,48 +1,220 @@
 ﻿namespace FlowProtocol.Implementation.Workers.Clients
 {
     using System;
+    using System.Collections.Concurrent;
+    using System.Diagnostics;
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
     using System.Threading;
-    using EasySharp.NHelpers;
-    using EasySharp.NHelpers.ExtensionMethods;
-    using Interfaces;
     using Interfaces.CommonConventions;
     using Interfaces.Response;
     using Interfaces.Workers;
     using ProtocolHelpers;
+    using static Interfaces.CommonConventions.Conventions;
 
     public class TcpClientWorker : IFlowClientWorker
     {
-        private const string AuthenticationFormat =
-            @"AUTH --clienttype='tcp' --listenport='0' --login='{0}' --pass='{1}'";
+        //private const string AuthenticationFormat =
+        //    @"AUTH --clienttype='tcp' --listenport='0' --login='{0}' --pass='{1}'";
 
-        private readonly IFlowProtocolResponseProcessor _responseProcessor;
-
+        private readonly IFlowProtocolResponseParser _parser;
         private TcpClient _client;
+
+        private Guid _sessionToken = Guid.Empty;
         private string _login;
         private string _password;
-        public int Port { get; private set; }
-        public IPAddress RemoteHostIpAddress { get; private set; }
-        public string TextToBeSent { get; set; } = string.Empty;
+        private bool _initialized;
+        private readonly string AuthenticationTemplate = @"AUTH  --login='{0}' --pass='{1}'";
 
-        #region CONSTRUCTORS
-
-        public TcpClientWorker(IFlowProtocolResponseProcessor responseProcessor)
+        public TcpClientWorker(IFlowProtocolResponseParser parser)
         {
-            _responseProcessor = responseProcessor;
+            _parser = parser;
         }
 
-        #endregion
+        public int Port { get; private set; }
+        public IPAddress RemoteHostIpAddress { get; private set; }
 
-        public void Init(IPAddress ipAddress, int port)
+        public bool TryConnect(IPAddress ipAddress, int port)
+        {
+            RemoteHostIpAddress = ipAddress;
+            Port = port;
+
+            _initialized = true;
+
+            _client = new TcpClient();
+            _client.Connect(RemoteHostIpAddress, Port);
+
+            NetworkStream networkStream = _client.GetStream();
+
+            byte[] buffer = Hello.ToFlowProtocolAsciiEncodedBytesArray();
+
+
+            if (networkStream.CanWrite)
+            {
+                networkStream.Write(buffer, FromBeginning, buffer.Length);
+            }
+
+            string response = string.Empty;
+
+            if (networkStream.CanRead)
+            {
+                buffer = new byte[EthernetTcpUdpPacketSize];
+                int bytesRead = networkStream.Read(buffer, FromBeginning, EthernetTcpUdpPacketSize);
+                response = buffer.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
+            }
+
+            _client.Close();
+
+            if (response.Equals(Hello))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool TryAuthenticate(string login, string password)
+        {
+            if (_initialized == false)
+            {
+                return false;
+            }
+
+            _client = new TcpClient();
+
+            try
+            {
+                _client.Connect(RemoteHostIpAddress, Port);
+
+                NetworkStream networkStream = _client.GetStream();
+
+                string textToBeSent = string.Format(AuthenticationTemplate, login, password);
+
+                byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
+
+                if (networkStream.CanWrite)
+                {
+                    networkStream.Write(buffer, FromBeginning, buffer.Length);
+                }
+
+                string response = string.Empty;
+
+                if (networkStream.CanRead)
+                {
+                    buffer = new byte[EthernetTcpUdpPacketSize];
+                    int bytesRead = networkStream.Read(buffer, FromBeginning, EthernetTcpUdpPacketSize);
+                    response = buffer.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
+                }
+
+                var responseComponents = _parser.ParseResponse(response);
+
+                if (responseComponents.TryGetValue(Cmd, out string cmd))
+                {
+                    if (cmd == Commands.Auth)
+                    {
+                        if (responseComponents.TryGetValue(StatusDescription, out string statusDesc))
+                        {
+                            if (statusDesc == Error)
+                            {
+                                return false;
+                            }
+                            if (responseComponents.TryGetValue(SessionToken, out string token))
+                            {
+                                _sessionToken = Guid.Parse(token);
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+            }
+            finally
+            {
+                _client.Close();
+            }
+            return false;
+        }
+
+        public bool TryRegister(string login, string password, string name)
+        {
+            if (_initialized == false)
+            {
+                return false;
+            }
+
+            _client = new TcpClient();
+
+            try
+            {
+                _client.Connect(RemoteHostIpAddress, Port);
+
+                NetworkStream networkStream = _client.GetStream();
+
+                string textToBeSent = string.Format(AuthenticationTemplate, login, password);
+
+                byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
+
+                if (networkStream.CanWrite)
+                {
+                    networkStream.Write(buffer, FromBeginning, buffer.Length);
+                }
+
+                string response = string.Empty;
+
+                if (networkStream.CanRead)
+                {
+                    buffer = new byte[EthernetTcpUdpPacketSize];
+                    int bytesRead = networkStream.Read(buffer, FromBeginning, EthernetTcpUdpPacketSize);
+                    response = buffer.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
+                }
+
+                var responseComponents = _parser.ParseResponse(response);
+
+                if (responseComponents.TryGetValue(Cmd, out string cmd))
+                {
+                    if (cmd == Commands.Register)
+                    {
+                        if (responseComponents.TryGetValue(StatusDescription, out string statusDesc))
+                        {
+                            if (statusDesc == Error)
+                            {
+                                return false;
+                            }
+                            if (responseComponents.TryGetValue(SessionToken, out string token))
+                            {
+                                _sessionToken = Guid.Parse(token);
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+            }
+            finally
+            {
+                _client.Close();
+            }
+            return false;
+        }
+
+        public string Translate(string sourceText, string sourceTextLang, string targetTextLanguage)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void InitZZZZZZZZZZZZZZZ(IPAddress ipAddress, int port)
         {
             RemoteHostIpAddress = ipAddress;
             Port = port;
         }
 
-        public void StartCommunication()
+        public void StartCommunicationZZZZZZZZZZZZZ()
         {
             if (_client == null)
             {
@@ -55,17 +227,17 @@
                 _client.Connect(RemoteHostIpAddress, Port);
                 Console.Out.WriteLine($"Connected to {RemoteHostIpAddress} : {Port}");
 
-                while (!TextToBeSent.Equals(Conventions.CloseConnection))
+                while (!TextToBeSent.Equals(CloseConnection))
                 {
                     string textToBeSent = Console.ReadLine();
                     NetworkStream networkStream = _client.GetStream();
-                    byte[] bufferBytesArray = textToBeSent.ToAsciiEncodedByteArray();
+                    // byte[] bufferBytesArray = textToBeSent.ToAsciiEncodedByteArray();
 
                     Console.Out.WriteLine($"Transmitting [ {textToBeSent} ]");
 
                     if (networkStream.CanWrite)
                     {
-                        networkStream.Write(bufferBytesArray, Conventions.FromBeginning, bufferBytesArray.Length);
+                        networkStream.Write(bufferBytesArray, FromBeginning, bufferBytesArray.Length);
                     }
 
                     string response = string.Empty;
@@ -80,7 +252,7 @@
             }).Start();
         }
 
-        public string Authenticate(string login, string password)
+        public string AuthenticateZZZZZZZZZZZZZZZZ(string login, string password)
         {
             _client = _client ?? new TcpClient();
 
@@ -104,18 +276,18 @@
             if (tcpStream.CanWrite)
             {
                 Console.WriteLine(" Transmitting.....");
-                tcpStream.Write(bufferBytesArray, Conventions.FromBeginning, bufferBytesArray.Length);
+                tcpStream.Write(bufferBytesArray, FromBeginning, bufferBytesArray.Length);
                 tcpStream.Flush(); // ???
             }
 
-            bufferBytesArray = new byte[Conventions.EthernetTcpUdpPacketSize];
+            bufferBytesArray = new byte[EthernetTcpUdpPacketSize];
 
             if (tcpStream.CanRead)
             {
                 int bytesRead = tcpStream.Read(
                     bufferBytesArray,
-                    Conventions.FromBeginning,
-                    Conventions.EthernetTcpUdpPacketSize);
+                    FromBeginning,
+                    EthernetTcpUdpPacketSize);
 
                 string serverResponse = bufferBytesArray.Take(bytesRead)
                     .ToArray()
@@ -127,7 +299,7 @@
                     _password = password;
                     return Conventions.OK;
                 }
-                return Conventions.NotAuthenticated;
+                return NotAuthenticated;
             }
             Console.Out.WriteLine("Error. Can't receive response from server.");
             _client.Close();
@@ -136,7 +308,7 @@
             return Conventions.OK;
         }
 
-        public void Send(string message)
+        public void SendZZZZZZZZZZZZZZZZZ(string message)
         {
             _client = _client ?? new TcpClient();
 
@@ -160,19 +332,19 @@
             if (tcpStream.CanWrite)
             {
                 Console.WriteLine(" Transmitting.....");
-                tcpStream.Write(bufferBytesArray, Conventions.FromBeginning, bufferBytesArray.Length);
+                tcpStream.Write(bufferBytesArray, FromBeginning, bufferBytesArray.Length);
                 tcpStream.Flush(); // ???
             }
 
 
-            bufferBytesArray = new byte[Conventions.EthernetTcpUdpPacketSize];
+            bufferBytesArray = new byte[EthernetTcpUdpPacketSize];
 
             if (tcpStream.CanRead)
             {
                 int bytesRead = tcpStream.Read(
                     bufferBytesArray,
-                    Conventions.FromBeginning,
-                    Conventions.EthernetTcpUdpPacketSize);
+                    FromBeginning,
+                    EthernetTcpUdpPacketSize);
 
                 string serverResponse = bufferBytesArray.Take(bytesRead)
                     .ToArray()
@@ -189,22 +361,7 @@
 
         public void Dispose()
         {
-            ((IDisposable)_client)?.Dispose();
-        }
-
-        public byte[] ProcessResponseGetImageBytes(string response)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsAuthenticated(string response)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Init(string ipAddress, int port)
-        {
-            Init(IPAddress.Parse(ipAddress), port);
+            ((IDisposable) _client)?.Dispose();
         }
     }
 }

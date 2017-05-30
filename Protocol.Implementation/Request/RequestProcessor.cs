@@ -33,6 +33,7 @@
 
             if (requestComponents.TryGetValue(Cmd, out string cmd))
             {
+                // TODO add cmd HELLO
                 if (cmd == Commands.Translate)
                 {
                     requestComponents.TryGetValue(SourceText, out string sourceText);

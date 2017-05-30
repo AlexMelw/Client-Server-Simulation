@@ -1,17 +1,19 @@
 ﻿namespace FlowProtocol.Implementation.Workers.Clients
 {
-    using System;
-    using System.Net;
-    using Interfaces;
     using Interfaces.Response;
     using Interfaces.Workers;
 
     public class UdpClientWorker : IFlowClientWorker
     {
-        private readonly IFlowProtocolResponseProcessor _responseProcessor;
-        public UdpClientWorker(IFlowProtocolResponseProcessor responseProcessor)
+        private readonly IFlowProtocolResponseParser _parser;
+
+        #region CONSTRUCTORS
+
+        public UdpClientWorker(IFlowProtocolResponseParser parser)
         {
-            _responseProcessor = responseProcessor;
+            _parser = parser;
         }
+
+        #endregion
     }
 }

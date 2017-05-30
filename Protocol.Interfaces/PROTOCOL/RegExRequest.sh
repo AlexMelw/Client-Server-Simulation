@@ -25,11 +25,6 @@ SENDMSG --to='Ghideon94' --msg='Ce mai faci?' --sourcelang='ro'  sessiontoken='6
 SENDMSG --to='StarTrack77' --msg='Ка поживаешь?' --sourcelang='ru'  sessiontoken='4b6ef0fd-278d-44a9-bc1a-b36d1117d7cd'
 SENDMSG --to='StarTrack77' --msg='Ка поживаешь?' --sourcelang='unknown'  sessiontoken='687046DA-BD6C-46CF-ACC5-B67ABACC5866'
 
-# SENDMSG --from='VeaceslavWD' --to='DenisStarin' --msg='How tyou doin?' --sourcelang='en' sessiontoken='687046DA-BD6C-46CF-ACC5-B67ADACC5866'
-# SENDMSG  --from='Perkin77' --to='Ghideon94' --msg='Ce mai faci?' --sourcelang='ro'  sessiontoken='687046DA-BD6C-46CF-ACC5-B67ABACB5866'
-# SENDMSG  --from='Xeon' --to='StarTrack77' --msg='Ка поживаешь?' --sourcelang='ru'  sessiontoken='687046DA-BD6C-46CF-ACC5-B67ADACC5846'
-# SENDMSG  --from='Xeon' --to='StarTrack77' --msg='Ка поживаешь?' --sourcelang='unknown'  sessiontoken='687046DA-BD6C-46CF-ACC5-B67ABACC5866'
-
 #REGISTER
 (?:(?<cmd>REGISTER)\s+--login='(?<login>[\w]+)'\s+--pass='(?<pass>.+)'\s+--name='(?<name>(?:\w|\s)+)')
 # ----------------------

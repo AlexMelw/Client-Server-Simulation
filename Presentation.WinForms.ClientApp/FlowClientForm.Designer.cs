@@ -55,16 +55,16 @@
             this.label8 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.translateInputRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.toLangComboBox = new System.Windows.Forms.ComboBox();
+            this.fromLangComboBox = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.translateButton = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
+            this.translateOutputRichTextBox = new System.Windows.Forms.RichTextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -340,38 +340,38 @@
             this.tabPage5.Text = "Chat Room";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
-            // richTextBox1
+            // translateInputRichTextBox
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(18, 22);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(434, 146);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "";
+            this.translateInputRichTextBox.Location = new System.Drawing.Point(18, 22);
+            this.translateInputRichTextBox.Name = "translateInputRichTextBox";
+            this.translateInputRichTextBox.Size = new System.Drawing.Size(434, 146);
+            this.translateInputRichTextBox.TabIndex = 0;
+            this.translateInputRichTextBox.Text = "";
             // 
-            // comboBox1
+            // toLangComboBox
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.toLangComboBox.FormattingEnabled = true;
+            this.toLangComboBox.Items.AddRange(new object[] {
             "English",
             "Romanian",
             "Russian"});
-            this.comboBox1.Location = new System.Drawing.Point(194, 46);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 2;
+            this.toLangComboBox.Location = new System.Drawing.Point(194, 46);
+            this.toLangComboBox.Name = "toLangComboBox";
+            this.toLangComboBox.Size = new System.Drawing.Size(121, 21);
+            this.toLangComboBox.TabIndex = 2;
             // 
-            // comboBox2
+            // fromLangComboBox
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
+            this.fromLangComboBox.FormattingEnabled = true;
+            this.fromLangComboBox.Items.AddRange(new object[] {
             "English",
             "Romanian",
             "Russian",
             "Auto Detection"});
-            this.comboBox2.Location = new System.Drawing.Point(18, 46);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 21);
-            this.comboBox2.TabIndex = 3;
+            this.fromLangComboBox.Location = new System.Drawing.Point(18, 46);
+            this.fromLangComboBox.Name = "fromLangComboBox";
+            this.fromLangComboBox.Size = new System.Drawing.Size(121, 21);
+            this.fromLangComboBox.TabIndex = 3;
             // 
             // label9
             // 
@@ -393,11 +393,11 @@
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.button1);
+            this.groupBox4.Controls.Add(this.translateButton);
             this.groupBox4.Controls.Add(this.label9);
-            this.groupBox4.Controls.Add(this.comboBox1);
+            this.groupBox4.Controls.Add(this.toLangComboBox);
             this.groupBox4.Controls.Add(this.label10);
-            this.groupBox4.Controls.Add(this.comboBox2);
+            this.groupBox4.Controls.Add(this.fromLangComboBox);
             this.groupBox4.Location = new System.Drawing.Point(114, 22);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(469, 89);
@@ -405,18 +405,18 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Translate";
             // 
-            // button1
+            // translateButton
             // 
-            this.button1.Location = new System.Drawing.Point(343, 26);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(109, 43);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "TRANSLATE";
-            this.button1.UseVisualStyleBackColor = true;
+            this.translateButton.Location = new System.Drawing.Point(343, 26);
+            this.translateButton.Name = "translateButton";
+            this.translateButton.Size = new System.Drawing.Size(109, 43);
+            this.translateButton.TabIndex = 6;
+            this.translateButton.Text = "TRANSLATE";
+            this.translateButton.UseVisualStyleBackColor = true;
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.richTextBox1);
+            this.groupBox5.Controls.Add(this.translateInputRichTextBox);
             this.groupBox5.Location = new System.Drawing.Point(114, 117);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(469, 184);
@@ -426,7 +426,7 @@
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.richTextBox2);
+            this.groupBox6.Controls.Add(this.translateOutputRichTextBox);
             this.groupBox6.Location = new System.Drawing.Point(114, 307);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(469, 181);
@@ -434,13 +434,13 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Output";
             // 
-            // richTextBox2
+            // translateOutputRichTextBox
             // 
-            this.richTextBox2.Location = new System.Drawing.Point(18, 19);
-            this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.Size = new System.Drawing.Size(434, 146);
-            this.richTextBox2.TabIndex = 1;
-            this.richTextBox2.Text = "";
+            this.translateOutputRichTextBox.Location = new System.Drawing.Point(18, 19);
+            this.translateOutputRichTextBox.Name = "translateOutputRichTextBox";
+            this.translateOutputRichTextBox.Size = new System.Drawing.Size(434, 146);
+            this.translateOutputRichTextBox.TabIndex = 1;
+            this.translateOutputRichTextBox.Text = "";
             // 
             // FlowClientForm
             // 
@@ -501,15 +501,15 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.TabPage tabPage5;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox translateInputRichTextBox;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox toLangComboBox;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ComboBox fromLangComboBox;
+        private System.Windows.Forms.Button translateButton;
         private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.RichTextBox richTextBox2;
+        private System.Windows.Forms.RichTextBox translateOutputRichTextBox;
         private System.Windows.Forms.GroupBox groupBox5;
     }
 }

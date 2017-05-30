@@ -52,26 +52,49 @@
 
         private void RegisterEventHandlers()
         {
+            // TODO Run Asynchronously + use MethodInvoker delegate
+
             connectToServerButton.Click += (sender, args) =>
             {
-                _flowClientWorker.TryConnect(
+                bool connected = _flowClientWorker.TryConnect(
                     ipAddress: IPAddress.Parse(serverIpAddressTextBox.Text.Trim()),
                     port: int.Parse(serverPortTextBox.Text.Trim()));
+
+                MessageBox.Show($@"Connected: {connected}");
             };
 
             authButton.Click += (sender, args) =>
             {
-                _flowClientWorker.TryAuthenticate(
+                bool authenticated = _flowClientWorker.TryAuthenticate(
                     login: authLoginTextBox.Text,
                     password: authPassTextBox.Text);
+
+                MessageBox.Show($@"Authenticated: {authenticated}");
             };
 
             registerButton.Click += (sender, args) =>
             {
-                _flowClientWorker.TryRegister(
-                    registerLoginTextBox.Text,
-                    registerPassTextBox.Text,
-                    registerNameTextBox.Text);
+                bool registered = _flowClientWorker.TryRegister(
+                    login: registerLoginTextBox.Text,
+                    password: registerPassTextBox.Text,
+                    name: registerNameTextBox.Text);
+
+                MessageBox.Show(registered
+                    ? @"Registered successfully"
+                    : @"Registration failed");
+            };
+
+            translateButton.Click += (sender, args) =>
+            {
+                string inputTextLang = (string) fromLangComboBox.Text;
+                string outputTextLang = (string) toLangComboBox.Text;
+
+                string translatedText = _flowClientWorker.Translate(
+                    sourceText: translateInputRichTextBox.Text,
+                    sourceTextLang: inputTextLang,
+                    targetTextLanguage: outputTextLang);
+
+                translateOutputRichTextBox.Text = translatedText;
             };
         }
     }

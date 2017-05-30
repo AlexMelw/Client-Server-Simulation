@@ -73,6 +73,7 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Storage\CorrespondenceManagement.cs" />
     <Compile Include="Trash\ResponseProcessorTrash.cs" />
+    <Compile Include="Trash\TrashTcpClientWorker.cs" />
     <Compile Include="Web References\MSTranslatorService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
