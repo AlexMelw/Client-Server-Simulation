@@ -42,7 +42,7 @@
 
                         if (request == QuitServerCmd)
                         {
-                            bufferByteArray = "OK 200 [ UDP SERVER HALTED ]".ToFlowProtocolAsciiEncodedBytesArray();
+                            bufferByteArray = "200 OK SHUTDOWN --res='UDP Server Halted'".ToFlowProtocolAsciiEncodedBytesArray();
                             udpServer.Send(bufferByteArray, bufferByteArray.Length, remoteClientEndPoint);
                             isServingRequests = false;
                             continue;

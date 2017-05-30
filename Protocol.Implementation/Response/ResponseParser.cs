@@ -24,6 +24,9 @@
         private readonly string _translateResponsePattern =
             @"(?:(?<statuscode>200)\s+(?<statusdesc>OK)\s+(?<cmd>TRANSLATE)\s+--RES='(?<res>.+)')";
 
+        private readonly string _shutdownServerResponsePattern =
+            @"(?:(?<statuscode>200)\s+(?<statusdesc>OK)\s+(?<cmd>SHUTDOWN)\s+--res='(?<res>.+)')";
+
         public ConcurrentDictionary<string, string> ParseResponse(string response)
         {
             var responseComponents = new ConcurrentDictionary<string, string>();
@@ -109,6 +112,20 @@
                     responseComponents.TryAdd(SenderId, match.Groups[SenderId].Value);
                     responseComponents.TryAdd(Message, match.Groups[Message].Value);
                 }
+
+                return responseComponents;
+            }
+
+            // <SHUTDOWN SERVER> RESPONSE
+            parser = new Regex(_shutdownServerResponsePattern);
+            match = parser.Match(response);
+
+            if (match.Success)
+            {
+                responseComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
+                responseComponents.TryAdd(StatusCode, match.Groups[StatusCode].Value);
+                responseComponents.TryAdd(StatusDescription, match.Groups[StatusDescription].Value);
+                responseComponents.TryAdd(ResultValue, match.Groups[ResultValue].Value);
 
                 return responseComponents;
             }

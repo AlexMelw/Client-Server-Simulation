@@ -29,13 +29,12 @@
                 try
                 {
                     tcpListener.Start();
-                    bool isServingRequests = true;
 
                     Console.WriteLine(" The local End point is  :" + tcpListener.LocalEndpoint);
                     Console.WriteLine(" Waiting for a connection.....");
                     Console.Out.WriteLine();
 
-                    while (isServingRequests)
+                    while (true) // is serving continuously
                     {
                         Socket workerTcpSocket = tcpListener.AcceptSocket();
 
@@ -46,8 +45,6 @@
                             .Init(workerTcpSocket, tcpListener)
                             .StartWorking();
                     }
-
-                    Console.Out.WriteLine("[ TCP ] SERVER HALTED");
                 }
                 catch (Exception e)
                 {
@@ -61,7 +58,10 @@
                 }
                 finally
                 {
-                    tcpListener.Stop();
+                    if (tcpListener.Active)
+                    {
+                        tcpListener.Stop();
+                    }
                 }
             }).Start();
         }

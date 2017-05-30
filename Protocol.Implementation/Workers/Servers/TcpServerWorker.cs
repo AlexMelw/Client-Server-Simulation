@@ -77,6 +77,8 @@
                         .ToArray()
                         .ToFlowProtocolAsciiDecodedString();
 
+                    Console.Out.WriteLine($"[TCP] Remote Message: {requestString}");
+
                     if (requestString == CloseConnection)
                     {
                         connectionAlive = false;
@@ -89,13 +91,15 @@
                         connectionAlive = false;
                         serverMustStopServingRequests = true;
 
+                        _workerSocket.Send("200 OK SHUTDOWN --res='TCP Server Halted'"
+                            .ToFlowProtocolAsciiEncodedBytesArray());
+
                         Console.Out.WriteLine($"Client [ {_workerSocket.RemoteEndPoint} ] closed connection");
-                        Console.Out.WriteLine("Connection closed by client's intent.");
+                        Console.Out.WriteLine("Client turned off [ TCP ] server.");
                         continue;
                     }
 
-                    Console.Out.WriteLine($"[TCP] Remote Message: {requestString}");
-
+                    // OTHERWISE PROCESS REQUEST
                     string result = _requestProcessor.ProcessRequest(requestString);
                     buffer = result.ToFlowProtocolAsciiEncodedBytesArray();
 
@@ -108,6 +112,7 @@
                 if (serverMustStopServingRequests && _server.Active)
                 {
                     _server.Stop();
+                    Console.Out.WriteLine("[ TCP ] SERVER HALTED");
                 }
 
                 Console.Out.WriteLine($"[ TCP ] SERVER WORKER for {_workerSocket.RemoteEndPoint} finished job");
