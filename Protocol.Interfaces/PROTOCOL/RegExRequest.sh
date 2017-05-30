@@ -37,7 +37,10 @@ AUTH  securepassword protectiontype='MD5' --login='Serg1996' --pass='95myPass95'
 AUTH  --login='AlexMayhem' --pass='%%elim5595%%'
 AUTH  --login='Serg1996' --pass='95myPass95'
 
-
+#HELLO
+(?<cmd>HELLO)
+# ----------------------
+HELLO
 
 
 

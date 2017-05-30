@@ -1,5 +1,6 @@
 ﻿namespace FlowProtocol.Implementation.Response
 {
+    using System;
     using System.Collections.Concurrent;
     using System.Text.RegularExpressions;
     using Interfaces.Response;
@@ -16,16 +17,18 @@
             ;
 
         private readonly string _registerResponsePattern =
-            @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>(?:OK|ERR))\s+(?<cmd>REGISTER)\s+--RES='(?<res>.+)')";
+            @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>(?:OK|ERR))\s+(?<cmd>REGISTER)\s+--res='(?<res>.+)')";
 
         private readonly string _sendMessageResponsePattern =
             @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK|ERR)\s+(?<cmd>SENDMSG)\s+--res='(?<res>.+)')";
 
         private readonly string _translateResponsePattern =
-            @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK)\s+(?<cmd>TRANSLATE)\s+--RES='(?<res>.+)')";
+            @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK)\s+(?<cmd>TRANSLATE)\s+--res='(?<res>.+)')";
 
         private readonly string _shutdownServerResponsePattern =
             @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK)\s+(?<cmd>SHUTDOWN)\s+--res='(?<res>.+)')";
+
+        private readonly string _helloResponsePattern = @"(?:(?<statuscode>200)\s+(?<statusdesc>OK)\s+(?<cmd>HELLO))";
 
         public ConcurrentDictionary<string, string> ParseResponse(string response)
         {
@@ -126,6 +129,19 @@
                 responseComponents.TryAdd(StatusCode, match.Groups[StatusCode].Value);
                 responseComponents.TryAdd(StatusDescription, match.Groups[StatusDescription].Value);
                 responseComponents.TryAdd(ResultValue, match.Groups[ResultValue].Value);
+
+                return responseComponents;
+            }
+
+            // <HELLO> RESPONSE
+            parser = new Regex(_helloResponsePattern);
+            match = parser.Match(response);
+
+            if (match.Success)
+            {
+                responseComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
+                responseComponents.TryAdd(StatusCode, match.Groups[StatusCode].Value);
+                responseComponents.TryAdd(StatusDescription, match.Groups[StatusDescription].Value);
 
                 return responseComponents;
             }

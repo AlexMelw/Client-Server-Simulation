@@ -24,7 +24,7 @@
         {
             new Thread(() =>
             {
-                Console.Out.WriteLine("[ UDP ] SERVER IS RUNNING");
+                Console.Out.WriteLine(" [UDP] SERVER IS RUNNING");
 
                 using (var udpServer = new UdpClient(new IPEndPoint(IPAddress.Any, port)))
                 {
@@ -35,10 +35,10 @@
                         IPEndPoint remoteClientEndPoint = EmptyEndPointInstance;
 
                         byte[] bufferByteArray = udpServer.Receive(ref remoteClientEndPoint);
-                        Console.Out.WriteLine($"remoteClientEndPoint = {remoteClientEndPoint}");
+                        Console.Out.WriteLine($" [UDP] remoteClientEndPoint = {remoteClientEndPoint}");
 
                         string request = bufferByteArray.ToFlowProtocolAsciiDecodedString();
-                        Console.Out.WriteLine($"[UDP] Remote Message: {request}");
+                        Console.Out.WriteLine($" [UDP] Remote Message: {request}");
 
                         if (request == QuitServerCmd)
                         {

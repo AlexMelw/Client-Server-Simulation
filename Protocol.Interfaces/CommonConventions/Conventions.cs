@@ -20,7 +20,7 @@
         public const string QuitServerCmd = "QUIT_SERVER";
         public const string Quit = "QUIT";
         public const string NotAuthenticated = "NOT_AUTHENTICATED";
-        public const string BadRequest = "400 Bad Request UNKNOWN --RES='Not applicable'";
+        public const string BadRequest = "400 Bad Request UNKNOWN --res='Not applicable'";
 
         // GET MESSAGE
         public const string TranslationMode = "translationmode";
@@ -50,9 +50,6 @@
         public const string SourceLang = "sourcelang";
         public const string TargetLang = "targetlang";
 
-        // Hello
-        public const string Hello = "HELLO";
-
         public class Lang
         {
             public const string English = "en";
@@ -80,6 +77,7 @@
             public const string Translate = "TRANSLATE";
             public const string Register = "REGISTER";
             public const string Auth = "AUTH";
+            public const string Hello = "HELLO";
         }
     }
 }

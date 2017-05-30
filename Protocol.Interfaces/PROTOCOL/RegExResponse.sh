@@ -1,3 +1,4 @@
+
 # TRANSLATE RESULT
 (?:(?<statuscode>200)\s+(?<statusdesc>OK)\s+(?<cmd>TRANSLATE)\s+--res='(?<res>.+)')
 # --------------------------
@@ -40,6 +41,10 @@
 400 Bad Request --ERR='Not applicable'
 200 OK TRANSLATE --TEXT='Careva text'
 
+#HELLO RESULT
+(?:(?<statuscode>200)\s+(?<statusdesc>OK)\s+(?<cmd>HELLO))
+# ------------------------
+200 OK HELLO
 
 #SHUTDOWN RESULT
 (?:(?<statuscode>200)\s+(?<statusdesc>OK)\s+(?<cmd>SHUTDOWN)\s+--res='(?<res>.+)')

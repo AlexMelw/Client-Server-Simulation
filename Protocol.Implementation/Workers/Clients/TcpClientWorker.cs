@@ -1,13 +1,10 @@
 ﻿namespace FlowProtocol.Implementation.Workers.Clients
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Diagnostics;
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
-    using System.Threading;
-    using Interfaces.CommonConventions;
     using Interfaces.Response;
     using Interfaces.Workers;
     using ProtocolHelpers;
@@ -19,12 +16,6 @@
         //    @"AUTH --clienttype='tcp' --listenport='0' --login='{0}' --pass='{1}'";
 
         private readonly IFlowProtocolResponseParser _parser;
-        private TcpClient _client;
-
-        private Guid _sessionToken = Guid.Empty;
-        private string _login;
-        private string _password;
-        private bool _initialized;
         private readonly string AuthenticationTemplate = @"AUTH  --login='{0}' --pass='{1}'";
         private readonly string RegisterTemplate = @"REGISTER  --login='{0}' --pass='{1}' --name='{2}'";
 
@@ -32,13 +23,24 @@
                 @"TRANSLATE  --sourcetext='{0}' --sourcelang='{1}' --targetlang='{2}'"
             ;
 
+        private TcpClient _client;
+        private bool _initialized;
+        private string _login;
+        private string _password;
+
+        private Guid _sessionToken = Guid.Empty;
+
+        public int Port { get; private set; }
+        public IPAddress RemoteHostIpAddress { get; private set; }
+
+        #region CONSTRUCTORS
+
         public TcpClientWorker(IFlowProtocolResponseParser parser)
         {
             _parser = parser;
         }
 
-        public int Port { get; private set; }
-        public IPAddress RemoteHostIpAddress { get; private set; }
+        #endregion
 
         public bool TryConnect(IPAddress ipAddress, int port)
         {
@@ -47,33 +49,47 @@
 
             _initialized = true;
 
-            _client = new TcpClient();
-            _client.Connect(RemoteHostIpAddress, Port);
-
-            NetworkStream networkStream = _client.GetStream();
-
-            byte[] buffer = Hello.ToFlowProtocolAsciiEncodedBytesArray();
-
-
-            if (networkStream.CanWrite)
+            try
             {
-                networkStream.Write(buffer, FromBeginning, buffer.Length);
+                _client = new TcpClient();
+                _client.Connect(RemoteHostIpAddress, Port);
+
+                NetworkStream networkStream = _client.GetStream();
+
+                byte[] buffer = Commands.Hello.ToFlowProtocolAsciiEncodedBytesArray();
+
+
+                if (networkStream.CanWrite)
+                {
+                    networkStream.Write(buffer, FromBeginning, buffer.Length);
+                }
+
+                string response = string.Empty;
+
+                if (networkStream.CanRead)
+                {
+                    buffer = new byte[EthernetTcpUdpPacketSize];
+                    int bytesRead = networkStream.Read(buffer, FromBeginning, EthernetTcpUdpPacketSize);
+                    response = buffer.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
+                }
+
+                var responseComponents = _parser.ParseResponse(response);
+
+                if (responseComponents.TryGetValue(Cmd, out string cmd))
+                {
+                    if (cmd.Equals(Commands.Hello))
+                    {
+                        return true;
+                    }
+                }
             }
-
-            string response = string.Empty;
-
-            if (networkStream.CanRead)
+            catch (Exception exception)
             {
-                buffer = new byte[EthernetTcpUdpPacketSize];
-                int bytesRead = networkStream.Read(buffer, FromBeginning, EthernetTcpUdpPacketSize);
-                response = buffer.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
+                Debug.WriteLine(exception);
             }
-
-            _client.Close();
-
-            if (response.Equals(Hello))
+            finally
             {
-                return true;
+                _client.Close();
             }
             return false;
         }
@@ -84,6 +100,9 @@
             {
                 return false;
             }
+
+            _login = login;
+            _password = password;
 
             _client = new TcpClient();
 
@@ -250,7 +269,7 @@
                 {
                     if (cmd == Commands.Translate)
                     {
-                        if (responseComponents.TryGetValue(Conventions.ResultValue, out string resultValue))
+                        if (responseComponents.TryGetValue(ResultValue, out string resultValue))
                         {
                             return resultValue;
                         }

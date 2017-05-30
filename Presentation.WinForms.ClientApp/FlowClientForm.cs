@@ -36,19 +36,32 @@
             if (ClientType.Equals(Conventions.ClientType.Tcp))
             {
                 //_flowClientWorker = IoC.Resolve<TcpClientWorker>();
-                _flowClientWorker = new TcpClientWorker(new ResponseProcessor(new ResponseParser()));
+                _flowClientWorker = new TcpClientWorker(new ResponseParser());
                 serverPortTextBox.Text = TcpServerListeningPort.ToString();
+                return;
             }
 
             if (ClientType.Equals(Conventions.ClientType.Udp))
             {
                 //_flowClientWorker = IoC.Resolve<UdpClientWorker>();
-                _flowClientWorker = new UdpClientWorker(new ResponseProcessor(new ResponseParser()));
+                _flowClientWorker = new UdpClientWorker(new ResponseParser());
                 serverPortTextBox.Text = UdpServerListeningPort.ToString();
             }
         }
 
-        private void ConfigControlsProperties() => serverIpAddressTextBox.Text = Localhost;
+        private void ConfigControlsProperties()
+        {
+            serverIpAddressTextBox.Text = Localhost;
+
+            fromLangComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            fromLangComboBox.SelectedIndex = 3;
+
+            toLangComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            toLangComboBox.SelectedIndex = 0;
+
+            translateInputRichTextBox.BorderStyle = BorderStyle.None;
+            translateOutputRichTextBox.BorderStyle = BorderStyle.None;
+        }
 
         private void RegisterEventHandlers()
         {

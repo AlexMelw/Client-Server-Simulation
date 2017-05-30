@@ -26,13 +26,26 @@
                 @"(?:(?<cmd>TRANSLATE)\s+--sourcetext='(?<sourcetext>.*)'\s+--sourcelang='(?<sourcelang>ro|ru|en|unknown)'\s+--targetlang='(?<targetlang>ro|ru|en)')"
             ;
 
+        private readonly string _helloRequestPattern = @"(?<cmd>HELLO)";
+
         public ConcurrentDictionary<string, string> ParseRequest(string request)
         {
             var requestComponents = new ConcurrentDictionary<string, string>();
 
-            // <REGISTER> REQUEST
-            Regex parser = new Regex(_registerRequestPattern);
+            // <HELLO> REQUEST
+            Regex parser = new Regex(_helloRequestPattern);
             Match match = parser.Match(request);
+
+            if (match.Success)
+            {
+                requestComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
+
+                return requestComponents;
+            }
+
+            // <REGISTER> REQUEST
+            parser = new Regex(_registerRequestPattern);
+            match = parser.Match(request);
 
             if (match.Success)
             {

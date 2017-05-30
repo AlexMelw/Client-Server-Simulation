@@ -33,7 +33,7 @@
         {
             new Thread(() =>
             {
-                Console.Out.WriteLine($"[ TCP ] SERVER WORKER IS TALKING TO {_workerSocket.RemoteEndPoint}");
+                Console.Out.WriteLine($" [TCP] SERVER WORKER IS TALKING TO {_workerSocket.RemoteEndPoint}");
 
                 // The IP header and the TCP header take up 20 bytes each at least
                 // (unless optional header fields are used) and thus the max for
@@ -60,29 +60,22 @@
                         connectionAlive = false;
 
                         Console.Out.WriteLine(
-                            $@"[ TCP ] SERVER WORKER BOUND TO {
-                                    _workerSocket.RemoteEndPoint
-                                } says: ""No bytes received. Connection closed.""");
+                            $@" [TCP] SERVER WORKER says: ""No bytes received. Connection closed.""");
 
                         continue;
                     }
-
-                    //Console.WriteLine(" Recieved some bytes...");
-
-                    //for (int i = 0; i < receivedBytes; i++)
-                    //    Console.Write(Convert.ToChar(buffer[i]));
 
                     string requestString = buffer
                         .Take(receivedBytes)
                         .ToArray()
                         .ToFlowProtocolAsciiDecodedString();
 
-                    Console.Out.WriteLine($"[TCP] Remote Message: {requestString}");
+                    Console.Out.WriteLine($" [TCP] Remote Message: {requestString}");
 
                     if (requestString == CloseConnection)
                     {
                         connectionAlive = false;
-                        Console.Out.WriteLine($"Client [ {_workerSocket.RemoteEndPoint} ] closed connection");
+                        Console.Out.WriteLine($" Client closed connection");
                         continue;
                     }
 
@@ -94,8 +87,8 @@
                         _workerSocket.Send("200 OK SHUTDOWN --res='TCP Server Halted'"
                             .ToFlowProtocolAsciiEncodedBytesArray());
 
-                        Console.Out.WriteLine($"Client [ {_workerSocket.RemoteEndPoint} ] closed connection");
-                        Console.Out.WriteLine("Client turned off [ TCP ] server.");
+                        Console.Out.WriteLine($" Client closed connection");
+                        Console.Out.WriteLine(" Client turned off [ TCP ] server.");
                         continue;
                     }
 
@@ -112,10 +105,10 @@
                 if (serverMustStopServingRequests && _server.Active)
                 {
                     _server.Stop();
-                    Console.Out.WriteLine("[ TCP ] SERVER HALTED");
+                    Console.Out.WriteLine(" [TCP] SERVER HALTED");
                 }
 
-                Console.Out.WriteLine($"[ TCP ] SERVER WORKER for {_workerSocket.RemoteEndPoint} finished job");
+                Console.Out.WriteLine($" [TCP] SERVER WORKER finished job");
             }).Start();
         }
 

@@ -39,6 +39,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.registerNameTextBox = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.registerButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.registerPassTextBox = new System.Windows.Forms.TextBox();
@@ -51,20 +53,18 @@
             this.authPassTextBox = new System.Windows.Forms.TextBox();
             this.authLoginTextBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.registerNameTextBox = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.translateInputRichTextBox = new System.Windows.Forms.RichTextBox();
-            this.toLangComboBox = new System.Windows.Forms.ComboBox();
-            this.fromLangComboBox = new System.Windows.Forms.ComboBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.translateButton = new System.Windows.Forms.Button();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.translateOutputRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.translateInputRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.translateButton = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.toLangComboBox = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.fromLangComboBox = new System.Windows.Forms.ComboBox();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -73,9 +73,9 @@
             this.tabPage3.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tabPage4.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -194,6 +194,22 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Register";
             // 
+            // registerNameTextBox
+            // 
+            this.registerNameTextBox.Location = new System.Drawing.Point(18, 171);
+            this.registerNameTextBox.Name = "registerNameTextBox";
+            this.registerNameTextBox.Size = new System.Drawing.Size(165, 20);
+            this.registerNameTextBox.TabIndex = 6;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(21, 152);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(54, 13);
+            this.label8.TabIndex = 5;
+            this.label8.Text = "Full Name";
+            // 
             // registerButton
             // 
             this.registerButton.Location = new System.Drawing.Point(18, 213);
@@ -266,7 +282,7 @@
             this.authButton.Name = "authButton";
             this.authButton.Size = new System.Drawing.Size(165, 23);
             this.authButton.TabIndex = 4;
-            this.authButton.Text = "REGISTER";
+            this.authButton.Text = "AUTHENTICATE";
             this.authButton.UseVisualStyleBackColor = true;
             // 
             // label6
@@ -301,22 +317,6 @@
             this.label7.TabIndex = 2;
             this.label7.Text = "Password";
             // 
-            // registerNameTextBox
-            // 
-            this.registerNameTextBox.Location = new System.Drawing.Point(18, 171);
-            this.registerNameTextBox.Name = "registerNameTextBox";
-            this.registerNameTextBox.Size = new System.Drawing.Size(165, 20);
-            this.registerNameTextBox.TabIndex = 6;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(21, 152);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(54, 13);
-            this.label8.TabIndex = 5;
-            this.label8.Text = "Full Name";
-            // 
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.groupBox6);
@@ -330,15 +330,33 @@
             this.tabPage4.Text = "Translator";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // tabPage5
+            // groupBox6
             // 
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(714, 513);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "Chat Room";
-            this.tabPage5.UseVisualStyleBackColor = true;
+            this.groupBox6.Controls.Add(this.translateOutputRichTextBox);
+            this.groupBox6.Location = new System.Drawing.Point(114, 307);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(469, 181);
+            this.groupBox6.TabIndex = 10;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Output";
+            // 
+            // translateOutputRichTextBox
+            // 
+            this.translateOutputRichTextBox.Location = new System.Drawing.Point(18, 19);
+            this.translateOutputRichTextBox.Name = "translateOutputRichTextBox";
+            this.translateOutputRichTextBox.Size = new System.Drawing.Size(434, 146);
+            this.translateOutputRichTextBox.TabIndex = 1;
+            this.translateOutputRichTextBox.Text = "";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.translateInputRichTextBox);
+            this.groupBox5.Location = new System.Drawing.Point(114, 117);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(469, 184);
+            this.groupBox5.TabIndex = 9;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Input";
             // 
             // translateInputRichTextBox
             // 
@@ -347,49 +365,6 @@
             this.translateInputRichTextBox.Size = new System.Drawing.Size(434, 146);
             this.translateInputRichTextBox.TabIndex = 0;
             this.translateInputRichTextBox.Text = "";
-            // 
-            // toLangComboBox
-            // 
-            this.toLangComboBox.FormattingEnabled = true;
-            this.toLangComboBox.Items.AddRange(new object[] {
-            "English",
-            "Romanian",
-            "Russian"});
-            this.toLangComboBox.Location = new System.Drawing.Point(194, 46);
-            this.toLangComboBox.Name = "toLangComboBox";
-            this.toLangComboBox.Size = new System.Drawing.Size(121, 21);
-            this.toLangComboBox.TabIndex = 2;
-            // 
-            // fromLangComboBox
-            // 
-            this.fromLangComboBox.FormattingEnabled = true;
-            this.fromLangComboBox.Items.AddRange(new object[] {
-            "English",
-            "Romanian",
-            "Russian",
-            "Auto Detection"});
-            this.fromLangComboBox.Location = new System.Drawing.Point(18, 46);
-            this.fromLangComboBox.Name = "fromLangComboBox";
-            this.fromLangComboBox.Size = new System.Drawing.Size(121, 21);
-            this.fromLangComboBox.TabIndex = 3;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(15, 26);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(30, 13);
-            this.label9.TabIndex = 4;
-            this.label9.Text = "From";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(191, 26);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(20, 13);
-            this.label10.TabIndex = 5;
-            this.label10.Text = "To";
             // 
             // groupBox4
             // 
@@ -414,33 +389,58 @@
             this.translateButton.Text = "TRANSLATE";
             this.translateButton.UseVisualStyleBackColor = true;
             // 
-            // groupBox5
+            // label9
             // 
-            this.groupBox5.Controls.Add(this.translateInputRichTextBox);
-            this.groupBox5.Location = new System.Drawing.Point(114, 117);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(469, 184);
-            this.groupBox5.TabIndex = 9;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Input";
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(15, 26);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(30, 13);
+            this.label9.TabIndex = 4;
+            this.label9.Text = "From";
             // 
-            // groupBox6
+            // toLangComboBox
             // 
-            this.groupBox6.Controls.Add(this.translateOutputRichTextBox);
-            this.groupBox6.Location = new System.Drawing.Point(114, 307);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(469, 181);
-            this.groupBox6.TabIndex = 10;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Output";
+            this.toLangComboBox.FormattingEnabled = true;
+            this.toLangComboBox.Items.AddRange(new object[] {
+            "English",
+            "Romanian",
+            "Russian"});
+            this.toLangComboBox.Location = new System.Drawing.Point(194, 46);
+            this.toLangComboBox.Name = "toLangComboBox";
+            this.toLangComboBox.Size = new System.Drawing.Size(121, 21);
+            this.toLangComboBox.TabIndex = 2;
             // 
-            // translateOutputRichTextBox
+            // label10
             // 
-            this.translateOutputRichTextBox.Location = new System.Drawing.Point(18, 19);
-            this.translateOutputRichTextBox.Name = "translateOutputRichTextBox";
-            this.translateOutputRichTextBox.Size = new System.Drawing.Size(434, 146);
-            this.translateOutputRichTextBox.TabIndex = 1;
-            this.translateOutputRichTextBox.Text = "";
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(191, 26);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(20, 13);
+            this.label10.TabIndex = 5;
+            this.label10.Text = "To";
+            // 
+            // fromLangComboBox
+            // 
+            this.fromLangComboBox.FormattingEnabled = true;
+            this.fromLangComboBox.Items.AddRange(new object[] {
+            "English",
+            "Romanian",
+            "Russian",
+            "Auto Detection"});
+            this.fromLangComboBox.Location = new System.Drawing.Point(18, 46);
+            this.fromLangComboBox.Name = "fromLangComboBox";
+            this.fromLangComboBox.Size = new System.Drawing.Size(121, 21);
+            this.fromLangComboBox.TabIndex = 3;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(714, 513);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Chat Room";
+            this.tabPage5.UseVisualStyleBackColor = true;
             // 
             // FlowClientForm
             // 
@@ -464,10 +464,10 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox6.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
