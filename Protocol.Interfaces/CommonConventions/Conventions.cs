@@ -54,10 +54,10 @@
             public const string Unknown = "unknown";
         }
 
-        public class TransportType
+        public class ClientType
         {
-            public const string Udp = "udp";
-            public const string Tcp = "tcp";
+            public const string Udp = "UDP";
+            public const string Tcp = "TCP";
         }
 
         public class TagMode

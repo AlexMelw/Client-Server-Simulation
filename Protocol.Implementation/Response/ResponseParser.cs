@@ -22,10 +22,10 @@
             @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK|ERR)\s+(?<cmd>SENDMSG)\s+--res='(?<res>.+)')";
 
         private readonly string _translateResponsePattern =
-            @"(?:(?<statuscode>200)\s+(?<statusdesc>OK)\s+(?<cmd>TRANSLATE)\s+--RES='(?<res>.+)')";
+            @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK)\s+(?<cmd>TRANSLATE)\s+--RES='(?<res>.+)')";
 
         private readonly string _shutdownServerResponsePattern =
-            @"(?:(?<statuscode>200)\s+(?<statusdesc>OK)\s+(?<cmd>SHUTDOWN)\s+--res='(?<res>.+)')";
+            @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK)\s+(?<cmd>SHUTDOWN)\s+--res='(?<res>.+)')";
 
         public ConcurrentDictionary<string, string> ParseResponse(string response)
         {

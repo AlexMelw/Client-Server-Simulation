@@ -30,6 +30,7 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label5 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.connectToServerButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -44,13 +45,26 @@
             this.registerLoginTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.label5 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.authButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.authPassTextBox = new System.Windows.Forms.TextBox();
             this.authLoginTextBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.registerNameTextBox = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -58,6 +72,10 @@
             this.groupBox1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -65,6 +83,8 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -82,6 +102,15 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Connect";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(248, 374);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(226, 13);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "It\'s quite recommended to leave default values";
             // 
             // groupBox2
             // 
@@ -151,6 +180,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.registerNameTextBox);
+            this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.registerButton);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.registerPassTextBox);
@@ -158,14 +189,14 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Location = new System.Drawing.Point(257, 161);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 190);
+            this.groupBox1.Size = new System.Drawing.Size(200, 255);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Register";
             // 
             // registerButton
             // 
-            this.registerButton.Location = new System.Drawing.Point(18, 146);
+            this.registerButton.Location = new System.Drawing.Point(18, 213);
             this.registerButton.Name = "registerButton";
             this.registerButton.Size = new System.Drawing.Size(165, 23);
             this.registerButton.TabIndex = 4;
@@ -214,15 +245,6 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Authentication";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(248, 374);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(226, 13);
-            this.label5.TabIndex = 5;
-            this.label5.Text = "It\'s quite recommended to leave default values";
             // 
             // groupBox3
             // 
@@ -279,6 +301,147 @@
             this.label7.TabIndex = 2;
             this.label7.Text = "Password";
             // 
+            // registerNameTextBox
+            // 
+            this.registerNameTextBox.Location = new System.Drawing.Point(18, 171);
+            this.registerNameTextBox.Name = "registerNameTextBox";
+            this.registerNameTextBox.Size = new System.Drawing.Size(165, 20);
+            this.registerNameTextBox.TabIndex = 6;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(21, 152);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(54, 13);
+            this.label8.TabIndex = 5;
+            this.label8.Text = "Full Name";
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.groupBox6);
+            this.tabPage4.Controls.Add(this.groupBox5);
+            this.tabPage4.Controls.Add(this.groupBox4);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(714, 513);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Translator";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(714, 513);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Chat Room";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(18, 22);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(434, 146);
+            this.richTextBox1.TabIndex = 0;
+            this.richTextBox1.Text = "";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "English",
+            "Romanian",
+            "Russian"});
+            this.comboBox1.Location = new System.Drawing.Point(194, 46);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 2;
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "English",
+            "Romanian",
+            "Russian",
+            "Auto Detection"});
+            this.comboBox2.Location = new System.Drawing.Point(18, 46);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(121, 21);
+            this.comboBox2.TabIndex = 3;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(15, 26);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(30, 13);
+            this.label9.TabIndex = 4;
+            this.label9.Text = "From";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(191, 26);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(20, 13);
+            this.label10.TabIndex = 5;
+            this.label10.Text = "To";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.button1);
+            this.groupBox4.Controls.Add(this.label9);
+            this.groupBox4.Controls.Add(this.comboBox1);
+            this.groupBox4.Controls.Add(this.label10);
+            this.groupBox4.Controls.Add(this.comboBox2);
+            this.groupBox4.Location = new System.Drawing.Point(114, 22);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(469, 89);
+            this.groupBox4.TabIndex = 6;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Translate";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(343, 26);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(109, 43);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "TRANSLATE";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.richTextBox1);
+            this.groupBox5.Location = new System.Drawing.Point(114, 117);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(469, 184);
+            this.groupBox5.TabIndex = 9;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Input";
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.richTextBox2);
+            this.groupBox6.Location = new System.Drawing.Point(114, 307);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(469, 181);
+            this.groupBox6.TabIndex = 10;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Output";
+            // 
+            // richTextBox2
+            // 
+            this.richTextBox2.Location = new System.Drawing.Point(18, 19);
+            this.richTextBox2.Name = "richTextBox2";
+            this.richTextBox2.Size = new System.Drawing.Size(434, 146);
+            this.richTextBox2.TabIndex = 1;
+            this.richTextBox2.Text = "";
+            // 
             // FlowClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -300,6 +463,11 @@
             this.tabPage3.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -329,6 +497,20 @@
         private System.Windows.Forms.TextBox authPassTextBox;
         private System.Windows.Forms.TextBox authLoginTextBox;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox registerNameTextBox;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.RichTextBox richTextBox2;
+        private System.Windows.Forms.GroupBox groupBox5;
     }
 }
 
