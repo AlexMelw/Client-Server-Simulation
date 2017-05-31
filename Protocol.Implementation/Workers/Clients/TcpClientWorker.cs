@@ -15,12 +15,18 @@
         //private const string AuthenticationFormat =
         //    @"AUTH --clienttype='tcp' --listenport='0' --login='{0}' --pass='{1}'";
 
+        private const string clientSayDoNotTranslate = "Do Not Translate";
+
         private readonly IFlowProtocolResponseParser _parser;
         private readonly string AuthenticationTemplate = @"AUTH  --login='{0}' --pass='{1}'";
         private readonly string RegisterTemplate = @"REGISTER  --login='{0}' --pass='{1}' --name='{2}'";
 
         private readonly string TranslateTemplate =
                 @"TRANSLATE  --sourcetext='{0}' --sourcelang='{1}' --targetlang='{2}'"
+            ;
+
+        private readonly string SendMessageTemplate =
+                @"SENDMSG --to='{0}' --msg='{1}' --sourcelang='{2}' --sessiontoken='{3}'"
             ;
 
         private TcpClient _client;

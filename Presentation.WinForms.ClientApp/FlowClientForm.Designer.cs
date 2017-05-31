@@ -79,6 +79,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.topLineSeparator = new System.Windows.Forms.Label();
             this.bottomLineSeparator = new System.Windows.Forms.Label();
+            this.getMessageButton = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -536,6 +537,7 @@
             // 
             // groupBox9
             // 
+            this.groupBox9.Controls.Add(this.getMessageButton);
             this.groupBox9.Controls.Add(this.topLineSeparator);
             this.groupBox9.Controls.Add(this.label13);
             this.groupBox9.Controls.Add(this.incomingMessagesRichTextBox);
@@ -604,6 +606,15 @@
             this.bottomLineSeparator.Size = new System.Drawing.Size(1, 147);
             this.bottomLineSeparator.TabIndex = 9;
             this.bottomLineSeparator.Text = "l";
+            // 
+            // getMessageButton
+            // 
+            this.getMessageButton.Location = new System.Drawing.Point(548, 108);
+            this.getMessageButton.Name = "getMessageButton";
+            this.getMessageButton.Size = new System.Drawing.Size(120, 73);
+            this.getMessageButton.TabIndex = 10;
+            this.getMessageButton.Text = "GET MESSAGE MANUALLY";
+            this.getMessageButton.UseVisualStyleBackColor = true;
             // 
             // FlowClientForm
             // 
@@ -693,6 +704,7 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label topLineSeparator;
         private System.Windows.Forms.Label bottomLineSeparator;
+        private System.Windows.Forms.Button getMessageButton;
     }
 }
 
