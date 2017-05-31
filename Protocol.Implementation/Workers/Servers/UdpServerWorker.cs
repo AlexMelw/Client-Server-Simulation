@@ -32,7 +32,7 @@
         {
             new Thread(() =>
             {
-                Console.Out.WriteLine($" [UDP]  SERVER WORKER IS TALKING TO {_remoteClientEndPoint}");
+                Console.Out.WriteLine($" [UDP]   >> SERVER WORKER IS TALKING TO {_remoteClientEndPoint}");
 
                 string result = _requestProcessor.ProcessRequest(requestString);
 
@@ -40,7 +40,7 @@
 
                 _server.Send(buffer, buffer.Length, _remoteClientEndPoint);
 
-                Console.Out.WriteLine($" [UDP]  SERVER WORKER for {_remoteClientEndPoint} finished job");
+                Console.Out.WriteLine($" [UDP]   >> SERVER WORKER for {_remoteClientEndPoint} finished job");
             }).Start();
         }
 

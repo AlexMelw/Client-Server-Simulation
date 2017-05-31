@@ -33,7 +33,7 @@
         {
             new Thread(() =>
             {
-                Console.Out.WriteLine($" [TCP] SERVER WORKER IS TALKING TO {_workerSocket.RemoteEndPoint}");
+                Console.Out.WriteLine($" [TCP]   >> SERVER WORKER IS TALKING TO {_workerSocket.RemoteEndPoint}");
 
                 // The IP header and the TCP header take up 20 bytes each at least
                 // (unless optional header fields are used) and thus the max for
@@ -60,7 +60,7 @@
                         connectionAlive = false;
 
                         Console.Out.WriteLine(
-                            $@" [TCP] SERVER WORKER says: ""No bytes received. Connection closed.""");
+                            $@" [TCP]   >> SERVER WORKER says: ""No bytes received. Connection closed.""");
 
                         continue;
                     }
@@ -75,7 +75,7 @@
                     if (requestString == CloseConnection)
                     {
                         connectionAlive = false;
-                        Console.Out.WriteLine($" Client closed connection");
+                        Console.Out.WriteLine($" [TCP] Client closed connection");
                         continue;
                     }
 
@@ -87,8 +87,8 @@
                         _workerSocket.Send("200 OK SHUTDOWN --res='TCP Server Halted'"
                             .ToFlowProtocolAsciiEncodedBytesArray());
 
-                        Console.Out.WriteLine($" Client closed connection");
-                        Console.Out.WriteLine(" Client turned off [ TCP ] server.");
+                        Console.Out.WriteLine($" [TCP] Client closed connection");
+                        Console.Out.WriteLine(" [TCP] Client turned off TCP server.");
                         continue;
                     }
 
@@ -108,7 +108,7 @@
                     Console.Out.WriteLine(" [TCP] SERVER HALTED");
                 }
 
-                Console.Out.WriteLine($" [TCP] SERVER WORKER finished job");
+                Console.Out.WriteLine($" [TCP]   >> SERVER WORKER finished job");
             }).Start();
         }
 

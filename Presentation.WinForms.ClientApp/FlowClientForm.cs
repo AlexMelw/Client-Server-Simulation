@@ -85,11 +85,19 @@
 
             connectToServerButton.Click += (sender, args) =>
             {
-                bool connected = _flowClientWorker.Connect(
-                    ipAddress: IPAddress.Parse(serverIpAddressTextBox.Text.Trim()),
-                    port: int.Parse(serverPortTextBox.Text.Trim()));
+                try
+                {
+                    bool connected = _flowClientWorker.Connect(
+                        ipAddress: IPAddress.Parse(serverIpAddressTextBox.Text.Trim()),
+                        port: int.Parse(serverPortTextBox.Text.Trim()));
 
-                MessageBox.Show($@"Connected: {connected}");
+                    MessageBox.Show($@"Connected: {connected}");
+                }
+                catch (Exception exception)
+                {
+                    Debug.WriteLine(exception);
+                    MessageBox.Show($@"{exception.Message}");
+                }
             };
 
             authButton.Click += (sender, args) =>
