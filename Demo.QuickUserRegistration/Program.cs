@@ -8,6 +8,7 @@ namespace Demo.QuickUserRegistration
 {
     using System.Diagnostics;
     using System.Net;
+    using System.Threading;
     using FlowProtocol.Implementation.Response;
     using FlowProtocol.Implementation.Workers.Clients;
     using FlowProtocol.Interfaces.CommonConventions;
@@ -30,19 +31,19 @@ namespace Demo.QuickUserRegistration
 
                 registered = clientWorker.Register(
                     login: "Admin",
-                    password: "qwerty123",
+                    password: "q",
                     name: "Veaceslav BARBARII"
                 );
 
                 registered = clientWorker.Register(
                     login: "Demo1",
-                    password: "qwerty",
+                    password: "q",
                     name: "Guba Dumitru"
                 );
 
                 registered = clientWorker.Register(
                     login: "Demo2",
-                    password: "qwerty",
+                    password: "q",
                     name: "Bujac Petru"
                 );
             }
@@ -57,7 +58,8 @@ namespace Demo.QuickUserRegistration
 
             Console.Out.WriteLine(registered ? "Users are registered..." : "Users are not registered...");
 
-            Console.ReadLine();
+            Thread.Sleep(5000);
+            Environment.Exit(0);
         }
     }
 }

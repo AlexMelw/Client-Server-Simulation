@@ -3,11 +3,13 @@
     using System;
     using System.Diagnostics;
     using System.Net;
+    using System.Threading;
     using System.Windows.Forms;
     using FlowProtocol.Implementation.Response;
     using FlowProtocol.Implementation.Workers.Clients;
     using FlowProtocol.Interfaces.CommonConventions;
     using FlowProtocol.Interfaces.Workers;
+    using libZPlay;
     using Properties;
     using static FlowProtocol.Interfaces.CommonConventions.Conventions;
 
@@ -173,6 +175,22 @@
 
                     if (result.Success)
                     {
+                        try
+                        {
+                            ZPlay player = new ZPlay();
+
+                            if (player.OpenFile(@"Resources/Sent2.mp3", TStreamFormat.sfAutodetect))
+                            {
+                                player.SetMasterVolume(100, 100);
+                                player.SetPlayerVolume(100, 100);
+
+                                player.StartPlayback();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            // I don't care if soundplayer is dgoing crazy
+                        }
                         MessageBox.Show($@"{result.ResponseMessage}");
                         outgoingMessagesRichTextBox.Clear();
                     }
@@ -202,6 +220,22 @@
                             Environment.NewLine + new string('-', 168)
                             + Environment.NewLine +
                             $"From {result.SenderName} [{result.SenderId}] : {result.MessageBody}");
+                        try
+                        {
+                            ZPlay player = new ZPlay();
+
+                            if (player.OpenFile(@"Resources/OwOw.mp3", TStreamFormat.sfAutodetect))
+                            {
+                                player.SetMasterVolume(100, 100);
+                                player.SetPlayerVolume(100, 100);
+
+                                player.StartPlayback();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            // I don't care if soundplayer is dgoing crazy
+                        }
                     }
                     else
                     {

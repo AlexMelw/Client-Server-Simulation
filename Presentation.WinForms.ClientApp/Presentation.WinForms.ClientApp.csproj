@@ -62,6 +62,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Third-party libs\libZPlay.cs" />
     <EmbeddedResource Include="FlowClientForm.resx">
       <DependentUpon>FlowClientForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -111,7 +112,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Email.ico" />
-    <None Include="Resources\Email.ico" />
+    <Content Include="Resources\OwOw.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libzplay.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Sent.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Sent2.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\Email.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
