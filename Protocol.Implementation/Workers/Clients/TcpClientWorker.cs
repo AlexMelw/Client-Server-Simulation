@@ -5,39 +5,36 @@
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
-    using Interfaces.CommonConventions;
     using Interfaces.Response;
     using Interfaces.Workers;
     using ProtocolHelpers;
     using Results;
+    using Utilities;
     using static Interfaces.CommonConventions.Conventions;
 
     public class TcpClientWorker : IFlowClientWorker
     {
-        //private const string AuthenticationFormat =
-        //    @"AUTH --clienttype='tcp' --listenport='0' --login='{0}' --pass='{1}'";
-
-        private const string clientSaysDoNotTranslate = "Do Not Translate";
+        private const string ClientSaysDoNotTranslate = "Do Not Translate";
 
         private readonly IFlowProtocolResponseParser _parser;
 
         private readonly string AuthenticationTemplate =
             @"AUTH  --login='{0}' --pass='{1}'";
 
-        private readonly string RegisterTemplate =
-            @"REGISTER  --login='{0}' --pass='{1}' --name='{2}'";
-
-        private readonly string TranslateTemplate =
-            @"TRANSLATE  --sourcetext='{0}' --sourcelang='{1}' --targetlang='{2}'";
-
-        private readonly string SendMessageTemplate =
-            @"SENDMSG --to='{0}' --msg='{1}' --sourcelang='{2}' --sessiontoken='{3}'";
+        private readonly string GetMessageTranslatedTemplate =
+            @"GETMSG --sessiontoken='{0}' --translateto='{1}'";
 
         private readonly string GetMessageUnmodifiedTemplate =
             @"GETMSG --sessiontoken='{0}' --donottranslate";
 
-        private readonly string GetMessageTranslatedTemplate =
-            @"GETMSG --sessiontoken='{0}' --translateto='{1}'";
+        private readonly string RegisterTemplate =
+            @"REGISTER  --login='{0}' --pass='{1}' --name='{2}'";
+
+        private readonly string SendMessageTemplate =
+            @"SENDMSG --to='{0}' --msg='{1}' --sourcelang='{2}' --sessiontoken='{3}'";
+
+        private readonly string TranslateTemplate =
+            @"TRANSLATE  --sourcetext='{0}' --sourcelang='{1}' --targetlang='{2}'";
 
         private TcpClient _client;
         private bool _initialized;
@@ -258,8 +255,8 @@
                 NetworkStream networkStream = _client.GetStream();
 
                 // From "English" to "en", from "Romanian" to "ro", etc.
-                ConvertToFlowProtocolLanguageNotations(ref sourceTextLang);
-                ConvertToFlowProtocolLanguageNotations(ref targetTextLanguage);
+                FlowUtility.ConvertToFlowProtocolLanguageNotations(ref sourceTextLang);
+                FlowUtility.ConvertToFlowProtocolLanguageNotations(ref targetTextLanguage);
 
                 string textToBeSent = string.Format(TranslateTemplate,
                     sourceText, sourceTextLang, targetTextLanguage);
@@ -325,7 +322,7 @@
                 NetworkStream networkStream = _client.GetStream();
 
                 // From "English" to "en", from "Romanian" to "ro", etc.
-                ConvertToFlowProtocolLanguageNotations(ref messageTextLang);
+                FlowUtility.ConvertToFlowProtocolLanguageNotations(ref messageTextLang);
 
                 string textToBeSent = string.Format(SendMessageTemplate,
                     recipient, messageText, messageTextLang, _sessionToken);
@@ -410,7 +407,7 @@
 
                 NetworkStream networkStream = _client.GetStream();
 
-                if (translationMode == clientSaysDoNotTranslate)
+                if (translationMode == ClientSaysDoNotTranslate)
                 {
                     string textToBeSent = string.Format(GetMessageUnmodifiedTemplate,
                         _sessionToken);
@@ -425,7 +422,7 @@
                 else
                 {
                     // From "English" to "en", from "Romanian" to "ro", etc.
-                    ConvertToFlowProtocolLanguageNotations(ref translationMode);
+                    FlowUtility.ConvertToFlowProtocolLanguageNotations(ref translationMode);
 
                     string textToBeSent = string.Format(GetMessageTranslatedTemplate,
                         _sessionToken, translationMode);
@@ -494,39 +491,6 @@
             };
         }
 
-
-        public void Dispose()
-        {
-            ((IDisposable) _client)?.Dispose();
-        }
-
-        public void ConvertToFlowProtocolLanguageNotations(ref string textLanguage)
-        {
-            const string english = "English";
-            const string romanian = "Romanian";
-            const string russian = "Russian";
-            const string autoDetection = "Auto Detection";
-
-            const string ro = "ro";
-            const string ru = "ru";
-            const string en = "en";
-            const string unknown = "unknown";
-
-            switch (textLanguage)
-            {
-                case english:
-                    textLanguage = en;
-                    break;
-                case romanian:
-                    textLanguage = ro;
-                    break;
-                case russian:
-                    textLanguage = ru;
-                    break;
-                case autoDetection:
-                    textLanguage = unknown;
-                    break;
-            }
-        }
+        public void Dispose() => ((IDisposable) _client)?.Dispose();
     }
 }

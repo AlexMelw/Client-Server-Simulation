@@ -1,4 +1,4 @@
-﻿namespace FlowProtocol.Implementation.Entities
+﻿namespace FlowProtocol.DomainModels.Entities
 {
     public class User
     {

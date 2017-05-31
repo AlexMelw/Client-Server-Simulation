@@ -142,6 +142,19 @@
                     MessageBox.Show($@"{exception.Message}");
                 }
             };
+
+            SendMessageButton.Click += (sender, args) =>
+            {
+                try
+                {
+                    _flowClientWorker.
+                }
+                catch (Exception exception)
+                {
+                    Debug.WriteLine(exception);
+                    MessageBox.Show($@"{exception.Message}");
+                }
+            };
         }
     }
 }

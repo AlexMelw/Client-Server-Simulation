@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6FA0AB1A-03E8-4C70-B628-8507CAA15247}</ProjectGuid>
+    <ProjectGuid>{3FD94B60-1584-4C36-88EE-1281B0FF661C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FlowProtocol.Interfaces</RootNamespace>
-    <AssemblyName>FlowProtocol.Interfaces</AssemblyName>
+    <RootNamespace>FlowProtocol.DomainModels</RootNamespace>
+    <AssemblyName>FlowProtocol.DomainModels</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,30 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommonConventions\Conventions.cs" />
-    <Compile Include="Common\IFlowProtocol.cs" />
-    <Compile Include="Servers\IServer.cs" />
-    <Compile Include="Request\IFlowProtocolRequestParser.cs" />
-    <Compile Include="Request\IFlowProtocolRequestProcessor.cs" />
-    <Compile Include="Response\IFlowProtocolResponseProcessor.cs" />
-    <Compile Include="Response\IFlowProtocolResponseParser.cs" />
-    <Compile Include="Workers\IFlowServerWorker.cs" />
-    <Compile Include="Workers\IFlowClientWorker.cs" />
+    <Compile Include="Entities\AuthClient.cs" />
+    <Compile Include="Entities\ChatMessage.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\EasySharp\NHelpers\NHelpers.csproj">
-      <Project>{CAC83CF1-E5D4-45F6-85CC-E0AD29B55A8E}</Project>
-      <Name>NHelpers</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FlowProtocol.DomainModels\FlowProtocol.DomainModels.csproj">
-      <Project>{3FD94B60-1584-4C36-88EE-1281B0FF661C}</Project>
-      <Name>FlowProtocol.DomainModels</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Protocol\RegExRequest.sh" />
-    <None Include="Protocol\RegExResponse.sh" />
+    <Compile Include="Results\GetMessageResult.cs" />
+    <Compile Include="Results\SendMessageResult.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
