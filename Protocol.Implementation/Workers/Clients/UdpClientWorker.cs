@@ -3,6 +3,7 @@
     using System.Net;
     using Interfaces.Response;
     using Interfaces.Workers;
+    using Results;
 
     public class UdpClientWorker : IFlowClientWorker
     {
@@ -22,17 +23,27 @@
             throw new System.NotImplementedException();
         }
 
-        public bool Connect(IPAddress ipAddress, int port)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public bool Authenticate(string login, string password)
         {
             throw new System.NotImplementedException();
         }
 
+        public bool Connect(IPAddress ipAddress, int port)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public GetMessageResult GetMessage(string translationMode)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public bool Register(string login, string password, string name)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public SendMessageResult SendMessage(string recipient, string messageText, string messageTextLang)
         {
             throw new System.NotImplementedException();
         }

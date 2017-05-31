@@ -88,6 +88,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FlowProtocol.DomainModels\FlowProtocol.DomainModels.csproj">
+      <Project>{3FD94B60-1584-4C36-88EE-1281B0FF661C}</Project>
+      <Name>FlowProtocol.DomainModels</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
       <Project>{D2F0F193-B562-4209-8919-F05E0FD88420}</Project>
       <Name>Infrastructure</Name>

@@ -25,7 +25,7 @@ namespace Presentation.WinForms.ClientApp
             {
                 this.Hide();
 
-                string selectedValue = (string) pickupProtocolComboBox.Text;
+                string selectedValue = pickupProtocolComboBox.Text;
 
                 FlowClientForm flowClientForm = new FlowClientForm
                 {

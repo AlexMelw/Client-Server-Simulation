@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Concurrent;
-    using Entities;
+    using DomainModels.Entities;
 
     public sealed class AuthenticatedClients
     {

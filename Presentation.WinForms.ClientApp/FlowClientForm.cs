@@ -6,6 +6,7 @@
     using System.Windows.Forms;
     using FlowProtocol.Implementation.Response;
     using FlowProtocol.Implementation.Workers.Clients;
+    using FlowProtocol.Implementation.Workers.Clients.Results;
     using FlowProtocol.Interfaces.CommonConventions;
     using FlowProtocol.Interfaces.Workers;
     using static FlowProtocol.Interfaces.CommonConventions.Conventions;
@@ -126,8 +127,8 @@
             {
                 try
                 {
-                    string inputTextLang = (string) fromLangComboBox.Text;
-                    string outputTextLang = (string) toLangComboBox.Text;
+                    string inputTextLang = fromLangComboBox.Text;
+                    string outputTextLang = toLangComboBox.Text;
 
                     string translatedText = _flowClientWorker.Translate(
                         sourceText: translateInputRichTextBox.Text,
@@ -145,9 +146,26 @@
 
             SendMessageButton.Click += (sender, args) =>
             {
+                string recipient = recipientTextBox.Text.Trim();
+                string messageBody = outgoingMessagesRichTextBox.Text;
+                string sourceTextLanguage = outgoingLangComboBox.Text;
+
                 try
                 {
-                    _flowClientWorker.
+                    var result = _flowClientWorker.SendMessage(
+                        recipient: recipient,
+                        messageText: messageBody,
+                        messageTextLang: sourceTextLanguage);
+
+                    if (result.Success)
+                    {
+                        MessageBox.Show($@"{result.ResponseMessage}");
+                        outgoingMessagesRichTextBox.Clear();
+                    }
+                    else
+                    {
+                        MessageBox.Show($@"{result.ResponseMessage}");
+                    }
                 }
                 catch (Exception exception)
                 {

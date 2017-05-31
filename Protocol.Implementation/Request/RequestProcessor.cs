@@ -4,7 +4,7 @@
     using System.Collections.Concurrent;
     using System.Diagnostics;
     using System.Linq;
-    using Entities;
+    using DomainModels.Entities;
     using Interfaces.Request;
     using MSTranslatorService;
     using Ninject;
@@ -44,9 +44,9 @@
                     requestComponents.TryGetValue(TargetLang, out string targetLang);
 
                     string translatedText = Translate(
-                        sourceText,
-                        sourceLang,
-                        targetLang
+                        sourceText: sourceText,
+                        sourceLang: sourceLang,
+                        targetLang: targetLang
                     );
                     return $@"200 OK TRANSLATE --res='{translatedText}'";
                 }
