@@ -81,6 +81,8 @@
             catch (Exception exception)
             {
                 Debug.WriteLine(exception);
+                _initialized = false;
+                throw new Exception("No connection to server");
             }
             finally
             {
