@@ -6,7 +6,6 @@
     using System.Windows.Forms;
     using FlowProtocol.Implementation.Response;
     using FlowProtocol.Implementation.Workers.Clients;
-    using FlowProtocol.Implementation.Workers.Servers;
     using FlowProtocol.Interfaces.CommonConventions;
     using FlowProtocol.Interfaces.Workers;
     using static FlowProtocol.Interfaces.CommonConventions.Conventions;
@@ -60,8 +59,17 @@
             toLangComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             toLangComboBox.SelectedIndex = 0;
 
+            incomingLangComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            incomingLangComboBox.SelectedIndex = 0;
+
+            outgoingLangComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            outgoingLangComboBox.SelectedIndex = 3;
+
             translateInputRichTextBox.BorderStyle = BorderStyle.None;
             translateOutputRichTextBox.BorderStyle = BorderStyle.None;
+
+            incomingMessagesRichTextBox.BorderStyle = BorderStyle.None;
+            outgoingMessagesRichTextBox.BorderStyle = BorderStyle.None;
         }
 
         private void RegisterEventHandlers()

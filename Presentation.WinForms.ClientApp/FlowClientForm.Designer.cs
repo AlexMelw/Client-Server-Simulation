@@ -54,8 +54,9 @@
             this.authLoginTextBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.translateOutputRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.translateInputRichTextBox = new System.Windows.Forms.RichTextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -65,6 +66,19 @@
             this.label10 = new System.Windows.Forms.Label();
             this.fromLangComboBox = new System.Windows.Forms.ComboBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.SendMessageButton = new System.Windows.Forms.Button();
+            this.label14 = new System.Windows.Forms.Label();
+            this.outgoingMessagesRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.outgoingLangComboBox = new System.Windows.Forms.ComboBox();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.incomingMessagesRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.incomingLangComboBox = new System.Windows.Forms.ComboBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.topLineSeparator = new System.Windows.Forms.Label();
+            this.bottomLineSeparator = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -73,9 +87,12 @@
             this.tabPage3.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tabPage4.SuspendLayout();
-            this.groupBox6.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.tabPage5.SuspendLayout();
+            this.groupBox8.SuspendLayout();
+            this.groupBox9.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -319,6 +336,7 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.groupBox7);
             this.tabPage4.Controls.Add(this.groupBox6);
             this.tabPage4.Controls.Add(this.groupBox5);
             this.tabPage4.Controls.Add(this.groupBox4);
@@ -330,23 +348,32 @@
             this.tabPage4.Text = "Translator";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.translateOutputRichTextBox);
+            this.groupBox7.Location = new System.Drawing.Point(114, 307);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(469, 181);
+            this.groupBox7.TabIndex = 10;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Output";
+            // 
+            // translateOutputRichTextBox
+            // 
+            this.translateOutputRichTextBox.Location = new System.Drawing.Point(18, 23);
+            this.translateOutputRichTextBox.Name = "translateOutputRichTextBox";
+            this.translateOutputRichTextBox.Size = new System.Drawing.Size(434, 146);
+            this.translateOutputRichTextBox.TabIndex = 1;
+            this.translateOutputRichTextBox.Text = "";
+            // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.translateOutputRichTextBox);
             this.groupBox6.Location = new System.Drawing.Point(114, 307);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(469, 181);
             this.groupBox6.TabIndex = 10;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Output";
-            // 
-            // translateOutputRichTextBox
-            // 
-            this.translateOutputRichTextBox.Location = new System.Drawing.Point(18, 19);
-            this.translateOutputRichTextBox.Name = "translateOutputRichTextBox";
-            this.translateOutputRichTextBox.Size = new System.Drawing.Size(434, 146);
-            this.translateOutputRichTextBox.TabIndex = 1;
-            this.translateOutputRichTextBox.Text = "";
             // 
             // groupBox5
             // 
@@ -434,6 +461,8 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.groupBox8);
+            this.tabPage5.Controls.Add(this.groupBox9);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
@@ -441,6 +470,140 @@
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Chat Room";
             this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.bottomLineSeparator);
+            this.groupBox8.Controls.Add(this.SendMessageButton);
+            this.groupBox8.Controls.Add(this.label14);
+            this.groupBox8.Controls.Add(this.outgoingMessagesRichTextBox);
+            this.groupBox8.Controls.Add(this.label15);
+            this.groupBox8.Controls.Add(this.outgoingLangComboBox);
+            this.groupBox8.Location = new System.Drawing.Point(9, 317);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(684, 181);
+            this.groupBox8.TabIndex = 13;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Outgoing Message Area";
+            // 
+            // SendMessageButton
+            // 
+            this.SendMessageButton.Location = new System.Drawing.Point(557, 92);
+            this.SendMessageButton.Name = "SendMessageButton";
+            this.SendMessageButton.Size = new System.Drawing.Size(120, 73);
+            this.SendMessageButton.TabIndex = 6;
+            this.SendMessageButton.Text = "SEND";
+            this.SendMessageButton.UseVisualStyleBackColor = true;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(591, 40);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(51, 13);
+            this.label14.TabIndex = 8;
+            this.label14.Text = "language";
+            // 
+            // outgoingMessagesRichTextBox
+            // 
+            this.outgoingMessagesRichTextBox.Location = new System.Drawing.Point(18, 19);
+            this.outgoingMessagesRichTextBox.Name = "outgoingMessagesRichTextBox";
+            this.outgoingMessagesRichTextBox.Size = new System.Drawing.Size(533, 146);
+            this.outgoingMessagesRichTextBox.TabIndex = 1;
+            this.outgoingMessagesRichTextBox.Text = "";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(568, 22);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(100, 13);
+            this.label15.TabIndex = 7;
+            this.label15.Text = "Indicate source text";
+            // 
+            // outgoingLangComboBox
+            // 
+            this.outgoingLangComboBox.FormattingEnabled = true;
+            this.outgoingLangComboBox.Items.AddRange(new object[] {
+            "English",
+            "Romanian",
+            "Russian",
+            "Auto Detection"});
+            this.outgoingLangComboBox.Location = new System.Drawing.Point(556, 65);
+            this.outgoingLangComboBox.Name = "outgoingLangComboBox";
+            this.outgoingLangComboBox.Size = new System.Drawing.Size(121, 21);
+            this.outgoingLangComboBox.TabIndex = 3;
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.topLineSeparator);
+            this.groupBox9.Controls.Add(this.label13);
+            this.groupBox9.Controls.Add(this.incomingMessagesRichTextBox);
+            this.groupBox9.Controls.Add(this.incomingLangComboBox);
+            this.groupBox9.Controls.Add(this.label12);
+            this.groupBox9.Location = new System.Drawing.Point(18, 16);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(675, 291);
+            this.groupBox9.TabIndex = 12;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "Incoming messages";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(575, 40);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(66, 13);
+            this.label13.TabIndex = 6;
+            this.label13.Text = "messages to";
+            // 
+            // incomingMessagesRichTextBox
+            // 
+            this.incomingMessagesRichTextBox.Location = new System.Drawing.Point(18, 22);
+            this.incomingMessagesRichTextBox.Name = "incomingMessagesRichTextBox";
+            this.incomingMessagesRichTextBox.Size = new System.Drawing.Size(524, 252);
+            this.incomingMessagesRichTextBox.TabIndex = 0;
+            this.incomingMessagesRichTextBox.Text = "";
+            // 
+            // incomingLangComboBox
+            // 
+            this.incomingLangComboBox.FormattingEnabled = true;
+            this.incomingLangComboBox.Items.AddRange(new object[] {
+            "Do Not Translate",
+            "English",
+            "Romanian",
+            "Russian"});
+            this.incomingLangComboBox.Location = new System.Drawing.Point(548, 64);
+            this.incomingLangComboBox.Name = "incomingLangComboBox";
+            this.incomingLangComboBox.Size = new System.Drawing.Size(121, 21);
+            this.incomingLangComboBox.TabIndex = 2;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(557, 22);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(96, 13);
+            this.label12.TabIndex = 5;
+            this.label12.Text = "Translate incoming";
+            // 
+            // topLineSeparator
+            // 
+            this.topLineSeparator.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.topLineSeparator.Location = new System.Drawing.Point(541, 22);
+            this.topLineSeparator.Name = "topLineSeparator";
+            this.topLineSeparator.Size = new System.Drawing.Size(1, 252);
+            this.topLineSeparator.TabIndex = 8;
+            this.topLineSeparator.Text = "l";
+            // 
+            // bottomLineSeparator
+            // 
+            this.bottomLineSeparator.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.bottomLineSeparator.Location = new System.Drawing.Point(549, 17);
+            this.bottomLineSeparator.Name = "bottomLineSeparator";
+            this.bottomLineSeparator.Size = new System.Drawing.Size(1, 147);
+            this.bottomLineSeparator.TabIndex = 9;
+            this.bottomLineSeparator.Text = "l";
             // 
             // FlowClientForm
             // 
@@ -464,10 +627,15 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
-            this.groupBox6.ResumeLayout(false);
+            this.groupBox7.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.tabPage5.ResumeLayout(false);
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -509,8 +677,22 @@
         private System.Windows.Forms.ComboBox fromLangComboBox;
         private System.Windows.Forms.Button translateButton;
         private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.RichTextBox translateOutputRichTextBox;
         private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.RichTextBox outgoingMessagesRichTextBox;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.RichTextBox incomingMessagesRichTextBox;
+        private System.Windows.Forms.Button SendMessageButton;
+        private System.Windows.Forms.ComboBox incomingLangComboBox;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ComboBox outgoingLangComboBox;
+        private System.Windows.Forms.RichTextBox translateOutputRichTextBox;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label topLineSeparator;
+        private System.Windows.Forms.Label bottomLineSeparator;
     }
 }
 
