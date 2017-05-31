@@ -173,6 +173,33 @@
                     MessageBox.Show($@"{exception.Message}");
                 }
             };
+
+            getMessageButton.Click += (sender, args) =>
+            {
+                string incomingMessagesTranslationMode = incomingLangComboBox.Text;
+
+                try
+                {
+                    var result = _flowClientWorker.GetMessage(incomingMessagesTranslationMode);
+
+                    if (result.Success)
+                    {
+                        incomingMessagesRichTextBox.AppendText(
+                            Environment.NewLine + new string('-', 50)
+                            + Environment.NewLine +
+                            $"From {result.SenderName} [{result.SenderId}] : {result.MessageBody}");
+                    }
+                    else
+                    {
+                        MessageBox.Show($@"There are no messages or smth went wrong");
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Debug.WriteLine(exception);
+                    MessageBox.Show($@"{exception.Message}");
+                }
+            };
         }
     }
 }

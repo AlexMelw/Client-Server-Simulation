@@ -17,10 +17,10 @@
 502 ERR REGISTER --res='User already exists'
 
 #AUTHENTICATION RESULT
-(?:(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK)\s+(?<cmd>AUTH)\s+--res='(?<res>.+)'\s+sessiontoken='(?<sessiontoken>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))')|(?:(?<statuscode>\d{3})\s+(?<statusdesc>ERR)\s+(?<cmd>AUTH)\s+--res='(?<res>.+)'))
+(?:(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK)\s+(?<cmd>AUTH)\s+--res='(?<res>.+)'\s+--sessiontoken='(?<sessiontoken>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))')|(?:(?<statuscode>\d{3})\s+(?<statusdesc>ERR)\s+(?<cmd>AUTH)\s+--res='(?<res>.+)'))
 # --------------------------
-201 OK AUTH --res='User authenticated successfully' sessiontoken='4b6ef0fd-278d-44a9-bc1a-b36d1117d7cd'
-201 OK AUTH --res='User authenticated successfully' sessiontoken='687046DA-BD6C-46CF-ACC5-B67ADACC5866'
+201 OK AUTH --res='User authenticated successfully' --sessiontoken='4b6ef0fd-278d-44a9-bc1a-b36d1117d7cd'
+201 OK AUTH --res='User authenticated successfully' --sessiontoken='687046DA-BD6C-46CF-ACC5-B67ADACC5866'
 401 ERR AUTH --res='login or password incorrect'
 #201 Authorized
 #401 Unauthorized

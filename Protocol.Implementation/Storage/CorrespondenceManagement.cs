@@ -13,6 +13,15 @@
 
         public static CorrespondenceManagement Instance => Lazy.Value;
 
+        public bool TryCreateMailboxForUser(User user)
+        {
+            if (ClientChatMessageQueues.ContainsKey(user.Login))
+            {
+                return false;
+            }
+            return ClientChatMessageQueues.TryAdd(user.Login, new ConcurrentQueue<ChatMessage>());
+        }
+
         #region CONSTRUCTORS
 
         private CorrespondenceManagement()

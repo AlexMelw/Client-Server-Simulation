@@ -9,7 +9,6 @@
     using MSTranslatorService;
     using Ninject;
     using Storage;
-    using Workers.Servers;
     using static Interfaces.CommonConventions.Conventions;
 
     public class RequestProcessor : IFlowProtocolRequestProcessor
@@ -72,7 +71,7 @@
 
                     if (authToken != Guid.Empty)
                     {
-                        return $@"200 OK AUTH --res='User authenticated successfully' sessiontoken='{authToken}'";
+                        return $@"200 OK AUTH --res='User authenticated successfully' --sessiontoken='{authToken}'";
                     }
 
                     return $@"530 ERR AUTH --res='login or password incorrect'";
@@ -203,12 +202,21 @@
 
         private bool RegisterUser(string login, string pass, string name)
         {
-            return RegisteredUsers.Instance.Users.TryAdd(login, new User
+            User newcomer = new User
             {
                 Login = login,
                 Pass = pass,
                 Name = name
-            });
+            };
+
+            bool registrationSucceded = RegisteredUsers.Instance.TryRegisterUser(newcomer);
+
+            if (registrationSucceded)
+            {
+                registrationSucceded = CorrespondenceManagement.Instance.TryCreateMailboxForUser(newcomer);
+            }
+
+            return registrationSucceded;
         }
 
         private string Translate(string sourceText, string sourceLang, string targetLang)

@@ -16,11 +16,29 @@
 
         public static RegisteredUsers Instance => Lazy.Value;
 
+
+        public bool TryRegisterUser(User user)
+        {
+            if (Users.ContainsKey(user.Login))
+            {
+                return false;
+            }
+            return Users.TryAdd(user.Login, user);
+        }
+
         #region CONSTRUCTORS
 
         private RegisteredUsers()
         {
             Users = new ConcurrentDictionary<string, User>();
+
+            Users.TryAdd("Admin",
+                new User
+                {
+                    Login = "Admin",
+                    Pass = "qwerty",
+                    Name = "Veaceslav BARBARII"
+                });
         }
 
         #endregion
