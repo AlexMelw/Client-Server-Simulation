@@ -67,19 +67,21 @@
             this.fromLangComboBox = new System.Windows.Forms.ComboBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.bottomLineSeparator = new System.Windows.Forms.Label();
             this.SendMessageButton = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
             this.outgoingMessagesRichTextBox = new System.Windows.Forms.RichTextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.outgoingLangComboBox = new System.Windows.Forms.ComboBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.getMessageButton = new System.Windows.Forms.Button();
+            this.topLineSeparator = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.incomingMessagesRichTextBox = new System.Windows.Forms.RichTextBox();
             this.incomingLangComboBox = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.topLineSeparator = new System.Windows.Forms.Label();
-            this.bottomLineSeparator = new System.Windows.Forms.Label();
-            this.getMessageButton = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.recipientTextBox = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -474,6 +476,8 @@
             // 
             // groupBox8
             // 
+            this.groupBox8.Controls.Add(this.recipientTextBox);
+            this.groupBox8.Controls.Add(this.label11);
             this.groupBox8.Controls.Add(this.bottomLineSeparator);
             this.groupBox8.Controls.Add(this.SendMessageButton);
             this.groupBox8.Controls.Add(this.label14);
@@ -487,11 +491,20 @@
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Outgoing Message Area";
             // 
+            // bottomLineSeparator
+            // 
+            this.bottomLineSeparator.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.bottomLineSeparator.Location = new System.Drawing.Point(549, 17);
+            this.bottomLineSeparator.Name = "bottomLineSeparator";
+            this.bottomLineSeparator.Size = new System.Drawing.Size(1, 147);
+            this.bottomLineSeparator.TabIndex = 9;
+            this.bottomLineSeparator.Text = "l";
+            // 
             // SendMessageButton
             // 
-            this.SendMessageButton.Location = new System.Drawing.Point(557, 92);
+            this.SendMessageButton.Location = new System.Drawing.Point(557, 139);
             this.SendMessageButton.Name = "SendMessageButton";
-            this.SendMessageButton.Size = new System.Drawing.Size(120, 73);
+            this.SendMessageButton.Size = new System.Drawing.Size(120, 26);
             this.SendMessageButton.TabIndex = 6;
             this.SendMessageButton.Text = "SEND";
             this.SendMessageButton.UseVisualStyleBackColor = true;
@@ -530,7 +543,7 @@
             "Romanian",
             "Russian",
             "Auto Detection"});
-            this.outgoingLangComboBox.Location = new System.Drawing.Point(556, 65);
+            this.outgoingLangComboBox.Location = new System.Drawing.Point(556, 62);
             this.outgoingLangComboBox.Name = "outgoingLangComboBox";
             this.outgoingLangComboBox.Size = new System.Drawing.Size(121, 21);
             this.outgoingLangComboBox.TabIndex = 3;
@@ -549,6 +562,24 @@
             this.groupBox9.TabIndex = 12;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Incoming messages";
+            // 
+            // getMessageButton
+            // 
+            this.getMessageButton.Location = new System.Drawing.Point(548, 108);
+            this.getMessageButton.Name = "getMessageButton";
+            this.getMessageButton.Size = new System.Drawing.Size(120, 73);
+            this.getMessageButton.TabIndex = 10;
+            this.getMessageButton.Text = "GET MESSAGE MANUALLY";
+            this.getMessageButton.UseVisualStyleBackColor = true;
+            // 
+            // topLineSeparator
+            // 
+            this.topLineSeparator.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.topLineSeparator.Location = new System.Drawing.Point(541, 22);
+            this.topLineSeparator.Name = "topLineSeparator";
+            this.topLineSeparator.Size = new System.Drawing.Size(1, 252);
+            this.topLineSeparator.TabIndex = 8;
+            this.topLineSeparator.Text = "l";
             // 
             // label13
             // 
@@ -575,7 +606,7 @@
             "English",
             "Romanian",
             "Russian"});
-            this.incomingLangComboBox.Location = new System.Drawing.Point(548, 64);
+            this.incomingLangComboBox.Location = new System.Drawing.Point(548, 61);
             this.incomingLangComboBox.Name = "incomingLangComboBox";
             this.incomingLangComboBox.Size = new System.Drawing.Size(121, 21);
             this.incomingLangComboBox.TabIndex = 2;
@@ -589,32 +620,21 @@
             this.label12.TabIndex = 5;
             this.label12.Text = "Translate incoming";
             // 
-            // topLineSeparator
+            // label11
             // 
-            this.topLineSeparator.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.topLineSeparator.Location = new System.Drawing.Point(541, 22);
-            this.topLineSeparator.Name = "topLineSeparator";
-            this.topLineSeparator.Size = new System.Drawing.Size(1, 252);
-            this.topLineSeparator.TabIndex = 8;
-            this.topLineSeparator.Text = "l";
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(591, 96);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(52, 13);
+            this.label11.TabIndex = 10;
+            this.label11.Text = "Recipient";
             // 
-            // bottomLineSeparator
+            // recipientTextBox
             // 
-            this.bottomLineSeparator.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.bottomLineSeparator.Location = new System.Drawing.Point(549, 17);
-            this.bottomLineSeparator.Name = "bottomLineSeparator";
-            this.bottomLineSeparator.Size = new System.Drawing.Size(1, 147);
-            this.bottomLineSeparator.TabIndex = 9;
-            this.bottomLineSeparator.Text = "l";
-            // 
-            // getMessageButton
-            // 
-            this.getMessageButton.Location = new System.Drawing.Point(548, 108);
-            this.getMessageButton.Name = "getMessageButton";
-            this.getMessageButton.Size = new System.Drawing.Size(120, 73);
-            this.getMessageButton.TabIndex = 10;
-            this.getMessageButton.Text = "GET MESSAGE MANUALLY";
-            this.getMessageButton.UseVisualStyleBackColor = true;
+            this.recipientTextBox.Location = new System.Drawing.Point(557, 113);
+            this.recipientTextBox.Name = "recipientTextBox";
+            this.recipientTextBox.Size = new System.Drawing.Size(120, 20);
+            this.recipientTextBox.TabIndex = 11;
             // 
             // FlowClientForm
             // 
@@ -705,6 +725,8 @@
         private System.Windows.Forms.Label topLineSeparator;
         private System.Windows.Forms.Label bottomLineSeparator;
         private System.Windows.Forms.Button getMessageButton;
+        private System.Windows.Forms.TextBox recipientTextBox;
+        private System.Windows.Forms.Label label11;
     }
 }
 

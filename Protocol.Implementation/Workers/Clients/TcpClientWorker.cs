@@ -5,9 +5,11 @@
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
+    using Interfaces.CommonConventions;
     using Interfaces.Response;
     using Interfaces.Workers;
     using ProtocolHelpers;
+    using Results;
     using static Interfaces.CommonConventions.Conventions;
 
     public class TcpClientWorker : IFlowClientWorker
@@ -15,19 +17,27 @@
         //private const string AuthenticationFormat =
         //    @"AUTH --clienttype='tcp' --listenport='0' --login='{0}' --pass='{1}'";
 
-        private const string clientSayDoNotTranslate = "Do Not Translate";
+        private const string clientSaysDoNotTranslate = "Do Not Translate";
 
         private readonly IFlowProtocolResponseParser _parser;
-        private readonly string AuthenticationTemplate = @"AUTH  --login='{0}' --pass='{1}'";
-        private readonly string RegisterTemplate = @"REGISTER  --login='{0}' --pass='{1}' --name='{2}'";
+
+        private readonly string AuthenticationTemplate =
+            @"AUTH  --login='{0}' --pass='{1}'";
+
+        private readonly string RegisterTemplate =
+            @"REGISTER  --login='{0}' --pass='{1}' --name='{2}'";
 
         private readonly string TranslateTemplate =
-                @"TRANSLATE  --sourcetext='{0}' --sourcelang='{1}' --targetlang='{2}'"
-            ;
+            @"TRANSLATE  --sourcetext='{0}' --sourcelang='{1}' --targetlang='{2}'";
 
         private readonly string SendMessageTemplate =
-                @"SENDMSG --to='{0}' --msg='{1}' --sourcelang='{2}' --sessiontoken='{3}'"
-            ;
+            @"SENDMSG --to='{0}' --msg='{1}' --sourcelang='{2}' --sessiontoken='{3}'";
+
+        private readonly string GetMessageUnmodifiedTemplate =
+            @"GETMSG --sessiontoken='{0}' --donottranslate";
+
+        private readonly string GetMessageTranslatedTemplate =
+            @"GETMSG --sessiontoken='{0}' --translateto='{1}'";
 
         private TcpClient _client;
         private bool _initialized;
@@ -48,7 +58,7 @@
 
         #endregion
 
-        public bool TryConnect(IPAddress ipAddress, int port)
+        public bool Connect(IPAddress ipAddress, int port)
         {
             RemoteHostIpAddress = ipAddress;
             Port = port;
@@ -100,7 +110,7 @@
             return false;
         }
 
-        public bool TryAuthenticate(string login, string password)
+        public bool Authenticate(string login, string password)
         {
             if (_initialized == false)
             {
@@ -168,7 +178,7 @@
             return false;
         }
 
-        public bool TryRegister(string login, string password, string name)
+        public bool Register(string login, string password, string name)
         {
             if (_initialized == false)
             {
@@ -248,7 +258,8 @@
                 NetworkStream networkStream = _client.GetStream();
 
                 // From "English" to "en", from "Romanian" to "ro", etc.
-                ConvertToFlowLangNotations(ref sourceTextLang, ref targetTextLanguage);
+                ConvertToFlowProtocolLanguageNotations(ref sourceTextLang);
+                ConvertToFlowProtocolLanguageNotations(ref targetTextLanguage);
 
                 string textToBeSent = string.Format(TranslateTemplate,
                     sourceText, sourceTextLang, targetTextLanguage);
@@ -293,12 +304,203 @@
             return string.Empty;
         }
 
+        public SendMessageResult SendMessage(string recipient, string messageText, string messageTextLang)
+        {
+            if (_initialized == false)
+            {
+                throw new Exception("No connection to server");
+            }
+
+            if (_sessionToken == Guid.Empty)
+            {
+                throw new Exception("Not authorized. You have to sign in first.");
+            }
+
+            _client = new TcpClient();
+
+            try
+            {
+                _client.Connect(RemoteHostIpAddress, Port);
+
+                NetworkStream networkStream = _client.GetStream();
+
+                // From "English" to "en", from "Romanian" to "ro", etc.
+                ConvertToFlowProtocolLanguageNotations(ref messageTextLang);
+
+                string textToBeSent = string.Format(SendMessageTemplate,
+                    recipient, messageText, messageTextLang, _sessionToken);
+
+                byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
+
+                if (networkStream.CanWrite)
+                {
+                    networkStream.Write(buffer, FromBeginning, buffer.Length);
+                }
+
+                string response = string.Empty;
+
+                if (networkStream.CanRead)
+                {
+                    buffer = new byte[EthernetTcpUdpPacketSize];
+                    int bytesRead = networkStream.Read(buffer, FromBeginning, EthernetTcpUdpPacketSize);
+                    response = buffer.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
+                }
+
+                var responseComponents = _parser.ParseResponse(response);
+
+                if (responseComponents.TryGetValue(Cmd, out string cmd))
+                {
+                    if (cmd == Commands.SendMessage)
+                    {
+                        if (responseComponents.TryGetValue(StatusDescription, out string statusDesc))
+                        {
+                            if (statusDesc == Error)
+                            {
+                                return new SendMessageResult
+                                {
+                                    Success = false
+                                };
+                            }
+                            if (statusDesc == Ok)
+                            {
+                                if (responseComponents.TryGetValue(ResultValue, out string resultValue))
+                                {
+                                    return new SendMessageResult
+                                    {
+                                        Success = true,
+                                        ResponseMessage = resultValue
+                                    };
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+            }
+            finally
+            {
+                _client.Close();
+            }
+            return new SendMessageResult
+            {
+                Success = false
+            };
+        }
+
+        public GetMessageResult GetMessage(string translationMode)
+        {
+            if (_initialized == false)
+            {
+                throw new Exception("No connection to server");
+            }
+
+            if (_sessionToken == Guid.Empty)
+            {
+                throw new Exception("Not authorized. You have to sign in first.");
+            }
+
+            _client = new TcpClient();
+
+            try
+            {
+                _client.Connect(RemoteHostIpAddress, Port);
+
+                NetworkStream networkStream = _client.GetStream();
+
+                if (translationMode == clientSaysDoNotTranslate)
+                {
+                    string textToBeSent = string.Format(GetMessageUnmodifiedTemplate,
+                        _sessionToken);
+
+                    byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
+
+                    if (networkStream.CanWrite)
+                    {
+                        networkStream.Write(buffer, FromBeginning, buffer.Length);
+                    }
+                }
+                else
+                {
+                    // From "English" to "en", from "Romanian" to "ro", etc.
+                    ConvertToFlowProtocolLanguageNotations(ref translationMode);
+
+                    string textToBeSent = string.Format(GetMessageTranslatedTemplate,
+                        _sessionToken, translationMode);
+
+                    byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
+
+                    if (networkStream.CanWrite)
+                    {
+                        networkStream.Write(buffer, FromBeginning, buffer.Length);
+                    }
+                }
+
+                string response = string.Empty;
+
+                if (networkStream.CanRead)
+                {
+                    byte[] buffer = new byte[EthernetTcpUdpPacketSize];
+                    int bytesRead = networkStream.Read(buffer, FromBeginning, EthernetTcpUdpPacketSize);
+                    response = buffer.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
+                }
+
+                var responseComponents = _parser.ParseResponse(response);
+
+                if (responseComponents.TryGetValue(Cmd, out string cmd))
+                {
+                    if (cmd == Commands.GetMessage)
+                    {
+                        if (responseComponents.TryGetValue(StatusDescription, out string statusDesc))
+                        {
+                            if (statusDesc == Error)
+                            {
+                                return new GetMessageResult
+                                {
+                                    Success = false
+                                };
+                            }
+                            if (statusDesc == Ok)
+                            {
+                                responseComponents.TryGetValue(SenderId, out string senderId);
+                                responseComponents.TryGetValue(SenderName, out string senderName);
+                                responseComponents.TryGetValue(Message, out string message);
+
+                                return new GetMessageResult
+                                {
+                                    Success = true,
+                                    SenderId = senderId,
+                                    SenderName = senderName,
+                                    MessageBody = message
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+            }
+            finally
+            {
+                _client.Close();
+            }
+            return new GetMessageResult
+            {
+                Success = false
+            };
+        }
+
+
         public void Dispose()
         {
             ((IDisposable) _client)?.Dispose();
         }
 
-        public void ConvertToFlowLangNotations(ref string sourceTextLang, ref string targetTextLanguage)
+        public void ConvertToFlowProtocolLanguageNotations(ref string textLanguage)
         {
             const string english = "English";
             const string romanian = "Romanian";
@@ -310,31 +512,19 @@
             const string en = "en";
             const string unknown = "unknown";
 
-            switch (sourceTextLang)
+            switch (textLanguage)
             {
                 case english:
-                    sourceTextLang = en;
+                    textLanguage = en;
                     break;
                 case romanian:
-                    sourceTextLang = ro;
+                    textLanguage = ro;
                     break;
                 case russian:
-                    sourceTextLang = ru;
+                    textLanguage = ru;
                     break;
                 case autoDetection:
-                    sourceTextLang = unknown;
-                    break;
-            }
-            switch (targetTextLanguage)
-            {
-                case english:
-                    targetTextLanguage = en;
-                    break;
-                case romanian:
-                    targetTextLanguage = ro;
-                    break;
-                case russian:
-                    targetTextLanguage = ru;
+                    textLanguage = unknown;
                     break;
             }
         }

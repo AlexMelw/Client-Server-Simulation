@@ -78,7 +78,7 @@
 
             connectToServerButton.Click += (sender, args) =>
             {
-                bool connected = _flowClientWorker.TryConnect(
+                bool connected = _flowClientWorker.Connect(
                     ipAddress: IPAddress.Parse(serverIpAddressTextBox.Text.Trim()),
                     port: int.Parse(serverPortTextBox.Text.Trim()));
 
@@ -89,7 +89,7 @@
             {
                 try
                 {
-                    bool authenticated = _flowClientWorker.TryAuthenticate(
+                    bool authenticated = _flowClientWorker.Authenticate(
                         login: authLoginTextBox.Text,
                         password: authPassTextBox.Text);
 
@@ -106,7 +106,7 @@
             {
                 try
                 {
-                    bool registered = _flowClientWorker.TryRegister(
+                    bool registered = _flowClientWorker.Register(
                         login: registerLoginTextBox.Text,
                         password: registerPassTextBox.Text,
                         name: registerNameTextBox.Text);

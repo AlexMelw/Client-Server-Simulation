@@ -22,17 +22,17 @@
             throw new System.NotImplementedException();
         }
 
-        public bool TryConnect(IPAddress ipAddress, int port)
+        public bool Connect(IPAddress ipAddress, int port)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool TryAuthenticate(string login, string password)
+        public bool Authenticate(string login, string password)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool TryRegister(string login, string password, string name)
+        public bool Register(string login, string password, string name)
         {
             throw new System.NotImplementedException();
         }

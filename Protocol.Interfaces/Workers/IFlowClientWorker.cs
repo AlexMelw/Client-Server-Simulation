@@ -12,9 +12,9 @@
         //string Authenticate(string login, string password);
         //string Register(string login, string password, string name);
 
-        bool TryConnect(IPAddress ipAddress, int port);
-        bool TryAuthenticate(string login, string password);
-        bool TryRegister(string login, string password, string name);
+        bool Connect(IPAddress ipAddress, int port);
+        bool Authenticate(string login, string password);
+        bool Register(string login, string password, string name);
         string Translate(string sourceText, string sourceTextLang, string targetTextLanguage);
     }
 }

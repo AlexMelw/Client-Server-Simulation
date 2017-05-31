@@ -78,6 +78,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Workers\Clients\Results\GetMessageResult.cs" />
+    <Compile Include="Workers\Clients\Results\SendMessageResult.cs" />
     <Compile Include="Workers\Servers\TcpServerWorker.cs" />
     <Compile Include="Workers\Servers\UdpServerWorker.cs" />
     <Compile Include="Workers\Clients\TcpClientWorker.cs" />

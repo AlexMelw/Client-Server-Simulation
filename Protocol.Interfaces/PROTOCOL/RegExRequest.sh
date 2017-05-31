@@ -27,12 +27,12 @@ AUTH  --login='AlexMayhem' --pass='%%elim5595%%'
 AUTH  --login='Serg1996' --pass='95myPass95'
 
 #GET MESSAGE
-(?:(?<cmd>GETMSG)\s+--sessiontoken='(?<sessiontoken>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))'\s+(?:(?<translationmode>donottranslate)|(?:(?<translationmode>translateto)='(?<targetlang>en|ro|ru)')))
+(?:(?<cmd>GETMSG)\s+--sessiontoken='(?<sessiontoken>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))'\s+(?:--(?<translationmode>donottranslate)|(?:--(?<translationmode>translateto)='(?<targetlang>en|ro|ru)')))
 # --------------------
-GETMSG --sessiontoken='687046DA-BD6C-46CF-ACC5-B67ADACC5866' donottranslate
-GETMSG --sessiontoken='4b6ef0fd-278d-44a9-bc1a-b36d1117d7cd' translateto='en'
-GETMSG --sessiontoken='687046DA-BD6C-46CF-ACC5-B67ADACC5866' translateto='ro' 
-GETMSG --sessiontoken='687046DA-BD6C-46CF-ACC5-B67ADACC5866' translateto='ru'
+GETMSG --sessiontoken='687046DA-BD6C-46CF-ACC5-B67ADACC5866' --donottranslate
+GETMSG --sessiontoken='4b6ef0fd-278d-44a9-bc1a-b36d1117d7cd' --translateto='en'
+GETMSG --sessiontoken='687046DA-BD6C-46CF-ACC5-B67ADACC5866' --translateto='ro' 
+GETMSG --sessiontoken='687046DA-BD6C-46CF-ACC5-B67ADACC5866' --translateto='ru'
 
 #SEND MESSAGE
 (?:(?<cmd>SENDMSG)\s+--to='(?<recipient>\w+)'\s+--msg='(?<message>.+)'\s+--sourcelang='(?<sourcelang>en|ro|ru|unknown)'\s+--sessiontoken='(?<sessiontoken>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))')

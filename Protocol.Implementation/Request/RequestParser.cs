@@ -12,7 +12,7 @@
             ;
 
         private readonly string _getMessageRequestPattern =
-                @"(?:(?<cmd>GETMSG)\s+sessiontoken='(?<sessiontoken>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))'\s+(?:(?<translationmode>donottranslate)|(?:(?<translationmode>translateto)='(?<targetlang>en|ro|ru)')))"
+                @"(?:(?<cmd>GETMSG)\s+--sessiontoken='(?<sessiontoken>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))'\s+(?:--(?<translationmode>donottranslate)|(?:--(?<translationmode>translateto)='(?<targetlang>en|ro|ru)')))"
             ;
 
         private readonly string _registerRequestPattern =
