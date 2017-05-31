@@ -31,14 +31,6 @@
         private RegisteredUsers()
         {
             Users = new ConcurrentDictionary<string, User>();
-
-            Users.TryAdd("Admin",
-                new User
-                {
-                    Login = "Admin",
-                    Pass = "qwerty",
-                    Name = "Veaceslav BARBARII"
-                });
         }
 
         #endregion

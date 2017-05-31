@@ -5,36 +5,18 @@
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
+    using Interfaces.CommonConventions;
     using Interfaces.Response;
     using Interfaces.Workers;
     using ProtocolHelpers;
+    using RequestTemplates;
     using Results;
     using Utilities;
     using static Interfaces.CommonConventions.Conventions;
 
     public class TcpClientWorker : IFlowClientWorker
     {
-        private const string ClientSaysDoNotTranslate = "Do Not Translate";
-
         private readonly IFlowProtocolResponseParser _parser;
-
-        private readonly string AuthenticationTemplate =
-            @"AUTH  --login='{0}' --pass='{1}'";
-
-        private readonly string GetMessageTranslatedTemplate =
-            @"GETMSG --sessiontoken='{0}' --translateto='{1}'";
-
-        private readonly string GetMessageUnmodifiedTemplate =
-            @"GETMSG --sessiontoken='{0}' --donottranslate";
-
-        private readonly string RegisterTemplate =
-            @"REGISTER  --login='{0}' --pass='{1}' --name='{2}'";
-
-        private readonly string SendMessageTemplate =
-            @"SENDMSG --to='{0}' --msg='{1}' --sourcelang='{2}' --sessiontoken='{3}'";
-
-        private readonly string TranslateTemplate =
-            @"TRANSLATE  --sourcetext='{0}' --sourcelang='{1}' --targetlang='{2}'";
 
         private TcpClient _client;
         private bool _initialized;
@@ -125,7 +107,7 @@
 
                 NetworkStream networkStream = _client.GetStream();
 
-                string textToBeSent = string.Format(AuthenticationTemplate, login, password);
+                string textToBeSent = string.Format(Template.AuthenticationTemplate, login, password);
 
                 byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
 
@@ -190,7 +172,7 @@
 
                 NetworkStream networkStream = _client.GetStream();
 
-                string textToBeSent = string.Format(RegisterTemplate, login, password, name);
+                string textToBeSent = string.Format(Template.RegisterTemplate, login, password, name);
 
                 byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
 
@@ -258,7 +240,7 @@
                 FlowUtility.ConvertToFlowProtocolLanguageNotations(ref sourceTextLang);
                 FlowUtility.ConvertToFlowProtocolLanguageNotations(ref targetTextLanguage);
 
-                string textToBeSent = string.Format(TranslateTemplate,
+                string textToBeSent = string.Format(Template.TranslateTemplate,
                     sourceText, sourceTextLang, targetTextLanguage);
 
                 byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
@@ -324,7 +306,7 @@
                 // From "English" to "en", from "Romanian" to "ro", etc.
                 FlowUtility.ConvertToFlowProtocolLanguageNotations(ref messageTextLang);
 
-                string textToBeSent = string.Format(SendMessageTemplate,
+                string textToBeSent = string.Format(Template.SendMessageTemplate,
                     recipient, messageText, messageTextLang, _sessionToken);
 
                 byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
@@ -407,9 +389,9 @@
 
                 NetworkStream networkStream = _client.GetStream();
 
-                if (translationMode == ClientSaysDoNotTranslate)
+                if (translationMode == Template.Convention.ClientSaysDoNotTranslate)
                 {
-                    string textToBeSent = string.Format(GetMessageUnmodifiedTemplate,
+                    string textToBeSent = string.Format(Template.GetMessageUnmodifiedTemplate,
                         _sessionToken);
 
                     byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
@@ -424,7 +406,7 @@
                     // From "English" to "en", from "Romanian" to "ro", etc.
                     FlowUtility.ConvertToFlowProtocolLanguageNotations(ref translationMode);
 
-                    string textToBeSent = string.Format(GetMessageTranslatedTemplate,
+                    string textToBeSent = string.Format(Template.GetMessageTranslatedTemplate,
                         _sessionToken, translationMode);
 
                     byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
@@ -454,9 +436,12 @@
                         {
                             if (statusDesc == Error)
                             {
+                                responseComponents.TryGetValue(Conventions.ResultValue, out string resultValue);
+
                                 return new GetMessageResult
                                 {
-                                    Success = false
+                                    Success = false,
+                                    ErrorExplained = resultValue
                                 };
                             }
                             if (statusDesc == Ok)

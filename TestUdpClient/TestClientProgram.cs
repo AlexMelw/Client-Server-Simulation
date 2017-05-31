@@ -25,11 +25,11 @@
                 cmdLine != Quit;
                 cmdLine = Console.ReadLine())
             {
-                byte[] bufferByteArray = cmdLine.ToFlowProtocolAsciiEncodedBytesArray();
-                udpClient.Send(bufferByteArray, bufferByteArray.Length);
+                byte[] buffer = cmdLine.ToFlowProtocolAsciiEncodedBytesArray();
+                udpClient.Send(buffer, buffer.Length);
 
-                bufferByteArray = udpClient.Receive(ref serverEndPoint);
-                Console.Out.WriteLine($"{bufferByteArray.ToFlowProtocolAsciiDecodedString()}");
+                buffer = udpClient.Receive(ref serverEndPoint);
+                Console.Out.WriteLine($"{buffer.ToFlowProtocolAsciiDecodedString()}");
             }
         }
     }

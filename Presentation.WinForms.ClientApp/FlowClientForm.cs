@@ -6,9 +6,9 @@
     using System.Windows.Forms;
     using FlowProtocol.Implementation.Response;
     using FlowProtocol.Implementation.Workers.Clients;
-    using FlowProtocol.Implementation.Workers.Clients.Results;
     using FlowProtocol.Interfaces.CommonConventions;
     using FlowProtocol.Interfaces.Workers;
+    using Properties;
     using static FlowProtocol.Interfaces.CommonConventions.Conventions;
 
     public partial class FlowClientForm : Form
@@ -37,21 +37,27 @@
             if (ClientType.Equals(Conventions.ClientType.Tcp))
             {
                 //_flowClientWorker = IoC.Resolve<TcpClientWorker>();
+
                 _flowClientWorker = new TcpClientWorker(new ResponseParser());
                 serverPortTextBox.Text = TcpServerListeningPort.ToString();
+                this.Text = @"Chat Client [ TCP is used as underlying transport protocol ]";
                 return;
             }
 
             if (ClientType.Equals(Conventions.ClientType.Udp))
             {
                 //_flowClientWorker = IoC.Resolve<UdpClientWorker>();
+
                 _flowClientWorker = new UdpClientWorker(new ResponseParser());
                 serverPortTextBox.Text = UdpServerListeningPort.ToString();
+                this.Text = @"Chat Client [ UDP is used as underlying transport protocol ]";
             }
         }
 
         private void ConfigControlsProperties()
         {
+            this.Icon = Resources.Email;
+
             serverIpAddressTextBox.Text = Localhost;
 
             fromLangComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -185,13 +191,13 @@
                     if (result.Success)
                     {
                         incomingMessagesRichTextBox.AppendText(
-                            Environment.NewLine + new string('-', 50)
+                            Environment.NewLine + new string('-', 168)
                             + Environment.NewLine +
                             $"From {result.SenderName} [{result.SenderId}] : {result.MessageBody}");
                     }
                     else
                     {
-                        MessageBox.Show($@"There are no messages or smth went wrong");
+                        MessageBox.Show($@"{result.ErrorExplained}");
                     }
                 }
                 catch (Exception exception)

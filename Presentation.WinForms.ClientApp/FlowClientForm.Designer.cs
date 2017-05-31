@@ -67,6 +67,8 @@
             this.fromLangComboBox = new System.Windows.Forms.ComboBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.recipientTextBox = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.bottomLineSeparator = new System.Windows.Forms.Label();
             this.SendMessageButton = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
@@ -80,8 +82,6 @@
             this.incomingMessagesRichTextBox = new System.Windows.Forms.RichTextBox();
             this.incomingLangComboBox = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.recipientTextBox = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -151,7 +151,7 @@
             this.connectToServerButton.Location = new System.Drawing.Point(18, 146);
             this.connectToServerButton.Name = "connectToServerButton";
             this.connectToServerButton.Size = new System.Drawing.Size(165, 23);
-            this.connectToServerButton.TabIndex = 4;
+            this.connectToServerButton.TabIndex = 2;
             this.connectToServerButton.Text = "CONNECT";
             this.connectToServerButton.UseVisualStyleBackColor = true;
             // 
@@ -169,7 +169,7 @@
             this.serverPortTextBox.Location = new System.Drawing.Point(18, 112);
             this.serverPortTextBox.Name = "serverPortTextBox";
             this.serverPortTextBox.Size = new System.Drawing.Size(165, 20);
-            this.serverPortTextBox.TabIndex = 3;
+            this.serverPortTextBox.TabIndex = 1;
             // 
             // serverIpAddressTextBox
             // 
@@ -219,7 +219,7 @@
             this.registerNameTextBox.Location = new System.Drawing.Point(18, 171);
             this.registerNameTextBox.Name = "registerNameTextBox";
             this.registerNameTextBox.Size = new System.Drawing.Size(165, 20);
-            this.registerNameTextBox.TabIndex = 6;
+            this.registerNameTextBox.TabIndex = 2;
             // 
             // label8
             // 
@@ -235,7 +235,7 @@
             this.registerButton.Location = new System.Drawing.Point(18, 213);
             this.registerButton.Name = "registerButton";
             this.registerButton.Size = new System.Drawing.Size(165, 23);
-            this.registerButton.TabIndex = 4;
+            this.registerButton.TabIndex = 3;
             this.registerButton.Text = "REGISTER";
             this.registerButton.UseVisualStyleBackColor = true;
             // 
@@ -253,7 +253,7 @@
             this.registerPassTextBox.Location = new System.Drawing.Point(18, 112);
             this.registerPassTextBox.Name = "registerPassTextBox";
             this.registerPassTextBox.Size = new System.Drawing.Size(165, 20);
-            this.registerPassTextBox.TabIndex = 3;
+            this.registerPassTextBox.TabIndex = 1;
             // 
             // registerLoginTextBox
             // 
@@ -301,7 +301,7 @@
             this.authButton.Location = new System.Drawing.Point(18, 146);
             this.authButton.Name = "authButton";
             this.authButton.Size = new System.Drawing.Size(165, 23);
-            this.authButton.TabIndex = 4;
+            this.authButton.TabIndex = 3;
             this.authButton.Text = "AUTHENTICATE";
             this.authButton.UseVisualStyleBackColor = true;
             // 
@@ -319,7 +319,7 @@
             this.authPassTextBox.Location = new System.Drawing.Point(18, 112);
             this.authPassTextBox.Name = "authPassTextBox";
             this.authPassTextBox.Size = new System.Drawing.Size(165, 20);
-            this.authPassTextBox.TabIndex = 3;
+            this.authPassTextBox.TabIndex = 1;
             // 
             // authLoginTextBox
             // 
@@ -366,7 +366,7 @@
             this.translateOutputRichTextBox.Location = new System.Drawing.Point(18, 23);
             this.translateOutputRichTextBox.Name = "translateOutputRichTextBox";
             this.translateOutputRichTextBox.Size = new System.Drawing.Size(434, 146);
-            this.translateOutputRichTextBox.TabIndex = 1;
+            this.translateOutputRichTextBox.TabIndex = 0;
             this.translateOutputRichTextBox.Text = "";
             // 
             // groupBox6
@@ -438,7 +438,7 @@
             this.toLangComboBox.Location = new System.Drawing.Point(194, 46);
             this.toLangComboBox.Name = "toLangComboBox";
             this.toLangComboBox.Size = new System.Drawing.Size(121, 21);
-            this.toLangComboBox.TabIndex = 2;
+            this.toLangComboBox.TabIndex = 1;
             // 
             // label10
             // 
@@ -460,7 +460,7 @@
             this.fromLangComboBox.Location = new System.Drawing.Point(18, 46);
             this.fromLangComboBox.Name = "fromLangComboBox";
             this.fromLangComboBox.Size = new System.Drawing.Size(121, 21);
-            this.fromLangComboBox.TabIndex = 3;
+            this.fromLangComboBox.TabIndex = 0;
             // 
             // tabPage5
             // 
@@ -487,9 +487,25 @@
             this.groupBox8.Location = new System.Drawing.Point(9, 317);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(684, 181);
-            this.groupBox8.TabIndex = 13;
+            this.groupBox8.TabIndex = 0;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Outgoing Message Area";
+            // 
+            // recipientTextBox
+            // 
+            this.recipientTextBox.Location = new System.Drawing.Point(557, 113);
+            this.recipientTextBox.Name = "recipientTextBox";
+            this.recipientTextBox.Size = new System.Drawing.Size(120, 20);
+            this.recipientTextBox.TabIndex = 2;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(591, 96);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(52, 13);
+            this.label11.TabIndex = 0;
+            this.label11.Text = "Recipient";
             // 
             // bottomLineSeparator
             // 
@@ -497,7 +513,7 @@
             this.bottomLineSeparator.Location = new System.Drawing.Point(549, 17);
             this.bottomLineSeparator.Name = "bottomLineSeparator";
             this.bottomLineSeparator.Size = new System.Drawing.Size(1, 147);
-            this.bottomLineSeparator.TabIndex = 9;
+            this.bottomLineSeparator.TabIndex = 7;
             this.bottomLineSeparator.Text = "l";
             // 
             // SendMessageButton
@@ -505,7 +521,7 @@
             this.SendMessageButton.Location = new System.Drawing.Point(557, 139);
             this.SendMessageButton.Name = "SendMessageButton";
             this.SendMessageButton.Size = new System.Drawing.Size(120, 26);
-            this.SendMessageButton.TabIndex = 6;
+            this.SendMessageButton.TabIndex = 3;
             this.SendMessageButton.Text = "SEND";
             this.SendMessageButton.UseVisualStyleBackColor = true;
             // 
@@ -515,7 +531,7 @@
             this.label14.Location = new System.Drawing.Point(591, 40);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(51, 13);
-            this.label14.TabIndex = 8;
+            this.label14.TabIndex = 6;
             this.label14.Text = "language";
             // 
             // outgoingMessagesRichTextBox
@@ -523,7 +539,7 @@
             this.outgoingMessagesRichTextBox.Location = new System.Drawing.Point(18, 19);
             this.outgoingMessagesRichTextBox.Name = "outgoingMessagesRichTextBox";
             this.outgoingMessagesRichTextBox.Size = new System.Drawing.Size(533, 146);
-            this.outgoingMessagesRichTextBox.TabIndex = 1;
+            this.outgoingMessagesRichTextBox.TabIndex = 4;
             this.outgoingMessagesRichTextBox.Text = "";
             // 
             // label15
@@ -532,7 +548,7 @@
             this.label15.Location = new System.Drawing.Point(568, 22);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(100, 13);
-            this.label15.TabIndex = 7;
+            this.label15.TabIndex = 5;
             this.label15.Text = "Indicate source text";
             // 
             // outgoingLangComboBox
@@ -546,7 +562,7 @@
             this.outgoingLangComboBox.Location = new System.Drawing.Point(556, 62);
             this.outgoingLangComboBox.Name = "outgoingLangComboBox";
             this.outgoingLangComboBox.Size = new System.Drawing.Size(121, 21);
-            this.outgoingLangComboBox.TabIndex = 3;
+            this.outgoingLangComboBox.TabIndex = 1;
             // 
             // groupBox9
             // 
@@ -559,7 +575,7 @@
             this.groupBox9.Location = new System.Drawing.Point(18, 16);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Size = new System.Drawing.Size(675, 291);
-            this.groupBox9.TabIndex = 12;
+            this.groupBox9.TabIndex = 1;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Incoming messages";
             // 
@@ -568,7 +584,7 @@
             this.getMessageButton.Location = new System.Drawing.Point(548, 108);
             this.getMessageButton.Name = "getMessageButton";
             this.getMessageButton.Size = new System.Drawing.Size(120, 73);
-            this.getMessageButton.TabIndex = 10;
+            this.getMessageButton.TabIndex = 3;
             this.getMessageButton.Text = "GET MESSAGE MANUALLY";
             this.getMessageButton.UseVisualStyleBackColor = true;
             // 
@@ -578,7 +594,7 @@
             this.topLineSeparator.Location = new System.Drawing.Point(541, 22);
             this.topLineSeparator.Name = "topLineSeparator";
             this.topLineSeparator.Size = new System.Drawing.Size(1, 252);
-            this.topLineSeparator.TabIndex = 8;
+            this.topLineSeparator.TabIndex = 0;
             this.topLineSeparator.Text = "l";
             // 
             // label13
@@ -587,7 +603,7 @@
             this.label13.Location = new System.Drawing.Point(575, 40);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(66, 13);
-            this.label13.TabIndex = 6;
+            this.label13.TabIndex = 5;
             this.label13.Text = "messages to";
             // 
             // incomingMessagesRichTextBox
@@ -595,7 +611,7 @@
             this.incomingMessagesRichTextBox.Location = new System.Drawing.Point(18, 22);
             this.incomingMessagesRichTextBox.Name = "incomingMessagesRichTextBox";
             this.incomingMessagesRichTextBox.Size = new System.Drawing.Size(524, 252);
-            this.incomingMessagesRichTextBox.TabIndex = 0;
+            this.incomingMessagesRichTextBox.TabIndex = 1;
             this.incomingMessagesRichTextBox.Text = "";
             // 
             // incomingLangComboBox
@@ -617,24 +633,8 @@
             this.label12.Location = new System.Drawing.Point(557, 22);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(96, 13);
-            this.label12.TabIndex = 5;
+            this.label12.TabIndex = 4;
             this.label12.Text = "Translate incoming";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(591, 96);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(52, 13);
-            this.label11.TabIndex = 10;
-            this.label11.Text = "Recipient";
-            // 
-            // recipientTextBox
-            // 
-            this.recipientTextBox.Location = new System.Drawing.Point(557, 113);
-            this.recipientTextBox.Name = "recipientTextBox";
-            this.recipientTextBox.Size = new System.Drawing.Size(120, 20);
-            this.recipientTextBox.TabIndex = 11;
             // 
             // FlowClientForm
             // 
