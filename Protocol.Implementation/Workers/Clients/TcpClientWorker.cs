@@ -57,6 +57,7 @@
                 if (networkStream.CanWrite)
                 {
                     networkStream.Write(buffer, FromBeginning, buffer.Length);
+                    networkStream.Flush();
                 }
 
                 string response = string.Empty;
@@ -116,6 +117,7 @@
                 if (networkStream.CanWrite)
                 {
                     networkStream.Write(buffer, FromBeginning, buffer.Length);
+                    networkStream.Flush();
                 }
 
                 string response = string.Empty;
@@ -181,6 +183,7 @@
                 if (networkStream.CanWrite)
                 {
                     networkStream.Write(buffer, FromBeginning, buffer.Length);
+                    networkStream.Flush();
                 }
 
                 string response = string.Empty;
@@ -250,6 +253,7 @@
                 if (networkStream.CanWrite)
                 {
                     networkStream.Write(buffer, FromBeginning, buffer.Length);
+                    networkStream.Flush();
                 }
 
                 string response = string.Empty;
@@ -316,6 +320,7 @@
                 if (networkStream.CanWrite)
                 {
                     networkStream.Write(buffer, FromBeginning, buffer.Length);
+                    networkStream.Flush();
                 }
 
                 string response = string.Empty;
@@ -401,6 +406,7 @@
                     if (networkStream.CanWrite)
                     {
                         networkStream.Write(buffer, FromBeginning, buffer.Length);
+                        networkStream.Flush();
                     }
                 }
                 else
@@ -416,6 +422,7 @@
                     if (networkStream.CanWrite)
                     {
                         networkStream.Write(buffer, FromBeginning, buffer.Length);
+                        networkStream.Flush();
                     }
                 }
 

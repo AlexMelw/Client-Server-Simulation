@@ -52,6 +52,7 @@
                     }
 
                     byte[] buffer = new byte[EthernetTcpUdpPacketSize];
+
                     int receivedBytes = _workerSocket.Receive(buffer);
 
                     if (receivedBytes == 0)

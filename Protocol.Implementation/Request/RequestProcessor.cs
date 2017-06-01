@@ -24,7 +24,7 @@
         }
 
         public string ProcessRequest(string request)
-        {
+            {
             ConcurrentDictionary<string, string> requestComponents = _parser.ParseRequest(request);
 
             if (requestComponents == null)
@@ -140,10 +140,19 @@
                                     ? Lang.English
                                     : targetLang;
 
-                                string translatedText = Translate(
-                                    sourceText: msg.TextBody,
-                                    sourceLang: fromLang,
-                                    targetLang: toLang);
+                                string translatedText;
+                                try
+                                {
+                                    translatedText = Translate(
+                                        sourceText: msg.TextBody,
+                                        sourceLang: fromLang,
+                                        targetLang: toLang);
+                                }
+                                catch (Exception e)
+                                {
+                                    translatedText =
+                                        "[ Cognitive Services Reply: you have reached your translations limit for today ]";
+                                }
 
                                 return
                                     $"200 OK GETMSG --senderid='{msg.SenderId}' --sendername='{msg.SenderName}' --msg='{translatedText}'";
@@ -230,11 +239,19 @@
                     string fromLang = sourceLang == Lang.Unknown ? "" : sourceLang;
                     string toLang = targetLang == Lang.Unknown ? Lang.English : targetLang;
 
-                    translatedText = translatorClient.Translate(
-                        appId: AppId,
-                        text: sourceText,
-                        from: $"{fromLang}",
-                        to: $"{toLang}");
+                    try
+                    {
+                        translatedText = translatorClient.Translate(
+                            appId: AppId,
+                            text: sourceText,
+                            from: $"{fromLang}",
+                            to: $"{toLang}");
+                    }
+                    catch (Exception)
+                    {
+                        translatedText =
+                            "[ Cognitive Services Reply: you have reached your translations limit for today ]";
+                    }
                 }
 
                 return translatedText;

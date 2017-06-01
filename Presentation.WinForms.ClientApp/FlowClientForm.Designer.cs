@@ -76,7 +76,8 @@
             this.label15 = new System.Windows.Forms.Label();
             this.outgoingLangComboBox = new System.Windows.Forms.ComboBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.getMessageButton = new System.Windows.Forms.Button();
+            this.activateOfflineModeButton = new System.Windows.Forms.Button();
+            this.activateOnlineModeButton = new System.Windows.Forms.Button();
             this.topLineSeparator = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.incomingMessagesRichTextBox = new System.Windows.Forms.RichTextBox();
@@ -126,11 +127,11 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(248, 374);
+            this.label5.Location = new System.Drawing.Point(233, 374);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(226, 13);
+            this.label5.Size = new System.Drawing.Size(244, 13);
             this.label5.TabIndex = 5;
-            this.label5.Text = "It\'s quite recommended to leave default values";
+            this.label5.Text = "It\'s quite recommended to leave the default values";
             // 
             // groupBox2
             // 
@@ -566,7 +567,8 @@
             // 
             // groupBox9
             // 
-            this.groupBox9.Controls.Add(this.getMessageButton);
+            this.groupBox9.Controls.Add(this.activateOfflineModeButton);
+            this.groupBox9.Controls.Add(this.activateOnlineModeButton);
             this.groupBox9.Controls.Add(this.topLineSeparator);
             this.groupBox9.Controls.Add(this.label13);
             this.groupBox9.Controls.Add(this.incomingMessagesRichTextBox);
@@ -579,14 +581,23 @@
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Incoming messages";
             // 
-            // getMessageButton
+            // activateOfflineModeButton
             // 
-            this.getMessageButton.Location = new System.Drawing.Point(548, 108);
-            this.getMessageButton.Name = "getMessageButton";
-            this.getMessageButton.Size = new System.Drawing.Size(120, 73);
-            this.getMessageButton.TabIndex = 3;
-            this.getMessageButton.Text = "GET MESSAGE MANUALLY";
-            this.getMessageButton.UseVisualStyleBackColor = true;
+            this.activateOfflineModeButton.Location = new System.Drawing.Point(548, 138);
+            this.activateOfflineModeButton.Name = "activateOfflineModeButton";
+            this.activateOfflineModeButton.Size = new System.Drawing.Size(120, 28);
+            this.activateOfflineModeButton.TabIndex = 6;
+            this.activateOfflineModeButton.Text = "Activate offline mode";
+            this.activateOfflineModeButton.UseVisualStyleBackColor = true;
+            // 
+            // activateOnlineModeButton
+            // 
+            this.activateOnlineModeButton.Location = new System.Drawing.Point(548, 97);
+            this.activateOnlineModeButton.Name = "activateOnlineModeButton";
+            this.activateOnlineModeButton.Size = new System.Drawing.Size(120, 28);
+            this.activateOnlineModeButton.TabIndex = 3;
+            this.activateOnlineModeButton.Text = "Activate online mode";
+            this.activateOnlineModeButton.UseVisualStyleBackColor = true;
             // 
             // topLineSeparator
             // 
@@ -724,9 +735,10 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label topLineSeparator;
         private System.Windows.Forms.Label bottomLineSeparator;
-        private System.Windows.Forms.Button getMessageButton;
+        private System.Windows.Forms.Button activateOnlineModeButton;
         private System.Windows.Forms.TextBox recipientTextBox;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button activateOfflineModeButton;
     }
 }
 

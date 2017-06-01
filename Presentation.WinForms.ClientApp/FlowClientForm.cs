@@ -1,9 +1,11 @@
-﻿namespace Presentation.WinForms.ClientApp
+﻿using static FlowProtocol.Interfaces.CommonConventions.Conventions;
+
+namespace Presentation.WinForms.ClientApp
 {
     using System;
     using System.Diagnostics;
+    using System.Drawing;
     using System.Net;
-    using System.Threading;
     using System.Windows.Forms;
     using FlowProtocol.Implementation.Response;
     using FlowProtocol.Implementation.Workers.Clients;
@@ -11,11 +13,12 @@
     using FlowProtocol.Interfaces.Workers;
     using libZPlay;
     using Properties;
-    using static FlowProtocol.Interfaces.CommonConventions.Conventions;
+    using Timer = System.Timers.Timer;
 
     public partial class FlowClientForm : Form
     {
         private IFlowClientWorker _flowClientWorker;
+        private Timer _timer;
         public string ClientType { get; set; }
 
         #region CONSTRUCTORS
@@ -42,7 +45,7 @@
 
                 _flowClientWorker = new TcpClientWorker(new ResponseParser());
                 serverPortTextBox.Text = TcpServerListeningPort.ToString();
-                this.Text = @"Chat Client [ TCP is used as underlying transport protocol ]";
+                Text = @"Chat Client [ TCP is used as underlying transport protocol ]";
                 return;
             }
 
@@ -52,13 +55,13 @@
 
                 _flowClientWorker = new UdpClientWorker(new ResponseParser());
                 serverPortTextBox.Text = UdpServerListeningPort.ToString();
-                this.Text = @"Chat Client [ UDP is used as underlying transport protocol ]";
+                Text = @"Chat Client [ UDP is used as underlying transport protocol ]";
             }
         }
 
         private void ConfigControlsProperties()
         {
-            this.Icon = Resources.Email;
+            Icon = Resources.Email;
 
             serverIpAddressTextBox.Text = Localhost;
 
@@ -75,9 +78,15 @@
             outgoingLangComboBox.SelectedIndex = 3;
 
             translateInputRichTextBox.BorderStyle = BorderStyle.None;
-            translateOutputRichTextBox.BorderStyle = BorderStyle.None;
 
+            translateOutputRichTextBox.BorderStyle = BorderStyle.None;
+            translateOutputRichTextBox.ReadOnly = true;
+            translateOutputRichTextBox.BackColor = Color.White;
+
+            incomingMessagesRichTextBox.ReadOnly = true;
+            incomingMessagesRichTextBox.BackColor = Color.White;
             incomingMessagesRichTextBox.BorderStyle = BorderStyle.None;
+
             outgoingMessagesRichTextBox.BorderStyle = BorderStyle.None;
         }
 
@@ -141,6 +150,10 @@
 
             translateButton.Click += (sender, args) =>
             {
+                if (string.IsNullOrWhiteSpace(translateInputRichTextBox.Text))
+                {
+                    return;
+                }
                 try
                 {
                     string inputTextLang = fromLangComboBox.Text;
@@ -162,6 +175,11 @@
 
             SendMessageButton.Click += (sender, args) =>
             {
+                if (string.IsNullOrWhiteSpace(outgoingMessagesRichTextBox.Text))
+                {
+                    return;
+                }
+
                 string recipient = recipientTextBox.Text.Trim();
                 string messageBody = outgoingMessagesRichTextBox.Text;
                 string sourceTextLanguage = outgoingLangComboBox.Text;
@@ -191,7 +209,7 @@
                         {
                             // I don't care if soundplayer is dgoing crazy
                         }
-                        MessageBox.Show($@"{result.ResponseMessage}");
+                        //MessageBox.Show($@"{result.ResponseMessage}");
                         outgoingMessagesRichTextBox.Clear();
                     }
                     else
@@ -206,48 +224,70 @@
                 }
             };
 
-            getMessageButton.Click += (sender, args) =>
+            activateOnlineModeButton.Click += (sender, args) =>
             {
-                string incomingMessagesTranslationMode = incomingLangComboBox.Text;
-
-                try
+                if (_timer != null)
                 {
-                    var result = _flowClientWorker.GetMessage(incomingMessagesTranslationMode);
-
-                    if (result.Success)
-                    {
-                        incomingMessagesRichTextBox.AppendText(
-                            Environment.NewLine + new string('-', 168)
-                            + Environment.NewLine +
-                            $"From {result.SenderName} [{result.SenderId}] : {result.MessageBody}");
-                        try
-                        {
-                            ZPlay player = new ZPlay();
-
-                            if (player.OpenFile(@"Resources/OwOw.mp3", TStreamFormat.sfAutodetect))
-                            {
-                                player.SetMasterVolume(100, 100);
-                                player.SetPlayerVolume(100, 100);
-
-                                player.StartPlayback();
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            // I don't care if soundplayer is dgoing crazy
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show($@"{result.ErrorExplained}");
-                    }
+                    return;
                 }
-                catch (Exception exception)
+                _timer = new Timer
                 {
-                    Debug.WriteLine(exception);
-                    MessageBox.Show($@"{exception.Message}");
+                    AutoReset = true,
+                    Interval = 3000
+                };
+
+                _timer.Elapsed += CheckMailbox;
+                _timer.Start();
+            };
+
+            activateOfflineModeButton.Click += (sender, args) =>
+            {
+                if (_timer != null)
+                {
+                    _timer.Stop();
+                    _timer = null;
                 }
             };
+        }
+
+        private void CheckMailbox(object sender, EventArgs args)
+        {
+            string incomingMessagesTranslationMode = incomingLangComboBox.Text;
+
+            try
+            {
+                var result = _flowClientWorker.GetMessage(incomingMessagesTranslationMode);
+
+                if (result.Success)
+                {
+                    incomingMessagesRichTextBox.AppendText(
+                        Environment.NewLine + new string('-', 168) +
+                        Environment.NewLine +
+                        $"From {result.SenderName} [{result.SenderId}] : {result.MessageBody}");
+
+                    try
+                    {
+                        ZPlay player = new ZPlay();
+
+                        if (player.OpenFile(@"Resources/OwOw.mp3", TStreamFormat.sfAutodetect))
+                        {
+                            player.SetMasterVolume(100, 100);
+                            player.SetPlayerVolume(100, 100);
+
+                            player.StartPlayback();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // I don't care if soundplayer is dgoing crazy
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+                MessageBox.Show($@"{exception.Message}");
+            }
         }
     }
 }

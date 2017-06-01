@@ -9,24 +9,24 @@
     public class ResponseParser : IFlowProtocolResponseParser
     {
         private readonly string _authenticationResponsePattern =
-                @"(?:(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK)\s+(?<cmd>AUTH)\s+--res='(?<res>.+)'\s+--sessiontoken='(?<sessiontoken>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))')|(?:(?<statuscode>\d{3})\s+(?<statusdesc>ERR)\s+(?<cmd>AUTH)\s+--res='(?<res>.+)'))"
+                @"(?:(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK)\s+(?<cmd>AUTH)\s+--res='(?<res>(?s:.+))'\s+--sessiontoken='(?<sessiontoken>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))')|(?:(?<statuscode>\d{3})\s+(?<statusdesc>ERR)\s+(?<cmd>AUTH)\s+--res='(?<res>(?s:.+))'))"
             ;
 
         private readonly string _getMessageResponsePattern =
-                @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>ERR)\s+(?<cmd>GETMSG)\s+--res='(?<res>.+)')|(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK)\s+(?<cmd>GETMSG)\s+--senderid='(?<senderid>\w+)'\s+--sendername='(?<sendername>.+)'\s+--msg='(?<message>.+)')"
+                @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>ERR)\s+(?<cmd>GETMSG)\s+--res='(?<res>(?s:.+))')|(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK)\s+(?<cmd>GETMSG)\s+--senderid='(?<senderid>\w+)'\s+--sendername='(?<sendername>(?s:.+))'\s+--msg='(?<message>(?s:.+))')"
             ;
 
         private readonly string _registerResponsePattern =
-            @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>(?:OK|ERR))\s+(?<cmd>REGISTER)\s+--res='(?<res>.+)')";
+            @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>(?:OK|ERR))\s+(?<cmd>REGISTER)\s+--res='(?<res>(?s:.+))')";
 
         private readonly string _sendMessageResponsePattern =
-            @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK|ERR)\s+(?<cmd>SENDMSG)\s+--res='(?<res>.+)')";
+            @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK|ERR)\s+(?<cmd>SENDMSG)\s+--res='(?<res>(?s:.+))')";
 
         private readonly string _translateResponsePattern =
-            @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK)\s+(?<cmd>TRANSLATE)\s+--res='(?<res>.+)')";
+            @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK)\s+(?<cmd>TRANSLATE)\s+--res='(?<res>(?s:.+))')";
 
         private readonly string _shutdownServerResponsePattern =
-            @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK)\s+(?<cmd>SHUTDOWN)\s+--res='(?<res>.+)')";
+            @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK)\s+(?<cmd>SHUTDOWN)\s+--res='(?<res>(?s:.+))')";
 
         private readonly string _helloResponsePattern = @"(?:(?<statuscode>200)\s+(?<statusdesc>OK)\s+(?<cmd>HELLO))";
 

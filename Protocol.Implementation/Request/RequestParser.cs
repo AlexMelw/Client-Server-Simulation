@@ -8,7 +8,7 @@
     public class RequestParser : IFlowProtocolRequestParser
     {
         private readonly string _authenticationRequestPattern =
-                @"(?:(?<cmd>AUTH)\s+(\s+securepassword\s+protectiontype='(?<passprotectiontype>\w+)')?\s+--login='(?<login>\w+)'\s+--pass='(?<pass>.+)')"
+                @"(?:(?<cmd>AUTH)\s+(\s+securepassword\s+protectiontype='(?<passprotectiontype>\w+)')?\s+--login='(?<login>\w+)'\s+--pass='(?<pass>(?s:.+))')"
             ;
 
         private readonly string _getMessageRequestPattern =
@@ -16,14 +16,14 @@
             ;
 
         private readonly string _registerRequestPattern =
-            @"(?:(?<cmd>REGISTER)\s+--login='(?<login>[\w]+)'\s+--pass='(?<pass>.+)'\s+--name='(?<name>(?:\w|\s)+)')";
+            @"(?:(?<cmd>REGISTER)\s+--login='(?<login>[\w]+)'\s+--pass='(?<pass>(?s:.+))'\s+--name='(?<name>(?:\w|\s)+)')";
 
         private readonly string _sendMessageRequestPattern =
-                @"(?:(?<cmd>SENDMSG)\s+--to='(?<recipient>\w+)'\s+--msg='(?<message>.*)'\s+--sourcelang='(?<sourcelang>en|ro|ru|unknown)'\s+--sessiontoken='(?<sessiontoken>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))')"
+                @"(?:(?<cmd>SENDMSG)\s+--to='(?<recipient>\w+)'\s+--msg='(?<message>(?s:.+))'\s+--sourcelang='(?<sourcelang>en|ro|ru|unknown)'\s+--sessiontoken='(?<sessiontoken>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))')"
             ;
 
         private readonly string _translateRequestPattern =
-                @"(?:(?<cmd>TRANSLATE)\s+--sourcetext='(?<sourcetext>.*)'\s+--sourcelang='(?<sourcelang>ro|ru|en|unknown)'\s+--targetlang='(?<targetlang>ro|ru|en)')"
+                @"(?:(?<cmd>TRANSLATE)\s+--sourcetext='(?<sourcetext>(?s:.+))'\s+--sourcelang='(?<sourcelang>ro|ru|en|unknown)'\s+--targetlang='(?<targetlang>ro|ru|en)')"
             ;
 
         private readonly string _helloRequestPattern = @"(?<cmd>HELLO)";
