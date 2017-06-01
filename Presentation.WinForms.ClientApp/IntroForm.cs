@@ -3,6 +3,8 @@ using System.Windows.Forms;
 
 namespace Presentation.WinForms.ClientApp
 {
+    using Properties;
+
     public partial class IntroForm : Form
     {
         public IntroForm() => InitializeComponent();
@@ -15,6 +17,9 @@ namespace Presentation.WinForms.ClientApp
 
         private void ConfigControlsProperties()
         {
+            this.Text = @"Client initializer";
+            this.Icon = Resources.Email;
+
             pickupProtocolComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             pickupProtocolComboBox.SelectedIndex = 0;
         }
@@ -25,7 +30,7 @@ namespace Presentation.WinForms.ClientApp
             {
                 this.Hide();
 
-                string selectedValue = (string) pickupProtocolComboBox.Text;
+                string selectedValue = pickupProtocolComboBox.Text;
 
                 FlowClientForm flowClientForm = new FlowClientForm
                 {

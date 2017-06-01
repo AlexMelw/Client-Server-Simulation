@@ -61,15 +61,22 @@
     </Compile>
     <Compile Include="ProtocolHelpers\FlowProtocolEncodingHelper.cs" />
     <Compile Include="Request\RequestParser.cs" />
+    <Compile Include="Request\RequestProcessor.cs" />
     <Compile Include="Response\ResponseParser.cs" />
     <Compile Include="Servers\FlowTcpServer.cs" />
     <Compile Include="Servers\FlowUdpServer.cs" />
+    <Compile Include="Storage\AuthenticatedClients.cs" />
+    <Compile Include="Storage\RegisteredUsers.cs" />
+    <Compile Include="Storage\CorrespondenceManagement.cs" />
     <Compile Include="Trash\ResponseProcessorTrash.cs" />
+    <Compile Include="Trash\TrashTcpClientWorker.cs" />
     <Compile Include="Web References\MSTranslatorService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Workers\Clients\RequestTemplates\Template.cs" />
+    <Compile Include="Workers\Clients\Utilities\FlowUtility.cs" />
     <Compile Include="Workers\Servers\TcpServerWorker.cs" />
     <Compile Include="Workers\Servers\UdpServerWorker.cs" />
     <Compile Include="Workers\Clients\TcpClientWorker.cs" />
@@ -79,6 +86,10 @@
     <ProjectReference Include="..\..\EasySharp\NHelpers\NHelpers.csproj">
       <Project>{cac83cf1-e5d4-45f6-85cc-e0ad29b55a8e}</Project>
       <Name>NHelpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FlowProtocol.DomainModels\FlowProtocol.DomainModels.csproj">
+      <Project>{3FD94B60-1584-4C36-88EE-1281B0FF661C}</Project>
+      <Name>FlowProtocol.DomainModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\Protocol.Interfaces\FlowProtocol.Interfaces.csproj">
       <Project>{6FA0AB1A-03E8-4C70-B628-8507CAA15247}</Project>

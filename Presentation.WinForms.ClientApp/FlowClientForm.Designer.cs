@@ -30,6 +30,7 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label5 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.connectToServerButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -38,19 +39,50 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.registerNameTextBox = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.registerButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.registerPassTextBox = new System.Windows.Forms.TextBox();
             this.registerLoginTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.label5 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.authButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.authPassTextBox = new System.Windows.Forms.TextBox();
             this.authLoginTextBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.translateOutputRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.translateInputRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.translateButton = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.toLangComboBox = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.fromLangComboBox = new System.Windows.Forms.ComboBox();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.recipientTextBox = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.bottomLineSeparator = new System.Windows.Forms.Label();
+            this.SendMessageButton = new System.Windows.Forms.Button();
+            this.label14 = new System.Windows.Forms.Label();
+            this.outgoingMessagesRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.outgoingLangComboBox = new System.Windows.Forms.ComboBox();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.activateOfflineModeButton = new System.Windows.Forms.Button();
+            this.activateOnlineModeButton = new System.Windows.Forms.Button();
+            this.topLineSeparator = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.incomingMessagesRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.incomingLangComboBox = new System.Windows.Forms.ComboBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -58,6 +90,13 @@
             this.groupBox1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.groupBox7.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.tabPage5.SuspendLayout();
+            this.groupBox8.SuspendLayout();
+            this.groupBox9.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -65,6 +104,8 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -82,6 +123,15 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Connect";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(233, 374);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(244, 13);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "It\'s quite recommended to leave the default values";
             // 
             // groupBox2
             // 
@@ -102,7 +152,7 @@
             this.connectToServerButton.Location = new System.Drawing.Point(18, 146);
             this.connectToServerButton.Name = "connectToServerButton";
             this.connectToServerButton.Size = new System.Drawing.Size(165, 23);
-            this.connectToServerButton.TabIndex = 4;
+            this.connectToServerButton.TabIndex = 2;
             this.connectToServerButton.Text = "CONNECT";
             this.connectToServerButton.UseVisualStyleBackColor = true;
             // 
@@ -120,7 +170,7 @@
             this.serverPortTextBox.Location = new System.Drawing.Point(18, 112);
             this.serverPortTextBox.Name = "serverPortTextBox";
             this.serverPortTextBox.Size = new System.Drawing.Size(165, 20);
-            this.serverPortTextBox.TabIndex = 3;
+            this.serverPortTextBox.TabIndex = 1;
             // 
             // serverIpAddressTextBox
             // 
@@ -151,6 +201,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.registerNameTextBox);
+            this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.registerButton);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.registerPassTextBox);
@@ -158,17 +210,33 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Location = new System.Drawing.Point(257, 161);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 190);
+            this.groupBox1.Size = new System.Drawing.Size(200, 255);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Register";
             // 
+            // registerNameTextBox
+            // 
+            this.registerNameTextBox.Location = new System.Drawing.Point(18, 171);
+            this.registerNameTextBox.Name = "registerNameTextBox";
+            this.registerNameTextBox.Size = new System.Drawing.Size(165, 20);
+            this.registerNameTextBox.TabIndex = 2;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(21, 152);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(54, 13);
+            this.label8.TabIndex = 5;
+            this.label8.Text = "Full Name";
+            // 
             // registerButton
             // 
-            this.registerButton.Location = new System.Drawing.Point(18, 146);
+            this.registerButton.Location = new System.Drawing.Point(18, 213);
             this.registerButton.Name = "registerButton";
             this.registerButton.Size = new System.Drawing.Size(165, 23);
-            this.registerButton.TabIndex = 4;
+            this.registerButton.TabIndex = 3;
             this.registerButton.Text = "REGISTER";
             this.registerButton.UseVisualStyleBackColor = true;
             // 
@@ -186,7 +254,7 @@
             this.registerPassTextBox.Location = new System.Drawing.Point(18, 112);
             this.registerPassTextBox.Name = "registerPassTextBox";
             this.registerPassTextBox.Size = new System.Drawing.Size(165, 20);
-            this.registerPassTextBox.TabIndex = 3;
+            this.registerPassTextBox.TabIndex = 1;
             // 
             // registerLoginTextBox
             // 
@@ -215,15 +283,6 @@
             this.tabPage3.Text = "Authentication";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(248, 374);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(226, 13);
-            this.label5.TabIndex = 5;
-            this.label5.Text = "It\'s quite recommended to leave default values";
-            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.authButton);
@@ -243,8 +302,8 @@
             this.authButton.Location = new System.Drawing.Point(18, 146);
             this.authButton.Name = "authButton";
             this.authButton.Size = new System.Drawing.Size(165, 23);
-            this.authButton.TabIndex = 4;
-            this.authButton.Text = "REGISTER";
+            this.authButton.TabIndex = 3;
+            this.authButton.Text = "AUTHENTICATE";
             this.authButton.UseVisualStyleBackColor = true;
             // 
             // label6
@@ -261,7 +320,7 @@
             this.authPassTextBox.Location = new System.Drawing.Point(18, 112);
             this.authPassTextBox.Name = "authPassTextBox";
             this.authPassTextBox.Size = new System.Drawing.Size(165, 20);
-            this.authPassTextBox.TabIndex = 3;
+            this.authPassTextBox.TabIndex = 1;
             // 
             // authLoginTextBox
             // 
@@ -278,6 +337,315 @@
             this.label7.Size = new System.Drawing.Size(53, 13);
             this.label7.TabIndex = 2;
             this.label7.Text = "Password";
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.groupBox7);
+            this.tabPage4.Controls.Add(this.groupBox6);
+            this.tabPage4.Controls.Add(this.groupBox5);
+            this.tabPage4.Controls.Add(this.groupBox4);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(714, 513);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Translator";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.translateOutputRichTextBox);
+            this.groupBox7.Location = new System.Drawing.Point(114, 307);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(469, 181);
+            this.groupBox7.TabIndex = 10;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Output";
+            // 
+            // translateOutputRichTextBox
+            // 
+            this.translateOutputRichTextBox.Location = new System.Drawing.Point(18, 23);
+            this.translateOutputRichTextBox.Name = "translateOutputRichTextBox";
+            this.translateOutputRichTextBox.Size = new System.Drawing.Size(434, 146);
+            this.translateOutputRichTextBox.TabIndex = 0;
+            this.translateOutputRichTextBox.Text = "";
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Location = new System.Drawing.Point(114, 307);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(469, 181);
+            this.groupBox6.TabIndex = 10;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Output";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.translateInputRichTextBox);
+            this.groupBox5.Location = new System.Drawing.Point(114, 117);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(469, 184);
+            this.groupBox5.TabIndex = 9;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Input";
+            // 
+            // translateInputRichTextBox
+            // 
+            this.translateInputRichTextBox.Location = new System.Drawing.Point(18, 22);
+            this.translateInputRichTextBox.Name = "translateInputRichTextBox";
+            this.translateInputRichTextBox.Size = new System.Drawing.Size(434, 146);
+            this.translateInputRichTextBox.TabIndex = 0;
+            this.translateInputRichTextBox.Text = "";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.translateButton);
+            this.groupBox4.Controls.Add(this.label9);
+            this.groupBox4.Controls.Add(this.toLangComboBox);
+            this.groupBox4.Controls.Add(this.label10);
+            this.groupBox4.Controls.Add(this.fromLangComboBox);
+            this.groupBox4.Location = new System.Drawing.Point(114, 22);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(469, 89);
+            this.groupBox4.TabIndex = 6;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Translate";
+            // 
+            // translateButton
+            // 
+            this.translateButton.Location = new System.Drawing.Point(343, 26);
+            this.translateButton.Name = "translateButton";
+            this.translateButton.Size = new System.Drawing.Size(109, 43);
+            this.translateButton.TabIndex = 6;
+            this.translateButton.Text = "TRANSLATE";
+            this.translateButton.UseVisualStyleBackColor = true;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(15, 26);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(30, 13);
+            this.label9.TabIndex = 4;
+            this.label9.Text = "From";
+            // 
+            // toLangComboBox
+            // 
+            this.toLangComboBox.FormattingEnabled = true;
+            this.toLangComboBox.Items.AddRange(new object[] {
+            "English",
+            "Romanian",
+            "Russian"});
+            this.toLangComboBox.Location = new System.Drawing.Point(194, 46);
+            this.toLangComboBox.Name = "toLangComboBox";
+            this.toLangComboBox.Size = new System.Drawing.Size(121, 21);
+            this.toLangComboBox.TabIndex = 1;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(191, 26);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(20, 13);
+            this.label10.TabIndex = 5;
+            this.label10.Text = "To";
+            // 
+            // fromLangComboBox
+            // 
+            this.fromLangComboBox.FormattingEnabled = true;
+            this.fromLangComboBox.Items.AddRange(new object[] {
+            "English",
+            "Romanian",
+            "Russian",
+            "Auto Detection"});
+            this.fromLangComboBox.Location = new System.Drawing.Point(18, 46);
+            this.fromLangComboBox.Name = "fromLangComboBox";
+            this.fromLangComboBox.Size = new System.Drawing.Size(121, 21);
+            this.fromLangComboBox.TabIndex = 0;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.groupBox8);
+            this.tabPage5.Controls.Add(this.groupBox9);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(714, 513);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Chat Room";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.recipientTextBox);
+            this.groupBox8.Controls.Add(this.label11);
+            this.groupBox8.Controls.Add(this.bottomLineSeparator);
+            this.groupBox8.Controls.Add(this.SendMessageButton);
+            this.groupBox8.Controls.Add(this.label14);
+            this.groupBox8.Controls.Add(this.outgoingMessagesRichTextBox);
+            this.groupBox8.Controls.Add(this.label15);
+            this.groupBox8.Controls.Add(this.outgoingLangComboBox);
+            this.groupBox8.Location = new System.Drawing.Point(9, 317);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(684, 181);
+            this.groupBox8.TabIndex = 0;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Outgoing Message Area";
+            // 
+            // recipientTextBox
+            // 
+            this.recipientTextBox.Location = new System.Drawing.Point(557, 113);
+            this.recipientTextBox.Name = "recipientTextBox";
+            this.recipientTextBox.Size = new System.Drawing.Size(120, 20);
+            this.recipientTextBox.TabIndex = 2;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(591, 96);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(52, 13);
+            this.label11.TabIndex = 0;
+            this.label11.Text = "Recipient";
+            // 
+            // bottomLineSeparator
+            // 
+            this.bottomLineSeparator.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.bottomLineSeparator.Location = new System.Drawing.Point(549, 17);
+            this.bottomLineSeparator.Name = "bottomLineSeparator";
+            this.bottomLineSeparator.Size = new System.Drawing.Size(1, 147);
+            this.bottomLineSeparator.TabIndex = 7;
+            this.bottomLineSeparator.Text = "l";
+            // 
+            // SendMessageButton
+            // 
+            this.SendMessageButton.Location = new System.Drawing.Point(557, 139);
+            this.SendMessageButton.Name = "SendMessageButton";
+            this.SendMessageButton.Size = new System.Drawing.Size(120, 26);
+            this.SendMessageButton.TabIndex = 3;
+            this.SendMessageButton.Text = "SEND";
+            this.SendMessageButton.UseVisualStyleBackColor = true;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(591, 40);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(51, 13);
+            this.label14.TabIndex = 6;
+            this.label14.Text = "language";
+            // 
+            // outgoingMessagesRichTextBox
+            // 
+            this.outgoingMessagesRichTextBox.Location = new System.Drawing.Point(18, 19);
+            this.outgoingMessagesRichTextBox.Name = "outgoingMessagesRichTextBox";
+            this.outgoingMessagesRichTextBox.Size = new System.Drawing.Size(533, 146);
+            this.outgoingMessagesRichTextBox.TabIndex = 4;
+            this.outgoingMessagesRichTextBox.Text = "";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(568, 22);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(100, 13);
+            this.label15.TabIndex = 5;
+            this.label15.Text = "Indicate source text";
+            // 
+            // outgoingLangComboBox
+            // 
+            this.outgoingLangComboBox.FormattingEnabled = true;
+            this.outgoingLangComboBox.Items.AddRange(new object[] {
+            "English",
+            "Romanian",
+            "Russian",
+            "Auto Detection"});
+            this.outgoingLangComboBox.Location = new System.Drawing.Point(556, 62);
+            this.outgoingLangComboBox.Name = "outgoingLangComboBox";
+            this.outgoingLangComboBox.Size = new System.Drawing.Size(121, 21);
+            this.outgoingLangComboBox.TabIndex = 1;
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.activateOfflineModeButton);
+            this.groupBox9.Controls.Add(this.activateOnlineModeButton);
+            this.groupBox9.Controls.Add(this.topLineSeparator);
+            this.groupBox9.Controls.Add(this.label13);
+            this.groupBox9.Controls.Add(this.incomingMessagesRichTextBox);
+            this.groupBox9.Controls.Add(this.incomingLangComboBox);
+            this.groupBox9.Controls.Add(this.label12);
+            this.groupBox9.Location = new System.Drawing.Point(18, 16);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(675, 291);
+            this.groupBox9.TabIndex = 1;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "Incoming messages";
+            // 
+            // activateOfflineModeButton
+            // 
+            this.activateOfflineModeButton.Location = new System.Drawing.Point(548, 138);
+            this.activateOfflineModeButton.Name = "activateOfflineModeButton";
+            this.activateOfflineModeButton.Size = new System.Drawing.Size(120, 28);
+            this.activateOfflineModeButton.TabIndex = 6;
+            this.activateOfflineModeButton.Text = "Activate offline mode";
+            this.activateOfflineModeButton.UseVisualStyleBackColor = true;
+            // 
+            // activateOnlineModeButton
+            // 
+            this.activateOnlineModeButton.Location = new System.Drawing.Point(548, 97);
+            this.activateOnlineModeButton.Name = "activateOnlineModeButton";
+            this.activateOnlineModeButton.Size = new System.Drawing.Size(120, 28);
+            this.activateOnlineModeButton.TabIndex = 3;
+            this.activateOnlineModeButton.Text = "Activate online mode";
+            this.activateOnlineModeButton.UseVisualStyleBackColor = true;
+            // 
+            // topLineSeparator
+            // 
+            this.topLineSeparator.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.topLineSeparator.Location = new System.Drawing.Point(541, 22);
+            this.topLineSeparator.Name = "topLineSeparator";
+            this.topLineSeparator.Size = new System.Drawing.Size(1, 252);
+            this.topLineSeparator.TabIndex = 0;
+            this.topLineSeparator.Text = "l";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(575, 40);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(66, 13);
+            this.label13.TabIndex = 5;
+            this.label13.Text = "messages to";
+            // 
+            // incomingMessagesRichTextBox
+            // 
+            this.incomingMessagesRichTextBox.Location = new System.Drawing.Point(18, 22);
+            this.incomingMessagesRichTextBox.Name = "incomingMessagesRichTextBox";
+            this.incomingMessagesRichTextBox.Size = new System.Drawing.Size(524, 252);
+            this.incomingMessagesRichTextBox.TabIndex = 1;
+            this.incomingMessagesRichTextBox.Text = "";
+            // 
+            // incomingLangComboBox
+            // 
+            this.incomingLangComboBox.FormattingEnabled = true;
+            this.incomingLangComboBox.Items.AddRange(new object[] {
+            "Do Not Translate",
+            "English",
+            "Romanian",
+            "Russian"});
+            this.incomingLangComboBox.Location = new System.Drawing.Point(548, 61);
+            this.incomingLangComboBox.Name = "incomingLangComboBox";
+            this.incomingLangComboBox.Size = new System.Drawing.Size(121, 21);
+            this.incomingLangComboBox.TabIndex = 2;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(557, 22);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(96, 13);
+            this.label12.TabIndex = 4;
+            this.label12.Text = "Translate incoming";
             // 
             // FlowClientForm
             // 
@@ -300,6 +668,16 @@
             this.tabPage3.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.tabPage5.ResumeLayout(false);
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -329,6 +707,38 @@
         private System.Windows.Forms.TextBox authPassTextBox;
         private System.Windows.Forms.TextBox authLoginTextBox;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox registerNameTextBox;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.RichTextBox translateInputRichTextBox;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox toLangComboBox;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.ComboBox fromLangComboBox;
+        private System.Windows.Forms.Button translateButton;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.RichTextBox outgoingMessagesRichTextBox;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.RichTextBox incomingMessagesRichTextBox;
+        private System.Windows.Forms.Button SendMessageButton;
+        private System.Windows.Forms.ComboBox incomingLangComboBox;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ComboBox outgoingLangComboBox;
+        private System.Windows.Forms.RichTextBox translateOutputRichTextBox;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label topLineSeparator;
+        private System.Windows.Forms.Label bottomLineSeparator;
+        private System.Windows.Forms.Button activateOnlineModeButton;
+        private System.Windows.Forms.TextBox recipientTextBox;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button activateOfflineModeButton;
     }
 }
 
