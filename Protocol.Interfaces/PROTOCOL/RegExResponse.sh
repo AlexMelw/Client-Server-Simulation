@@ -45,23 +45,3 @@
 # ------------------------
 200 OK SHUTDOWN --res='UDP Server Halted'
 200 OK SHUTDOWN --res='TCP Server Halted'
-
-
-# ------------------------- TEMP ----------------------------
-
-#AUTHENTICATION RESULT
-#(?:(?<statuscode>(?:\d{3}))\s+(?<statusdesc>(?:OK|ERR))\s+(?<cmd>AUTH)\s+--res='(?<resvalue>unauthorized|authorized)')
-# -------------------------
-#201 Authorized --auth-token='687046DA-BD6C-46CF-ACC5-B67ADACC5866'
-#401 Unauthorized --ERR='Login or password is wrong'
-#400 Bad Request --ERR='Not applicable'
-#200 OK TRANSLATE --TEXT='Careva text'
-
-#REGISTER
-#200 OK AUTH --res='User authenticated successfully' AuthToken='687046DA-BD6C-46CF-ACC5-B67ADACC5866'
-#502 ERR REGISTER --res='User already exists'
-#\s+--guid='(?<guid>[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?)'
-#AUTH --guid='687046DA-BD6C-46CF-ACC5-B67ADACC5866' --name='VeaceslavWD'
-#REGISTER --guid='687046DA-BD6C-46CF-ACC5-B67ADACC5866' --name='HelloMotto'
-#REGISTER --guid='687046DA-BD6C-46CF-ACC5-B67ADACC5866' --name='Serg1996'
-#TRANSLATE  --sourcetext='Salut! Ce mai faci?' --sourcelang='ro' --targetlang='en'

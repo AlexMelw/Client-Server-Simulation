@@ -1,9 +1,4 @@
 
-#HELLO
-(?<cmd>HELLO)
-# ----------------------
-HELLO
-
 #TRANSLATE TEXT
 (?:(?<cmd>TRANSLATE)\s+--sourcetext='(?<sourcetext>.+)'\s+--sourcelang='(?<sourcelang>ro|ru|en|unknown)'\s+--targetlang='(?<targetlang>ro|ru|en)')
 # ----------------------
@@ -42,15 +37,7 @@ SENDMSG --to='Ghideon94' --msg='Ce mai faci?' --sourcelang='ro'  --sessiontoken=
 SENDMSG --to='StarTrack77' --msg='Ка поживаешь?' --sourcelang='ru'  --sessiontoken='4b6ef0fd-278d-44a9-bc1a-b36d1117d7cd'
 SENDMSG --to='StarTrack77' --msg='Ка поживаешь?' --sourcelang='unknown'  --sessiontoken='687046DA-BD6C-46CF-ACC5-B67ABACC5866'
 
-
-# #GIMME SOME IMAGE
-# (?:(?<cmd>GIMMEIMG)\s+--tags='(?<tags>((\w+,)*\w+))'\s+--tagmode='(?<tagmode>any|all)'\s+--lang='(?<lang>en|ro|ru|unknown)'\s+--format='json')
-# # ----------------------
-# GIMMEIMG  --tags='android,nougat' --tagmode='any' --lang='en' --format='json'
-# GIMMEIMG  --tags='android,nougat' --tagmode='all' --lang='ru' --format='json'
-# GIMMEIMG  --tags='android,nougat' --tagmode='any' --lang='ro' --format='json'
-# GIMMEIMG  --tags='android,nougat' --tagmode='all' --lang='unknown' --format='json'
-#\s+--guid='(?<guid>[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?)'
-#AUTH --guid='687046DA-BD6C-46CF-ACC5-B67ADACC5866' --name='VeaceslavWD'
-#REGISTER --guid='687046DA-BD6C-46CF-ACC5-B67ADACC5866' --name='HelloMotto'
-#REGISTER --guid='687046DA-BD6C-46CF-ACC5-B67ADACC5866' --name='Serg1996'
+#HELLO
+(?<cmd>HELLO)
+# -----------
+HELLO
