@@ -1,11 +1,10 @@
-﻿using static FlowProtocol.Interfaces.CommonConventions.Conventions;
-
-namespace Presentation.WinForms.ClientApp
+﻿namespace Presentation.WinForms.ClientApp
 {
     using System;
     using System.Diagnostics;
     using System.Drawing;
     using System.Net;
+    using System.Threading.Tasks;
     using System.Windows.Forms;
     using FlowProtocol.Implementation.Response;
     using FlowProtocol.Implementation.Workers.Clients;
@@ -14,6 +13,7 @@ namespace Presentation.WinForms.ClientApp
     using libZPlay;
     using Properties;
     using Timer = System.Timers.Timer;
+    using static FlowProtocol.Interfaces.CommonConventions.Conventions;
 
     public partial class FlowClientForm : Form
     {
@@ -96,157 +96,188 @@ namespace Presentation.WinForms.ClientApp
 
             connectToServerButton.Click += (sender, args) =>
             {
-                try
+                Task.Run(() =>
                 {
-                    bool connected = _flowClientWorker.Connect(
-                        ipAddress: IPAddress.Parse(serverIpAddressTextBox.Text.Trim()),
-                        port: int.Parse(serverPortTextBox.Text.Trim()));
+                    try
+                    {
+                        bool connected = _flowClientWorker.Connect(
+                            ipAddress: IPAddress.Parse(serverIpAddressTextBox.Text.Trim()),
+                            port: int.Parse(serverPortTextBox.Text.Trim()));
 
-                    MessageBox.Show($@"Connected: {connected}");
-                }
-                catch (Exception exception)
-                {
-                    Debug.WriteLine(exception);
-                    MessageBox.Show($@"{exception.Message}");
-                }
+                        MessageBox.Show($@"Connected: {connected}");
+                    }
+                    catch (Exception exception)
+                    {
+                        Debug.WriteLine(exception);
+                        MessageBox.Show($@"{exception.Message}");
+                    }
+                });
             };
 
             authButton.Click += (sender, args) =>
             {
-                try
+                Task.Run(() =>
                 {
-                    bool authenticated = _flowClientWorker.Authenticate(
-                        login: authLoginTextBox.Text,
-                        password: authPassTextBox.Text);
+                    try
+                    {
+                        bool authenticated = _flowClientWorker.Authenticate(
+                            login: authLoginTextBox.Text,
+                            password: authPassTextBox.Text);
 
-                    MessageBox.Show($@"Authenticated: {authenticated}");
-                }
-                catch (Exception exception)
-                {
-                    Debug.WriteLine(exception);
-                    MessageBox.Show($@"{exception.Message}");
-                }
+                        MessageBox.Show($@"Authenticated: {authenticated}");
+                    }
+                    catch (Exception exception)
+                    {
+                        Debug.WriteLine(exception);
+                        MessageBox.Show($@"{exception.Message}");
+                    }
+                });
             };
 
             registerButton.Click += (sender, args) =>
             {
-                try
+                Task.Run(() =>
                 {
-                    bool registered = _flowClientWorker.Register(
-                        login: registerLoginTextBox.Text,
-                        password: registerPassTextBox.Text,
-                        name: registerNameTextBox.Text);
+                    try
+                    {
+                        bool registered = _flowClientWorker.Register(
+                            login: registerLoginTextBox.Text,
+                            password: registerPassTextBox.Text,
+                            name: registerNameTextBox.Text);
 
-                    MessageBox.Show(registered
-                        ? @"Registered successfully"
-                        : @"Registration failed");
-                }
-                catch (Exception exception)
-                {
-                    Debug.WriteLine(exception);
-                    MessageBox.Show($@"{exception.Message}");
-                }
+                        MessageBox.Show(registered
+                            ? @"Registered successfully"
+                            : @"Registration failed");
+                    }
+                    catch (Exception exception)
+                    {
+                        Debug.WriteLine(exception);
+                        MessageBox.Show($@"{exception.Message}");
+                    }
+                });
             };
 
             translateButton.Click += (sender, args) =>
             {
-                if (string.IsNullOrWhiteSpace(translateInputRichTextBox.Text))
+                Task.Run(() =>
                 {
-                    return;
-                }
-                try
-                {
-                    string inputTextLang = fromLangComboBox.Text;
-                    string outputTextLang = toLangComboBox.Text;
+                    if (string.IsNullOrWhiteSpace(translateInputRichTextBox.Text))
+                    {
+                        return;
+                    }
+                    try
+                    {
+                        string inputTextLang = fromLangComboBox.Text;
+                        string outputTextLang = toLangComboBox.Text;
 
-                    string translatedText = _flowClientWorker.Translate(
-                        sourceText: translateInputRichTextBox.Text,
-                        sourceTextLang: inputTextLang,
-                        targetTextLanguage: outputTextLang);
+                        string translatedText = _flowClientWorker.Translate(
+                            sourceText: translateInputRichTextBox.Text,
+                            sourceTextLang: inputTextLang,
+                            targetTextLanguage: outputTextLang);
 
-                    translateOutputRichTextBox.Text = translatedText;
-                }
-                catch (Exception exception)
-                {
-                    Debug.WriteLine(exception);
-                    MessageBox.Show($@"{exception.Message}");
-                }
+                        if (translateOutputRichTextBox.InvokeRequired)
+                        {
+                            translateOutputRichTextBox.Invoke((MethodInvoker) (() =>
+                            {
+                                translateOutputRichTextBox.Text = translatedText;
+                            }));
+                        }
+                        else
+                        {
+                            translateOutputRichTextBox.Text = translatedText;
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        Debug.WriteLine(exception);
+                        MessageBox.Show($@"{exception.Message}");
+                    }
+                });
             };
 
             SendMessageButton.Click += (sender, args) =>
             {
-                if (string.IsNullOrWhiteSpace(outgoingMessagesRichTextBox.Text))
+                Task.Run(() =>
                 {
-                    return;
-                }
-
-                string recipient = recipientTextBox.Text.Trim();
-                string messageBody = outgoingMessagesRichTextBox.Text;
-                string sourceTextLanguage = outgoingLangComboBox.Text;
-
-                try
-                {
-                    var result = _flowClientWorker.SendMessage(
-                        recipient: recipient,
-                        messageText: messageBody,
-                        messageTextLang: sourceTextLanguage);
-
-                    if (result.Success)
+                    if (string.IsNullOrWhiteSpace(outgoingMessagesRichTextBox.Text))
                     {
-                        try
-                        {
-                            ZPlay player = new ZPlay();
+                        return;
+                    }
 
-                            if (player.OpenFile(@"Resources/Sent2.mp3", TStreamFormat.sfAutodetect))
+                    string recipient = recipientTextBox.Text.Trim();
+                    string messageBody = outgoingMessagesRichTextBox.Text;
+                    string sourceTextLanguage = outgoingLangComboBox.Text;
+
+                    try
+                    {
+                        var result = _flowClientWorker.SendMessage(
+                            recipient: recipient,
+                            messageText: messageBody,
+                            messageTextLang: sourceTextLanguage);
+
+                        if (result.Success)
+                        {
+                            try
                             {
-                                player.SetMasterVolume(100, 100);
-                                player.SetPlayerVolume(100, 100);
+                                ZPlay player = new ZPlay();
 
-                                player.StartPlayback();
+                                if (player.OpenFile(@"Resources/Sent2.mp3", TStreamFormat.sfAutodetect))
+                                {
+                                    player.SetMasterVolume(100, 100);
+                                    player.SetPlayerVolume(100, 100);
+
+                                    player.StartPlayback();
+                                }
                             }
+                            catch (Exception)
+                            {
+                                // I don't care if soundplayer is dgoing crazy
+                            }
+                            //MessageBox.Show($@"{result.ResponseMessage}");
+                            outgoingMessagesRichTextBox.Clear();
                         }
-                        catch (Exception)
+                        else
                         {
-                            // I don't care if soundplayer is dgoing crazy
+                            MessageBox.Show($@"{result.ResponseMessage}");
                         }
-                        //MessageBox.Show($@"{result.ResponseMessage}");
-                        outgoingMessagesRichTextBox.Clear();
                     }
-                    else
+                    catch (Exception exception)
                     {
-                        MessageBox.Show($@"{result.ResponseMessage}");
+                        Debug.WriteLine(exception);
+                        MessageBox.Show($@"{exception.Message}");
                     }
-                }
-                catch (Exception exception)
-                {
-                    Debug.WriteLine(exception);
-                    MessageBox.Show($@"{exception.Message}");
-                }
+                });
             };
 
             activateOnlineModeButton.Click += (sender, args) =>
             {
-                if (_timer != null)
+                Task.Run(() =>
                 {
-                    return;
-                }
-                _timer = new Timer
-                {
-                    AutoReset = true,
-                    Interval = 3000
-                };
+                    if (_timer != null)
+                    {
+                        return;
+                    }
+                    _timer = new Timer
+                    {
+                        AutoReset = true,
+                        Interval = 3000
+                    };
 
-                _timer.Elapsed += CheckMailbox;
-                _timer.Start();
+                    _timer.Elapsed += CheckMailbox;
+                    _timer.Start();
+                });
             };
 
             activateOfflineModeButton.Click += (sender, args) =>
             {
-                if (_timer != null)
+                Task.Run(() =>
                 {
-                    _timer.Stop();
-                    _timer = null;
-                }
+                    if (_timer != null)
+                    {
+                        _timer.Stop();
+                        _timer = null;
+                    }
+                });
             };
         }
 
@@ -260,10 +291,23 @@ namespace Presentation.WinForms.ClientApp
 
                 if (result.Success)
                 {
-                    incomingMessagesRichTextBox.AppendText(
-                        Environment.NewLine + new string('-', 168) +
-                        Environment.NewLine +
-                        $"From {result.SenderName} [{result.SenderId}] : {result.MessageBody}");
+                    if (incomingMessagesRichTextBox.InvokeRequired)
+                    {
+                        incomingMessagesRichTextBox.Invoke((MethodInvoker) (() =>
+                        {
+                            incomingMessagesRichTextBox.AppendText(
+                                Environment.NewLine + new string('-', 168) +
+                                Environment.NewLine +
+                                $"From {result.SenderName} [{result.SenderId}] : {result.MessageBody}");
+                        }));
+                    }
+                    else
+                    {
+                        incomingMessagesRichTextBox.AppendText(
+                            Environment.NewLine + new string('-', 168) +
+                            Environment.NewLine +
+                            $"From {result.SenderName} [{result.SenderId}] : {result.MessageBody}");
+                    }
 
                     try
                     {
@@ -279,7 +323,7 @@ namespace Presentation.WinForms.ClientApp
                     }
                     catch (Exception)
                     {
-                        // I don't care if soundplayer is dgoing crazy
+                        // I don't care if soundplayer is going crazy
                     }
                 }
             }
