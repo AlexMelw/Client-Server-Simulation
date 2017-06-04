@@ -62,7 +62,7 @@
             this.runClientButton.Location = new System.Drawing.Point(99, 165);
             this.runClientButton.Name = "runClientButton";
             this.runClientButton.Size = new System.Drawing.Size(121, 27);
-            this.runClientButton.TabIndex = 2;
+            this.runClientButton.TabIndex = 0;
             this.runClientButton.Text = "RUN CLIENT";
             this.runClientButton.UseVisualStyleBackColor = true;
             // 

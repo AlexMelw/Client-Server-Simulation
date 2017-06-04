@@ -70,7 +70,7 @@
             this.recipientTextBox = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.bottomLineSeparator = new System.Windows.Forms.Label();
-            this.SendMessageButton = new System.Windows.Forms.Button();
+            this.sendMessageButton = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
             this.outgoingMessagesRichTextBox = new System.Windows.Forms.RichTextBox();
             this.label15 = new System.Windows.Forms.Label();
@@ -480,7 +480,7 @@
             this.groupBox8.Controls.Add(this.recipientTextBox);
             this.groupBox8.Controls.Add(this.label11);
             this.groupBox8.Controls.Add(this.bottomLineSeparator);
-            this.groupBox8.Controls.Add(this.SendMessageButton);
+            this.groupBox8.Controls.Add(this.sendMessageButton);
             this.groupBox8.Controls.Add(this.label14);
             this.groupBox8.Controls.Add(this.outgoingMessagesRichTextBox);
             this.groupBox8.Controls.Add(this.label15);
@@ -517,14 +517,14 @@
             this.bottomLineSeparator.TabIndex = 7;
             this.bottomLineSeparator.Text = "l";
             // 
-            // SendMessageButton
+            // sendMessageButton
             // 
-            this.SendMessageButton.Location = new System.Drawing.Point(557, 139);
-            this.SendMessageButton.Name = "SendMessageButton";
-            this.SendMessageButton.Size = new System.Drawing.Size(120, 26);
-            this.SendMessageButton.TabIndex = 3;
-            this.SendMessageButton.Text = "SEND";
-            this.SendMessageButton.UseVisualStyleBackColor = true;
+            this.sendMessageButton.Location = new System.Drawing.Point(557, 139);
+            this.sendMessageButton.Name = "sendMessageButton";
+            this.sendMessageButton.Size = new System.Drawing.Size(120, 26);
+            this.sendMessageButton.TabIndex = 3;
+            this.sendMessageButton.Text = "SEND";
+            this.sendMessageButton.UseVisualStyleBackColor = true;
             // 
             // label14
             // 
@@ -725,7 +725,7 @@
         private System.Windows.Forms.RichTextBox outgoingMessagesRichTextBox;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.RichTextBox incomingMessagesRichTextBox;
-        private System.Windows.Forms.Button SendMessageButton;
+        private System.Windows.Forms.Button sendMessageButton;
         private System.Windows.Forms.ComboBox incomingLangComboBox;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.ComboBox outgoingLangComboBox;

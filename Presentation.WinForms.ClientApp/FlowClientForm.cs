@@ -88,6 +88,36 @@
             incomingMessagesRichTextBox.BorderStyle = BorderStyle.None;
 
             outgoingMessagesRichTextBox.BorderStyle = BorderStyle.None;
+
+            activateOfflineModeButton.FlatStyle = FlatStyle.Flat;
+            activateOnlineModeButton.FlatStyle = FlatStyle.Flat;
+
+            activateOfflineModeButton.FlatAppearance.BorderColor = Color.DeepSkyBlue;
+            activateOnlineModeButton.FlatAppearance.BorderColor = Color.Gray;
+
+            activateOfflineModeButton.FlatAppearance.BorderSize = 1;
+            activateOnlineModeButton.FlatAppearance.BorderSize = 1;
+
+            translateButton.FlatStyle = FlatStyle.Flat;
+            translateButton.FlatAppearance.BorderColor = Color.MediumSeaGreen;
+            translateButton.BackColor = Color.PaleGreen;
+
+            sendMessageButton.FlatStyle = FlatStyle.Flat;
+            sendMessageButton.FlatAppearance.BorderSize = 1;
+            sendMessageButton.FlatAppearance.BorderColor = Color.MediumSeaGreen;
+            sendMessageButton.BackColor = Color.PaleGreen;
+
+            registerButton.FlatStyle = FlatStyle.Flat;
+            registerButton.FlatAppearance.BorderColor = Color.MediumSeaGreen;
+            registerButton.BackColor = Color.PaleGreen;
+
+            authButton.FlatStyle = FlatStyle.Flat;
+            authButton.FlatAppearance.BorderColor = Color.MediumSeaGreen;
+            authButton.BackColor = Color.PaleGreen;
+
+            connectToServerButton.FlatStyle = FlatStyle.Flat;
+            connectToServerButton.FlatAppearance.BorderColor = Color.MediumSeaGreen;
+            connectToServerButton.BackColor = Color.PaleGreen;
         }
 
         private void RegisterEventHandlers()
@@ -195,7 +225,7 @@
                 });
             };
 
-            SendMessageButton.Click += (sender, args) =>
+            sendMessageButton.Click += (sender, args) =>
             {
                 Task.Run(() =>
                 {
@@ -257,6 +287,7 @@
                     {
                         return;
                     }
+
                     _timer = new Timer
                     {
                         AutoReset = true,
@@ -265,6 +296,9 @@
 
                     _timer.Elapsed += CheckMailbox;
                     _timer.Start();
+
+                    ((Button) sender).FlatAppearance.BorderColor = Color.DeepSkyBlue;
+                    activateOfflineModeButton.FlatAppearance.BorderColor = Color.Gray;
                 });
             };
 
@@ -277,6 +311,9 @@
                         _timer.Stop();
                         _timer = null;
                     }
+
+                    ((Button) sender).FlatAppearance.BorderColor = Color.DeepSkyBlue;
+                    activateOnlineModeButton.FlatAppearance.BorderColor = Color.Gray;
                 });
             };
         }
