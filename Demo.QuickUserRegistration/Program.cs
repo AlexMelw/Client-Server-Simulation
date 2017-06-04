@@ -31,7 +31,7 @@ namespace Demo.QuickUserRegistration
 
                 registered = clientWorker.Register(
                     login: "Admin",
-                    password: "q",
+                    password: "qwerty",
                     name: "Veaceslav BARBARII"
                 );
 

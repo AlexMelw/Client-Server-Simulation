@@ -10,6 +10,7 @@
     using FlowProtocol.Implementation.Workers.Clients;
     using FlowProtocol.Interfaces.CommonConventions;
     using FlowProtocol.Interfaces.Workers;
+    using Infrastructure;
     using libZPlay;
     using Properties;
     using Timer = System.Timers.Timer;
@@ -22,6 +23,11 @@
         public string ClientType { get; set; }
 
         #region CONSTRUCTORS
+
+        static FlowClientForm()
+        {
+            IoC.RegisterAll();
+        }
 
         public FlowClientForm()
         {
@@ -41,9 +47,8 @@
         {
             if (ClientType.Equals(Conventions.ClientType.Tcp))
             {
-                //_flowClientWorker = IoC.Resolve<TcpClientWorker>();
+                _flowClientWorker = IoC.Resolve<TcpClientWorker>();
 
-                _flowClientWorker = new TcpClientWorker(new ResponseParser());
                 serverPortTextBox.Text = TcpServerListeningPort.ToString();
                 Text = @"Chat Client [ TCP is used as underlying transport protocol ]";
                 return;
@@ -51,9 +56,8 @@
 
             if (ClientType.Equals(Conventions.ClientType.Udp))
             {
-                //_flowClientWorker = IoC.Resolve<UdpClientWorker>();
+                _flowClientWorker = IoC.Resolve<UdpClientWorker>();
 
-                _flowClientWorker = new UdpClientWorker(new ResponseParser());
                 serverPortTextBox.Text = UdpServerListeningPort.ToString();
                 Text = @"Chat Client [ UDP is used as underlying transport protocol ]";
             }
