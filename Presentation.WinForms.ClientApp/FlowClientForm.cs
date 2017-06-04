@@ -118,6 +118,9 @@
             connectToServerButton.FlatStyle = FlatStyle.Flat;
             connectToServerButton.FlatAppearance.BorderColor = Color.MediumSeaGreen;
             connectToServerButton.BackColor = Color.PaleGreen;
+
+            registerPassTextBox.PasswordChar = '*';
+            authPassTextBox.PasswordChar = '*';
         }
 
         private void RegisterEventHandlers()
