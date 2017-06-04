@@ -1,4 +1,4 @@
-﻿namespace FlowProtocol.Interfaces.Workers
+﻿namespace FlowProtocol.Interfaces.Workers.Clients
 {
     using System;
     using System.Net;

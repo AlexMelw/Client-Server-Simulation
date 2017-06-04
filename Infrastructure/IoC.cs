@@ -3,6 +3,8 @@
     using FlowProtocol.Implementation.Response;
     using FlowProtocol.Implementation.Workers.Clients;
     using FlowProtocol.Interfaces.Response;
+    using FlowProtocol.Interfaces.Workers;
+    using FlowProtocol.Interfaces.Workers.Clients;
     using Ninject;
 
     public class IoC
@@ -14,8 +16,11 @@
             Kernel.Bind<IFlowProtocolResponseParser>()
                 .To<ResponseParser>();
 
-            Kernel.Bind<UdpClientWorker>()
+            Kernel.Bind<IFlowUdpClientWorker>()
                 .To<UdpClientWorker>();
+
+            Kernel.Bind<IFlowTcpClientWorker>()
+                .To<TcpClientWorker>();
 
             //Kernel.Bind<UdpClientWorker>()
             //    .To<UdpClientWorker>()

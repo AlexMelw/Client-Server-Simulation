@@ -5,8 +5,7 @@
     using System.Net.Sockets;
     using System.Threading;
     using Interfaces.Request;
-    using Interfaces.Workers;
-    using Ninject;
+    using Interfaces.Workers.Servers;
     using ProtocolHelpers;
     using Request;
 

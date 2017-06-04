@@ -1,4 +1,4 @@
-﻿namespace FlowProtocol.Interfaces.Workers
+﻿namespace FlowProtocol.Interfaces.Workers.Servers
 {
     using Common;
 

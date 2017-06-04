@@ -5,21 +5,19 @@
     using System.Net;
     using System.Net.Sockets;
     using Interfaces.Response;
-    using Interfaces.Workers;
+    using Interfaces.Workers.Clients;
     using ProtocolHelpers;
     using RequestTemplates;
     using Results;
     using Utilities;
     using static Interfaces.CommonConventions.Conventions;
 
-    public class UdpClientWorker : IFlowClientWorker
+    public class UdpClientWorker : IFlowUdpClientWorker
     {
         private readonly IFlowProtocolResponseParser _parser;
 
         private UdpClient _client;
         private bool _initialized;
-        private string _login;
-        private string _password;
 
         private Guid _sessionToken = Guid.Empty;
 
@@ -90,9 +88,6 @@
             {
                 throw new Exception("No connection to server");
             }
-
-            _login = login;
-            _password = password;
 
             _client = new UdpClient();
 

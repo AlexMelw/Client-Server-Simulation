@@ -47,9 +47,11 @@
     <Compile Include="Request\IFlowProtocolRequestProcessor.cs" />
     <Compile Include="Response\IFlowProtocolResponseProcessor.cs" />
     <Compile Include="Response\IFlowProtocolResponseParser.cs" />
-    <Compile Include="Workers\IFlowServerWorker.cs" />
-    <Compile Include="Workers\IFlowClientWorker.cs" />
+    <Compile Include="Workers\Servers\IFlowServerWorker.cs" />
+    <Compile Include="Workers\Clients\IFlowClientWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Workers\Clients\IFlowTcpClientWorker.cs" />
+    <Compile Include="Workers\Clients\IFlowUdpClientWorker.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\EasySharp\NHelpers\NHelpers.csproj">

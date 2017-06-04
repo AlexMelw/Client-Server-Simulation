@@ -13,6 +13,7 @@ namespace Demo.QuickUserRegistration
     using FlowProtocol.Implementation.Workers.Clients;
     using FlowProtocol.Interfaces.CommonConventions;
     using FlowProtocol.Interfaces.Workers;
+    using FlowProtocol.Interfaces.Workers.Clients;
 
     class Program
     {

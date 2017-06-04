@@ -6,7 +6,7 @@
     using System.Threading;
     using EasySharp.NHelpers.Wrappers;
     using Interfaces.Request;
-    using Interfaces.Workers;
+    using Interfaces.Workers.Servers;
     using ProtocolHelpers;
     using Request;
     using static Interfaces.CommonConventions.Conventions;
