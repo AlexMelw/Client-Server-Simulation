@@ -1,6 +1,6 @@
 
 #TRANSLATE TEXT
-(?:(?<cmd>TRANSLATE)\s+--sourcetext='(?<sourcetext>.+)'\s+--sourcelang='(?<sourcelang>ro|ru|en|unknown)'\s+--targetlang='(?<targetlang>ro|ru|en)')
+(?:(?<cmd>TRANSLATE)\s+--sourcetext='(?<sourcetext>(?s:.+))'\s+--sourcelang='(?<sourcelang>ro|ru|en|unknown)'\s+--targetlang='(?<targetlang>ro|ru|en)')
 # ----------------------
 TRANSLATE  --sourcetext='some\n text' --sourcelang='ro' --targetlang='en'
 TRANSLATE  --sourcetext='some text' --sourcelang='ru' --targetlang='ro'
@@ -8,14 +8,14 @@ TRANSLATE  --sourcetext='some text' --sourcelang='en' --targetlang='en'
 TRANSLATE  --sourcetext='some text' --sourcelang='unknown' --targetlang='ro'
 
 #REGISTER
-(?:(?<cmd>REGISTER)\s+--login='(?<login>[\w]+)'\s+--pass='(?<pass>.+)'\s+--name='(?<name>(?:\w|\s)+)')
+(?:(?<cmd>REGISTER)\s+--login='(?<login>[\w]+)'\s+--pass='(?<pass>(?s:.+))'\s+--name='(?<name>(?:\w|\s)+)')
 # ----------------------
 REGISTER  --login='Perkin77' --pass='95myPass95' --name='Denis Starin'
 REGISTER  --login='Xeon' --pass='95myPass95' --name='Anton Perkin'
 REGISTER  --login='Serg1996' --pass='95myPass95' --name='Petru Bujac'
 
 #AUTHENTICATION LOGIN NAME
-(?:(?<cmd>AUTH)\s+(\s+securepassword\s+protectiontype='(?<passprotectiontype>\w+)')?\s+--login='(?<login>\w+)'\s+--pass='(?<pass>.+)')
+(?:(?<cmd>AUTH)\s+(\s+securepassword\s+protectiontype='(?<passprotectiontype>\w+)')?\s+--login='(?<login>\w+)'\s+--pass='(?<pass>(?s:.+))')
 # ----------------------
 AUTH  securepassword protectiontype='MD5' --login='Serg1996' --pass='95myPass95'
 AUTH  --login='AlexMayhem' --pass='%%elim5595%%'
@@ -30,7 +30,7 @@ GETMSG --sessiontoken='687046DA-BD6C-46CF-ACC5-B67ADACC5866' --translateto='ro'
 GETMSG --sessiontoken='687046DA-BD6C-46CF-ACC5-B67ADACC5866' --translateto='ru'
 
 #SEND MESSAGE
-(?:(?<cmd>SENDMSG)\s+--to='(?<recipient>\w+)'\s+--msg='(?<message>.+)'\s+--sourcelang='(?<sourcelang>en|ro|ru|unknown)'\s+--sessiontoken='(?<sessiontoken>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))')
+(?:(?<cmd>SENDMSG)\s+--to='(?<recipient>\w+)'\s+--msg='(?<message>(?s:.+))'\s+--sourcelang='(?<sourcelang>en|ro|ru|unknown)'\s+--sessiontoken='(?<sessiontoken>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))')
 # ----------------------
 SENDMSG --to='DenisStarin' --msg='How you doin?' --sourcelang='en' --sessiontoken='687046DA-BD6C-46CF-ACC5-B67ADACC5866'
 SENDMSG --to='Ghideon94' --msg='Ce mai faci?' --sourcelang='ro'  --sessiontoken='687046DA-BD6C-46CF-ACC5-B67ABACB5866'

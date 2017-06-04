@@ -1,23 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Demo.QuickUserRegistration
+﻿namespace Demo.QuickUserRegistration
 {
-    using System.Diagnostics;
+    using System;
     using System.Net;
     using System.Threading;
     using FlowProtocol.Implementation.Response;
     using FlowProtocol.Implementation.Workers.Clients;
     using FlowProtocol.Interfaces.CommonConventions;
-    using FlowProtocol.Interfaces.Workers;
     using FlowProtocol.Interfaces.Workers.Clients;
 
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             IFlowClientWorker clientWorker = new TcpClientWorker(new ResponseParser());
 

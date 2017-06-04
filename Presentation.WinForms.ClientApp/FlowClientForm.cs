@@ -6,10 +6,7 @@
     using System.Net;
     using System.Threading.Tasks;
     using System.Windows.Forms;
-    using FlowProtocol.Implementation.Response;
-    using FlowProtocol.Implementation.Workers.Clients;
     using FlowProtocol.Interfaces.CommonConventions;
-    using FlowProtocol.Interfaces.Workers;
     using FlowProtocol.Interfaces.Workers.Clients;
     using Infrastructure;
     using libZPlay;
@@ -147,7 +144,9 @@
                     catch (Exception exception)
                     {
                         Debug.WriteLine(exception);
-                        MessageBox.Show($@"{exception.Message}");
+                        MessageBox.Show(string.IsNullOrWhiteSpace(exception.Message)
+                            ? "Something is wrong: check your server connection"
+                            : exception.Message);
                     }
                 });
             };
@@ -167,7 +166,9 @@
                     catch (Exception exception)
                     {
                         Debug.WriteLine(exception);
-                        MessageBox.Show($@"{exception.Message}");
+                        MessageBox.Show(string.IsNullOrWhiteSpace(exception.Message)
+                            ? "Something is wrong: check your server connection"
+                            : exception.Message);
                     }
                 });
             };
@@ -190,7 +191,9 @@
                     catch (Exception exception)
                     {
                         Debug.WriteLine(exception);
-                        MessageBox.Show($@"{exception.Message}");
+                        MessageBox.Show(string.IsNullOrWhiteSpace(exception.Message)
+                            ? "Something is wrong: check your server connection"
+                            : exception.Message);
                     }
                 });
             };
@@ -228,7 +231,9 @@
                     catch (Exception exception)
                     {
                         Debug.WriteLine(exception);
-                        MessageBox.Show($@"{exception.Message}");
+                        MessageBox.Show(string.IsNullOrWhiteSpace(exception.Message)
+                            ? "Something is wrong: check your server connection"
+                            : exception.Message);
                     }
                 });
             };
@@ -282,7 +287,9 @@
                     catch (Exception exception)
                     {
                         Debug.WriteLine(exception);
-                        MessageBox.Show($@"{exception.Message}");
+                        MessageBox.Show(string.IsNullOrWhiteSpace(exception.Message)
+                            ? "Something is wrong: check your server connection"
+                            : exception.Message);
                     }
                 });
             };
@@ -375,7 +382,9 @@
             catch (Exception exception)
             {
                 Debug.WriteLine(exception);
-                MessageBox.Show($@"{exception.Message}");
+                MessageBox.Show(string.IsNullOrWhiteSpace(exception.Message)
+                    ? "Something is wrong: check your server connection"
+                    : exception.Message);
             }
         }
     }
