@@ -4,8 +4,8 @@
     {
         public const int TcpServerListeningPort = 46418;
         public const int UdpServerListeningPort = 48146;
-        public const int FromBeginning = 0;
         public const int EthernetTcpUdpPacketSize = 1472;
+        public const int FromBeginning = 0;
 
         public const string Error = "ERR";
         public const string Ok = "OK";

@@ -6,16 +6,17 @@
     using System.Net.Sockets;
     using System.Threading;
     using EasySharp.NHelpers.Wrappers;
+    using Interfaces.Servers;
     using Workers.Servers;
     using static Interfaces.CommonConventions.Conventions;
 
-    public class FlowTcpServer
+    public class FlowTcpServer : IFlowTcpServer
     {
         public static FlowTcpServer Instance => new FlowTcpServer();
 
         #region CONSTRUCTORS
 
-        private FlowTcpServer() { }
+        public FlowTcpServer() { }
 
         #endregion
 

@@ -1,7 +1,6 @@
 ﻿namespace FlowProtocol.Implementation.Servers
 {
     using System;
-    using System.IO;
     using System.Net;
     using System.Net.Sockets;
     using System.Threading;
@@ -10,14 +9,14 @@
     using Workers.Servers;
     using static Interfaces.CommonConventions.Conventions;
 
-    public class FlowUdpServer : IServer
+    public class FlowUdpServer : IFlowUdpServer
     {
         private IPEndPoint EmptyEndPointInstance => new IPEndPoint(IPAddress.Any, 0);
         public static FlowUdpServer Instance => new FlowUdpServer();
 
         #region CONSTRUCTORS
 
-        private FlowUdpServer() { }
+        public FlowUdpServer() { }
 
         #endregion
 

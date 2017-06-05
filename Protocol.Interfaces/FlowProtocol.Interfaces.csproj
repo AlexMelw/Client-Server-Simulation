@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="CommonConventions\Conventions.cs" />
     <Compile Include="Common\IFlowProtocol.cs" />
+    <Compile Include="Servers\IFlowTcpServer.cs" />
+    <Compile Include="Servers\IFlowUdpServer.cs" />
     <Compile Include="Servers\IServer.cs" />
     <Compile Include="Request\IFlowProtocolRequestParser.cs" />
     <Compile Include="Request\IFlowProtocolRequestProcessor.cs" />
