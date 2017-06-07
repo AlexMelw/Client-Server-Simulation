@@ -7,7 +7,7 @@
     public sealed class AuthenticatedClients
     {
         private static readonly Lazy<AuthenticatedClients> Lazy =
-            new Lazy<AuthenticatedClients>(() => new AuthenticatedClients(), true);
+            new Lazy<AuthenticatedClients>(() => new AuthenticatedClients(), isThreadSafe: true);
 
         /// <summary>
         ///     Search key is AuthenticatedUser's login

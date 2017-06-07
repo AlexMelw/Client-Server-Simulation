@@ -9,7 +9,7 @@
     using ProtocolHelpers;
     using Request;
 
-    public class UdpServerWorker : IFlowServerWorker
+    public class UdpServerWorker : IUdpServerWorker
     {
         private readonly IFlowProtocolRequestProcessor _requestProcessor;
 
@@ -43,7 +43,7 @@
             }).Start();
         }
 
-        public UdpServerWorker Init(IPEndPoint remoteClientEndPoint, UdpClient udpServer)
+        public IUdpServerWorker Init(IPEndPoint remoteClientEndPoint, UdpClient udpServer)
         {
             _remoteClientEndPoint = remoteClientEndPoint;
             _server = udpServer;

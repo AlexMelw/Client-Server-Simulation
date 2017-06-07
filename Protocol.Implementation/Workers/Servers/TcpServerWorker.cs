@@ -11,7 +11,7 @@
     using Request;
     using static Interfaces.CommonConventions.Conventions;
 
-    public class TcpServerWorker : IFlowServerWorker
+    public class TcpServerWorker : ITcpServerWorker
     {
         private readonly IFlowProtocolRequestProcessor _requestProcessor;
         private TcpListenerEx _server;
@@ -113,7 +113,7 @@
             }).Start();
         }
 
-        public TcpServerWorker Init(Socket workerTcpSocket, TcpListenerEx tcpListener)
+        public ITcpServerWorker Init(Socket workerTcpSocket, TcpListenerEx tcpListener)
         {
             _workerSocket = workerTcpSocket;
             _server = tcpListener;

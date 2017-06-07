@@ -7,7 +7,7 @@
     public sealed class RegisteredUsers
     {
         private static readonly Lazy<RegisteredUsers> Lazy =
-            new Lazy<RegisteredUsers>(() => new RegisteredUsers(), true);
+            new Lazy<RegisteredUsers>(() => new RegisteredUsers(), isThreadSafe: true);
 
         /// <summary>
         ///     Search key is User's login

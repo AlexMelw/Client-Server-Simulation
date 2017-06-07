@@ -7,7 +7,7 @@
     public sealed class CorrespondenceManagement
     {
         private static readonly Lazy<CorrespondenceManagement> Lazy =
-            new Lazy<CorrespondenceManagement>(() => new CorrespondenceManagement(), true);
+            new Lazy<CorrespondenceManagement>(() => new CorrespondenceManagement(), isThreadSafe: true);
 
         public readonly ConcurrentDictionary<string, ConcurrentQueue<ChatMessage>> ClientChatMessageQueues;
 
