@@ -57,8 +57,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="InterfacesRequestResponse.cd" />
-    <None Include="InterfacesWorkersServers.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

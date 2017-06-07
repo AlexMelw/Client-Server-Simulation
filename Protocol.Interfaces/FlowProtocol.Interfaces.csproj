@@ -68,6 +68,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Class Diagrams\InterfacesRequestResponse.cd" />
+    <None Include="Class Diagrams\InterfacesWorkersServers.cd" />
     <None Include="Protocol\RegExRequest.sh" />
     <None Include="Protocol\RegExResponse.sh" />
   </ItemGroup>

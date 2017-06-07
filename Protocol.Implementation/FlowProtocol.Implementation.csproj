@@ -96,10 +96,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ClientWorkers.cd" />
-    <None Include="Parsers.cd" />
-    <None Include="Processors.cd" />
-    <None Include="ServerWorkers.cd" />
+    <None Include="Class Diagrams\ClientWorkers.cd" />
+    <None Include="Class Diagrams\Parsers.cd" />
+    <None Include="Class Diagrams\Processors.cd" />
+    <None Include="Class Diagrams\ServerWorkers.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

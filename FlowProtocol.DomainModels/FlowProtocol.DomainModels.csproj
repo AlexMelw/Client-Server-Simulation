@@ -48,7 +48,7 @@
     <Compile Include="Results\SendMessageResult.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Entities.cd" />
+    <None Include="Class Diagrams\Entities.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
