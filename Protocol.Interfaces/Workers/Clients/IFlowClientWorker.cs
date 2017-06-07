@@ -3,7 +3,7 @@
     using System;
     using System.Net;
     using Common;
-    using Implementation.Workers.Clients.Results;
+    using DomainModels.Results;
 
     /* TCP/UDP Client */
     public interface IFlowClientWorker : IFlowProtocol, IDisposable

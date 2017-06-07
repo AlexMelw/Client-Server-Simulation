@@ -281,7 +281,9 @@
                         }
                         else
                         {
-                            MessageBox.Show($@"{result.ResponseMessage}");
+                            MessageBox.Show(string.IsNullOrWhiteSpace(result.ResponseMessage)
+                                ? "Recipient not found"
+                                : result.ResponseMessage);
                         }
                     }
                     catch (Exception exception)

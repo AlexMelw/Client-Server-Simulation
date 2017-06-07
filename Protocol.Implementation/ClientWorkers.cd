@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="FlowProtocol.Implementation.Workers.Clients.TcpClientWorker">
+    <Position X="1" Y="0.5" Width="6.25" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAACCAAEAACCAAAIIACAEBAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Workers\Clients\TcpClientWorker.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FlowProtocol.Implementation.Workers.Clients.UdpClientWorker">
+    <Position X="1" Y="5" Width="6.25" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAACCAAEAACCAAAIIACAEBAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Workers\Clients\UdpClientWorker.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

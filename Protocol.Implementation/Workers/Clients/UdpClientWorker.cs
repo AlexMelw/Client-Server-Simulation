@@ -4,11 +4,11 @@
     using System.Diagnostics;
     using System.Net;
     using System.Net.Sockets;
+    using DomainModels.Results;
     using Interfaces.Response;
     using Interfaces.Workers.Clients;
     using ProtocolHelpers;
     using RequestTemplates;
-    using Results;
     using Utilities;
     using static Interfaces.CommonConventions.Conventions;
 

@@ -1,4 +1,4 @@
-﻿namespace FlowProtocol.Implementation.Workers.Clients.Results
+﻿namespace FlowProtocol.DomainModels.Results
 {
     public class GetMessageResult
     {

@@ -5,12 +5,12 @@
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
+    using DomainModels.Results;
     using Interfaces.CommonConventions;
     using Interfaces.Response;
     using Interfaces.Workers.Clients;
     using ProtocolHelpers;
     using RequestTemplates;
-    using Results;
     using Utilities;
     using static Interfaces.CommonConventions.Conventions;
 

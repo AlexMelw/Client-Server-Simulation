@@ -24,7 +24,7 @@
         }
 
         public string ProcessRequest(string request)
-            {
+        {
             ConcurrentDictionary<string, string> requestComponents = _parser.ParseRequest(request);
 
             if (requestComponents == null)
