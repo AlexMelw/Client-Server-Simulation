@@ -1,4 +1,6 @@
-﻿namespace Presentation.WinForms.ClientApp
+﻿// ReSharper disable ArgumentsStyleNamedExpression
+
+namespace Presentation.WinForms.ClientApp
 {
     using System;
     using System.Diagnostics;
@@ -11,8 +13,8 @@
     using Infrastructure;
     using libZPlay;
     using Properties;
-    using Timer = System.Timers.Timer;
     using static FlowProtocol.Interfaces.CommonConventions.Conventions;
+    using Timer = System.Timers.Timer;
 
     public partial class FlowClientForm : Form
     {
@@ -127,7 +129,27 @@
 
         private void RegisterEventHandlers()
         {
-            // TODO Run Asynchronously + use MethodInvoker delegate
+            authButton.Click += (sender, args) =>
+            {
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        bool authenticated = _flowClientWorker.Authenticate(
+                            login: authLoginTextBox.Text,
+                            password: authPassTextBox.Text);
+
+                        MessageBox.Show($@"Authenticated: {authenticated}");
+                    }
+                    catch (Exception exception)
+                    {
+                        Debug.WriteLine(exception);
+                        MessageBox.Show(string.IsNullOrWhiteSpace(exception.Message)
+                            ? "Something is wrong: check your server connection"
+                            : exception.Message);
+                    }
+                });
+            };
 
             connectToServerButton.Click += (sender, args) =>
             {
@@ -140,28 +162,6 @@
                             port: int.Parse(serverPortTextBox.Text.Trim()));
 
                         MessageBox.Show($@"Connected: {connected}");
-                    }
-                    catch (Exception exception)
-                    {
-                        Debug.WriteLine(exception);
-                        MessageBox.Show(string.IsNullOrWhiteSpace(exception.Message)
-                            ? "Something is wrong: check your server connection"
-                            : exception.Message);
-                    }
-                });
-            };
-
-            authButton.Click += (sender, args) =>
-            {
-                Task.Run(() =>
-                {
-                    try
-                    {
-                        bool authenticated = _flowClientWorker.Authenticate(
-                            login: authLoginTextBox.Text,
-                            password: authPassTextBox.Text);
-
-                        MessageBox.Show($@"Authenticated: {authenticated}");
                     }
                     catch (Exception exception)
                     {

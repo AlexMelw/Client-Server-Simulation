@@ -26,8 +26,9 @@
             {
                 Console.Out.WriteLine(" [TCP] SERVER IS RUNNING");
 
-                var ipAddress = IPAddress.Parse(Localhost);
-                var tcpListener = new TcpListenerEx(ipAddress, TcpServerListeningPort);
+                var tcpListener = new TcpListenerEx(
+                    localaddr: IPAddress.Parse(Localhost),
+                    port: TcpServerListeningPort);
 
                 try
                 {
@@ -47,6 +48,12 @@
                         TcpServerWorker.Instance
                             .Init(workerTcpSocket, tcpListener)
                             .StartWorking();
+
+                        //// TODO Unchecked modification
+                        //if (tcpListener.Inactive)
+                        //{
+                        //    tcpListener.Stop();
+                        //}
                     }
                 }
                 catch (Exception e)
@@ -57,7 +64,8 @@
                     Debug.WriteLine($"e = {e.Message}");
                     Console.Out.WriteLine("[TCP] PRESS ANY KEY TO QUIT");
                     Console.ReadLine();
-                    throw;
+
+                    //throw; // TODO Unchecked modification
                 }
                 finally
                 {

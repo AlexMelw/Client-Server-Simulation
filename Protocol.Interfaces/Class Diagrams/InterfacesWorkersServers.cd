@@ -1,40 +1,67 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
   <Interface Name="FlowProtocol.Interfaces.Workers.Clients.IFlowClientWorker">
-    <Position X="5" Y="4" Width="6.25" />
-    <TypeIdentifier />
+    <Position X="5" Y="4" Width="5.25" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAACAAAIIAAAABAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Workers\Clients\IFlowClientWorker.cs</FileName>
+    </TypeIdentifier>
   </Interface>
   <Interface Name="FlowProtocol.Interfaces.Workers.Clients.IFlowTcpClientWorker" Collapsed="true">
-    <Position X="8.5" Y="7" Width="1.75" />
-    <TypeIdentifier />
+    <Position X="8" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Workers\Clients\IFlowTcpClientWorker.cs</FileName>
+    </TypeIdentifier>
   </Interface>
   <Interface Name="FlowProtocol.Interfaces.Workers.Clients.IFlowUdpClientWorker" Collapsed="true">
-    <Position X="6" Y="7" Width="2" />
-    <TypeIdentifier />
+    <Position X="5.5" Y="7" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Workers\Clients\IFlowUdpClientWorker.cs</FileName>
+    </TypeIdentifier>
   </Interface>
   <Interface Name="FlowProtocol.Interfaces.Workers.Servers.IFlowServerWorker" Collapsed="true">
     <Position X="4.25" Y="0.75" Width="1.75" />
-    <TypeIdentifier />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Workers\Servers\IFlowServerWorker.cs</FileName>
+    </TypeIdentifier>
   </Interface>
   <Interface Name="FlowProtocol.Interfaces.Workers.Servers.ITcpServerWorker">
-    <Position X="0.5" Y="2.25" Width="4.75" />
-    <TypeIdentifier />
+    <Position X="0.5" Y="2.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAIA=</HashCode>
+      <FileName>Workers\Servers\ITcpServerWorker.cs</FileName>
+    </TypeIdentifier>
   </Interface>
   <Interface Name="FlowProtocol.Interfaces.Workers.Servers.IUdpServerWorker">
-    <Position X="5.5" Y="2.25" Width="5.25" />
-    <TypeIdentifier />
+    <Position X="5.5" Y="2.25" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiAAAAAAA=</HashCode>
+      <FileName>Workers\Servers\IUdpServerWorker.cs</FileName>
+    </TypeIdentifier>
   </Interface>
   <Interface Name="FlowProtocol.Interfaces.Servers.IFlowTcpServer" Collapsed="true">
     <Position X="0.5" Y="6.5" Width="1.5" />
-    <TypeIdentifier />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servers\IFlowTcpServer.cs</FileName>
+    </TypeIdentifier>
   </Interface>
   <Interface Name="FlowProtocol.Interfaces.Servers.IFlowUdpServer" Collapsed="true">
     <Position X="2.25" Y="6.5" Width="1.5" />
-    <TypeIdentifier />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servers\IFlowUdpServer.cs</FileName>
+    </TypeIdentifier>
   </Interface>
   <Interface Name="FlowProtocol.Interfaces.Servers.IServer">
     <Position X="0.75" Y="4.5" Width="2.75" />
-    <TypeIdentifier />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Servers\IServer.cs</FileName>
+    </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

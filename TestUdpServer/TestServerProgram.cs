@@ -21,19 +21,19 @@ namespace TestUdpServer
             //SINGLE THREAD
             // Server --------------------------
             Console.Out.WriteLine("Server...");
-            IPEndPoint serverEndPoint = new IPEndPoint(IPAddress.Any, Conventions.UdpServerListeningPort);
-            UdpClient udpServer = new UdpClient(Conventions.UdpServerListeningPort);
+            IPEndPoint remoteClientEndPoint = new IPEndPoint(IPAddress.Any, 0);
+            UdpClient udpServer = new UdpClient(new IPEndPoint(IPAddress.Any, Conventions.UdpServerListeningPort));
 
             for (
                 string cmdLine = string.Empty;
                 cmdLine != "quit server";)
             {
-                byte[] bufferBytesArray = udpServer.Receive(ref serverEndPoint);
+                byte[] bufferBytesArray = udpServer.Receive(ref remoteClientEndPoint);
                 cmdLine = bufferBytesArray.ToFlowProtocolAsciiDecodedString();
                 Console.Out.WriteLine($"Remote Message: {cmdLine}");
 
                 bufferBytesArray = "OK 200 [ Message Received ]".ToFlowProtocolAsciiEncodedBytesArray();
-                udpServer.Send(bufferBytesArray, bufferBytesArray.Length, serverEndPoint);
+                udpServer.Send(bufferBytesArray, bufferBytesArray.Length, remoteClientEndPoint);
             }
         }
     }
