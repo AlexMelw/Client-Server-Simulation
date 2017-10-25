@@ -158,8 +158,8 @@ namespace Presentation.WinForms.ClientApp
                     try
                     {
                         bool connected = _flowClientWorker.Connect(
-                            ipAddress: IPAddress.Parse(serverIpAddressTextBox.Text.Trim()),
-                            port: int.Parse(serverPortTextBox.Text.Trim()));
+                            IPAddress.Parse(serverIpAddressTextBox.Text.Trim()),
+                            int.Parse(serverPortTextBox.Text.Trim()));
 
                         MessageBox.Show($@"Connected: {connected}");
                     }

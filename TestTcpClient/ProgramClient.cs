@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TestTcpClient
+﻿namespace TestTcpClient
 {
+    using System;
+    using System.Linq;
     using System.Net;
     using System.Net.Sockets;
-    using EasySharp.NHelpers;
     using FlowProtocol.Implementation.ProtocolHelpers;
 
     class ProgramClient
@@ -39,7 +34,7 @@ namespace TestTcpClient
                 }
 
                 NetworkStream tcpStream = tcpClient.GetStream();
-                
+
                 byte[] bytesArray = textToTransmit.ToFlowProtocolAsciiEncodedBytesArray();
 
                 Console.WriteLine(" Transmitting.....");

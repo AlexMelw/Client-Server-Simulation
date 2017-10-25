@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TestUdpServer
+﻿namespace TestUdpServer
 {
+    using System;
     using System.Net;
     using System.Net.Sockets;
-    using EasySharp.NHelpers;
     using FlowProtocol.Implementation.ProtocolHelpers;
-    using FlowProtocol.Implementation.Servers;
     using FlowProtocol.Interfaces.CommonConventions;
-    using Presentation.Console.ServerApp;
 
     class TestServerProgram
     {

@@ -6,6 +6,12 @@
 
     public class Server
     {
+        #region CONSTRUCTORS
+
+        static Server() => IoC.RegisterAll();
+
+        #endregion
+
         private static void Main(string[] args)
         {
             IServer flowTcpServer = IoC.Resolve<IFlowTcpServer>();
@@ -14,7 +20,5 @@
             flowTcpServer.StartListeningToPort(TcpServerListeningPort);
             flowUdpServer.StartListeningToPort(UdpServerListeningPort);
         }
-
-        static Server() => IoC.RegisterAll();
     }
 }

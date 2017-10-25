@@ -6,7 +6,6 @@
     using System.Net;
     using System.Net.Sockets;
     using DomainModels.Results;
-    using Interfaces.CommonConventions;
     using Interfaces.Response;
     using Interfaces.Workers.Clients;
     using ProtocolHelpers;
@@ -440,7 +439,7 @@
                         {
                             if (statusDesc == Error)
                             {
-                                responseComponents.TryGetValue(Conventions.ResultValue, out string resultValue);
+                                responseComponents.TryGetValue(ResultValue, out string resultValue);
 
                                 return new GetMessageResult
                                 {

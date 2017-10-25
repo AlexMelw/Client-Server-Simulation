@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TestTcpServer
+﻿namespace TestTcpServer
 {
+    using System;
     using System.Diagnostics;
+    using System.Linq;
     using System.Net;
     using System.Net.Sockets;
-    using System.Threading;
-    using EasySharp.NHelpers;
     using FlowProtocol.Implementation.ProtocolHelpers;
 
     class ProgramServer
@@ -94,7 +88,6 @@ namespace TestTcpServer
             }
             catch (Exception e)
             {
-                
                 Console.Out.WriteLine("Grave error occured. Searver is dead.");
                 Console.Out.WriteLine($"e = {e}");
                 Debug.WriteLine("Grave error occured. Searver is dead.");

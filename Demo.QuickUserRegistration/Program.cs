@@ -19,26 +19,26 @@
             try
             {
                 clientWorker.Connect(
-                    ipAddress: IPAddress.Parse(Conventions.Localhost),
-                    port: Conventions.TcpServerListeningPort
+                    IPAddress.Parse(Conventions.Localhost),
+                    Conventions.TcpServerListeningPort
                 );
 
                 registered = clientWorker.Register(
-                    login: "Admin",
-                    password: "qwerty",
-                    name: "Veaceslav BARBARII"
+                    "Admin",
+                    "qwerty",
+                    "Veaceslav BARBARII"
                 );
 
                 registered = clientWorker.Register(
-                    login: "Demo1",
-                    password: "q",
-                    name: "Guba Dumitru"
+                    "Demo1",
+                    "q",
+                    "Guba Dumitru"
                 );
 
                 registered = clientWorker.Register(
-                    login: "Demo2",
-                    password: "q",
-                    name: "Bujac Petru"
+                    "Demo2",
+                    "q",
+                    "Bujac Petru"
                 );
             }
             catch (Exception)

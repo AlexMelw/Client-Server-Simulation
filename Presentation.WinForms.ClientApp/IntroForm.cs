@@ -1,13 +1,16 @@
-﻿using System;
-using System.Windows.Forms;
-
-namespace Presentation.WinForms.ClientApp
+﻿namespace Presentation.WinForms.ClientApp
 {
+    using System;
+    using System.Windows.Forms;
     using Properties;
 
     public partial class IntroForm : Form
     {
+        #region CONSTRUCTORS
+
         public IntroForm() => InitializeComponent();
+
+        #endregion
 
         private void OnLoadIntroForm(object sender, EventArgs e)
         {
@@ -17,8 +20,8 @@ namespace Presentation.WinForms.ClientApp
 
         private void ConfigControlsProperties()
         {
-            this.Text = @"Client initializer";
-            this.Icon = Resources.Email;
+            Text = @"Client initializer";
+            Icon = Resources.Email;
 
             pickupProtocolComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             pickupProtocolComboBox.SelectedIndex = 0;
@@ -28,7 +31,7 @@ namespace Presentation.WinForms.ClientApp
         {
             runClientButton.Click += (sender, args) =>
             {
-                this.Hide();
+                Hide();
 
                 string selectedValue = pickupProtocolComboBox.Text;
 
@@ -37,7 +40,7 @@ namespace Presentation.WinForms.ClientApp
                     ClientType = selectedValue
                 };
 
-                flowClientForm.Closed += (o, eventArgs) => this.Close();
+                flowClientForm.Closed += (o, eventArgs) => Close();
 
                 flowClientForm.Show();
             };

@@ -1,7 +1,6 @@
 ﻿namespace FlowProtocol.Interfaces.Workers.Servers
 {
     using System.Net.Sockets;
-    using EasySharp.NHelpers.Wrappers;
 
     public interface ITcpServerWorker : IFlowServerWorker
     {

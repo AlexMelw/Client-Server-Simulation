@@ -1,6 +1,5 @@
 ﻿namespace FlowProtocol.Implementation.Response
 {
-    using System;
     using System.Collections.Concurrent;
     using System.Text.RegularExpressions;
     using Interfaces.Response;

@@ -11,8 +11,8 @@
 
     public class FlowUdpServer : IFlowUdpServer
     {
-        private IPEndPoint EmptyEndPointInstance => new IPEndPoint(IPAddress.Any, 0);
         public static FlowUdpServer Instance => new FlowUdpServer();
+        private IPEndPoint EmptyEndPointInstance => new IPEndPoint(IPAddress.Any, 0);
 
         #region CONSTRUCTORS
 
@@ -25,12 +25,12 @@
             new Thread(() =>
             {
                 Console.Out.WriteLine(" [UDP] SERVER IS RUNNING");
-                
+
                 using (var udpServer = new UdpClient(new IPEndPoint(IPAddress.Any, port)))
                 {
                     bool isServingRequests = true;
 
-                    while(isServingRequests)
+                    while (isServingRequests)
                     {
                         IPEndPoint remoteClientEndPoint = EmptyEndPointInstance;
 
@@ -42,7 +42,8 @@
 
                         if (request == QuitServerCmd)
                         {
-                            bufferByteArray = "200 OK SHUTDOWN --res='UDP Server Halted'".ToFlowProtocolAsciiEncodedBytesArray();
+                            bufferByteArray = "200 OK SHUTDOWN --res='UDP Server Halted'"
+                                .ToFlowProtocolAsciiEncodedBytesArray();
                             udpServer.Send(bufferByteArray, bufferByteArray.Length, remoteClientEndPoint);
                             isServingRequests = false;
                             continue;

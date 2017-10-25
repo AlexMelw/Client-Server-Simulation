@@ -4,7 +4,6 @@
     using System.Linq;
     using System.Net.Sockets;
     using System.Threading;
-    using EasySharp.NHelpers.Wrappers;
     using Interfaces.Request;
     using Interfaces.Workers.Servers;
     using ProtocolHelpers;

@@ -1,8 +1,12 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="FlowProtocol.Implementation.Properties" GeneratedClassName="Settings">
+﻿<?xml version='1.0'
+      encoding='utf-8'?>
+
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)"
+              GeneratedClassNamespace="FlowProtocol.Implementation.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="FlowProtocol_Implementation_MSTranslatorService_SoapService" Type="(Web Service URL)" Scope="Application">
+    <Setting Name="FlowProtocol_Implementation_MSTranslatorService_SoapService" Type="(Web Service URL)"
+             Scope="Application">
       <Value Profile="(Default)">http://api.microsofttranslator.com/V1/soap.svc</Value>
     </Setting>
   </Settings>

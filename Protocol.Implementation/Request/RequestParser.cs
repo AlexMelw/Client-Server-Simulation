@@ -16,7 +16,8 @@
             ;
 
         private readonly string _registerRequestPattern =
-            @"(?:(?<cmd>REGISTER)\s+--login='(?<login>[\w]+)'\s+--pass='(?<pass>(?s:.+))'\s+--name='(?<name>(?:\w|\s)+)')";
+                @"(?:(?<cmd>REGISTER)\s+--login='(?<login>[\w]+)'\s+--pass='(?<pass>(?s:.+))'\s+--name='(?<name>(?:\w|\s)+)')"
+            ;
 
         private readonly string _sendMessageRequestPattern =
                 @"(?:(?<cmd>SENDMSG)\s+--to='(?<recipient>\w+)'\s+--msg='(?<message>(?s:.+))'\s+--sourcelang='(?<sourcelang>en|ro|ru|unknown)'\s+--sessiontoken='(?<sessiontoken>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))')"
