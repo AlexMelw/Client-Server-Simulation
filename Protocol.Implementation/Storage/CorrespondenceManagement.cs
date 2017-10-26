@@ -41,6 +41,7 @@
                                 new XElement("TextBody", chatMessage.TextBody)))));
                 }
 
+                root.Save(XmlFile, SaveOptions.None);
             }
         }
 
@@ -53,7 +54,7 @@
             if (!File.Exists(XmlFile))
             {
                 XElement root = new XElement("ChatMessages");
-                root.Save("CorrespondenceManagement.xml");
+                root.Save("CorrespondenceManagement.xml", SaveOptions.None);
             }
             else
             {
@@ -61,20 +62,23 @@
                 foreach (XElement node in root.Elements("MessageQueue"))
                 {
                     string userLogin = node.Attribute("UserLogin").Value;
-                    User user = RegisteredUsers.Instance.Users[userLogin];
-                    TryCreateMailboxForUser(user);
 
-                    ConcurrentQueue<ChatMessage> userQueue = ClientChatMessageQueues[user.Login];
-
-                    List<ChatMessage> chatMessages = node.Elements("ChatMessage").Select(xChatMessage => new ChatMessage
+                    if (RegisteredUsers.Instance.Users.TryGetValue(userLogin, out User user))
                     {
-                        SenderId = xChatMessage.Element("SenderId").Value,
-                        SenderName = xChatMessage.Element("SenderName").Value,
-                        SourceLang = xChatMessage.Element("SourceLang").Value,
-                        TextBody = xChatMessage.Element("TextBody").Value
-                    }).ToList();
+                        TryCreateMailboxForUser(user);
 
-                    chatMessages.ForEach(chatMessage => userQueue.Enqueue(chatMessage));
+                        ConcurrentQueue<ChatMessage> userQueue = ClientChatMessageQueues[user.Login];
+
+                        List<ChatMessage> chatMessages = node.Elements("ChatMessage").Select(xChatMessage => new ChatMessage
+                        {
+                            SenderId = xChatMessage.Element("SenderId").Value,
+                            SenderName = xChatMessage.Element("SenderName").Value,
+                            SourceLang = xChatMessage.Element("SourceLang").Value,
+                            TextBody = xChatMessage.Element("TextBody").Value
+                        }).ToList();
+
+                        chatMessages.ForEach(chatMessage => userQueue.Enqueue(chatMessage));
+                    }
                 }
             }
         }
@@ -105,7 +109,7 @@
                         root.Add(new XElement("MessageQueue",
                             new XAttribute("UserLogin", user.Login)));
 
-                        root.Save(XmlFile);
+                        root.Save(XmlFile, SaveOptions.None);
                     }
                 }
             }
