@@ -1,5 +1,7 @@
 ﻿namespace FlowProtocol.Implementation.ProtocolHelpers
 {
+    using EasySharp.NHelpers.CustomExMethods;
+
     public static class FlowProtocolEncodingHelper
     {
         public static byte[] ToFlowProtocolAsciiEncodedBytesArray(this string source)

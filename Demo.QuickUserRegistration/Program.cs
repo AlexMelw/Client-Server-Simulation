@@ -25,7 +25,7 @@
 
                 registered = clientWorker.Register(
                     "Admin",
-                    "qwerty",
+                    "q",
                     "Veaceslav BARBARII"
                 );
 

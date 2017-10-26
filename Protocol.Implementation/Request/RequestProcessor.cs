@@ -105,6 +105,8 @@
                                     SenderName = senderUser.Name
                                 });
 
+                            CorrespondenceManagement.Instance.UpdateLocalStorage();
+
                             return $@"200 OK SENDMSG --res='Message sent successfully'";
                         }
                         return $@"512 ERR SENDMSG --res='Inexistent recipient'";
@@ -126,6 +128,8 @@
                             if (CorrespondenceManagement.Instance.ClientChatMessageQueues[user.Login]
                                 .TryDequeue(out ChatMessage msg))
                             {
+                                CorrespondenceManagement.Instance.UpdateLocalStorage();
+
                                 return
                                     $"200 OK GETMSG --senderid='{msg.SenderId}' --sendername='{msg.SenderName}' --msg='{msg.TextBody}'";
                             }

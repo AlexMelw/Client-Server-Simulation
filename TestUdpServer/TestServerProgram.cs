@@ -4,7 +4,7 @@
     using System.Net;
     using System.Net.Sockets;
     using FlowProtocol.Implementation.ProtocolHelpers;
-    using FlowProtocol.Interfaces.CommonConventions;
+    using static FlowProtocol.Interfaces.CommonConventions.Conventions;
 
     class TestServerProgram
     {
@@ -13,8 +13,9 @@
             //SINGLE THREAD
             // Server --------------------------
             Console.Out.WriteLine("Server...");
-            IPEndPoint remoteClientEndPoint = new IPEndPoint(IPAddress.Any, 0);
-            UdpClient udpServer = new UdpClient(new IPEndPoint(IPAddress.Any, Conventions.UdpServerListeningPort));
+            IPEndPoint remoteClientEndPoint = new IPEndPoint(IPAddress.None, 0);
+            UdpClient udpServer = new UdpClient(
+                new IPEndPoint(IPAddress.Any, UdpServerListeningPort));
 
             for (
                 string cmdLine = string.Empty;

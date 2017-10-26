@@ -73,7 +73,7 @@
 
                         workerTcpSocket.Send(" 200 OK [ Message Received ]".ToFlowProtocolAsciiEncodedBytesArray());
 
-                        if ( /*stop server command received*/ count == 5)
+                        if ( /*stop server command received*/ count >= 5)
                         {
                             Console.Out.WriteLine("Server has ended serving requests for given client.");
                             workerTcpSocket.Close();
@@ -88,12 +88,12 @@
             }
             catch (Exception e)
             {
-                Console.Out.WriteLine("Grave error occured. Searver is dead.");
+                Console.Out.WriteLine("Grave error occurred. Server is dead.");
                 Console.Out.WriteLine($"e = {e}");
-                Debug.WriteLine("Grave error occured. Searver is dead.");
-                Debug.WriteLine($"e = {e}");
+                Debug.WriteLine("Grave error occurred. Server is dead.");
+                Debug.WriteLine(e);
                 Console.ReadLine();
-                throw;
+                Environment.Exit(1);
             }
             finally
             {

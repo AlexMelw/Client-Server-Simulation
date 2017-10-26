@@ -29,7 +29,7 @@
                 udpClient.Send(buffer, buffer.Length);
 
                 buffer = udpClient.Receive(ref serverEndPoint);
-                Console.Out.WriteLine($"{buffer.ToFlowProtocolAsciiDecodedString()}");
+                Console.Out.WriteLine(buffer.ToFlowProtocolAsciiDecodedString());
             }
         }
     }
