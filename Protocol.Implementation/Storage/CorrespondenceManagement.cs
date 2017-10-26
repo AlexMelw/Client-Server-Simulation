@@ -24,7 +24,10 @@
         {
             lock (PadLock)
             {
-                File.Delete(XmlFile);
+                if (File.Exists(XmlFile))
+                {
+                    File.Delete(XmlFile);
+                }
 
                 XElement root = new XElement("CorrespondenceManagement");
 
@@ -53,32 +56,43 @@
 
             if (!File.Exists(XmlFile))
             {
-                XElement root = new XElement("ChatMessages");
-                root.Save("CorrespondenceManagement.xml", SaveOptions.None);
+                CreateXmlLocalStorage();
             }
             else
             {
-                XElement root = XElement.Load(XmlFile, LoadOptions.PreserveWhitespace);
-                foreach (XElement node in root.Elements("MessageQueue"))
+                LoadCorrespondenceData();
+            }
+        }
+
+        private static void CreateXmlLocalStorage()
+        {
+            XElement root = new XElement("ChatMessages");
+            root.Save(XmlFile, SaveOptions.None);
+        }
+
+        private void LoadCorrespondenceData()
+        {
+            XElement root = XElement.Load(XmlFile, LoadOptions.PreserveWhitespace);
+
+            foreach (XElement node in root.Descendants("MessageQueue"))
+            {
+                string userLogin = node.Attribute("UserLogin").Value;
+
+                if (RegisteredUsers.Instance.Users.TryGetValue(userLogin, out User user))
                 {
-                    string userLogin = node.Attribute("UserLogin").Value;
+                    TryCreateMailboxForUser(user);
 
-                    if (RegisteredUsers.Instance.Users.TryGetValue(userLogin, out User user))
+                    ConcurrentQueue<ChatMessage> userQueue = ClientChatMessageQueues[user.Login];
+
+                    List<ChatMessage> chatMessages = node.Descendants("ChatMessage").Select(xChatMessage => new ChatMessage
                     {
-                        TryCreateMailboxForUser(user);
+                        SenderId = xChatMessage.Element("SenderId").Value,
+                        SenderName = xChatMessage.Element("SenderName").Value,
+                        SourceLang = xChatMessage.Element("SourceLang").Value,
+                        TextBody = xChatMessage.Element("TextBody").Value
+                    }).ToList();
 
-                        ConcurrentQueue<ChatMessage> userQueue = ClientChatMessageQueues[user.Login];
-
-                        List<ChatMessage> chatMessages = node.Elements("ChatMessage").Select(xChatMessage => new ChatMessage
-                        {
-                            SenderId = xChatMessage.Element("SenderId").Value,
-                            SenderName = xChatMessage.Element("SenderName").Value,
-                            SourceLang = xChatMessage.Element("SourceLang").Value,
-                            TextBody = xChatMessage.Element("TextBody").Value
-                        }).ToList();
-
-                        chatMessages.ForEach(chatMessage => userQueue.Enqueue(chatMessage));
-                    }
+                    chatMessages.ForEach(chatMessage => { userQueue.Enqueue(chatMessage); });
                 }
             }
         }
@@ -96,25 +110,37 @@
 
             if (success)
             {
-                lock (PadLock)
-                {
-                    XElement root = XElement.Load(XmlFile, LoadOptions.PreserveWhitespace);
-
-                    XElement userQueue = root
-                        .Elements("MessageQueue")
-                        .FirstOrDefault(queue => queue.Attribute("UserLogin").Value == user.Login);
-
-                    if (userQueue == null)
-                    {
-                        root.Add(new XElement("MessageQueue",
-                            new XAttribute("UserLogin", user.Login)));
-
-                        root.Save(XmlFile, SaveOptions.None);
-                    }
-                }
+                PersistCorrespondenceData();
             }
 
             return success;
+        }
+
+        private void PersistCorrespondenceData()
+        {
+            lock (PadLock)
+            {
+                XElement root = new XElement("ChatMessages");
+
+                foreach (KeyValuePair<string, ConcurrentQueue<ChatMessage>> pair in ClientChatMessageQueues)
+                {
+                    string login = pair.Key;
+
+                    root.Add(
+                        new XElement("MessageQueue",
+                            new XAttribute("UserLogin", login),
+                            pair.Value.Select(chatMessage =>
+                            {
+                                return new XElement("ChatMessage",
+                                    new XElement("SenderId", chatMessage.SenderId),
+                                    new XElement("SenderName", chatMessage.SenderName),
+                                    new XElement("SourceLang", chatMessage.SourceLang),
+                                    new XElement("TextBody", chatMessage.TextBody));
+                            }).ToList()));
+                }
+                
+                root.Save(XmlFile, SaveOptions.None);
+            }
         }
     }
 }

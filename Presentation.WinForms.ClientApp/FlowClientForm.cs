@@ -308,7 +308,7 @@ namespace Presentation.WinForms.ClientApp
                     _timer = new Timer
                     {
                         AutoReset = true,
-                        Interval = 3000
+                        Interval = 1000
                     };
 
                     _timer.Elapsed += CheckMailbox;
