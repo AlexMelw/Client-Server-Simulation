@@ -14,6 +14,8 @@
 
         private static void Main(string[] args)
         {
+            System.Console.Title = "Flow Server is running";
+
             IServer flowTcpServer = IoC.Resolve<IFlowTcpServer>();
             IServer flowUdpServer = IoC.Resolve<IFlowUdpServer>();
 

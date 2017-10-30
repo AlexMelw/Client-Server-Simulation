@@ -156,14 +156,12 @@
                                         fromLang,
                                         toLang);
                                 }
-                                catch (Exception e)
+                                catch (Exception)
                                 {
-                                    translatedText =
-                                        "[ Cognitive Services Reply: you have reached your translations limit for today ]";
+                                    translatedText = "[ Cognitive Services Reply: you have reached your translations limit for today ]";
                                 }
 
-                                return
-                                    $"200 OK GETMSG --senderid='{msg.SenderId}' --sendername='{msg.SenderName}' --msg='{translatedText}'";
+                                return $"200 OK GETMSG --senderid='{msg.SenderId}' --sendername='{msg.SenderName}' --msg='{translatedText}'";
                             }
                             return $@"513 ERR GETMSG --res='Message Box is empty'";
                         }
