@@ -148,7 +148,7 @@
                                         sourceLang: fromLang,
                                         targetLang: toLang);
                                 }
-                                catch (Exception e)
+                                catch (Exception)
                                 {
                                     translatedText =
                                         "[ Cognitive Services Reply: you have reached your translations limit for today ]";

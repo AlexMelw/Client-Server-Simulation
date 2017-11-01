@@ -28,7 +28,8 @@
         private readonly string _shutdownServerResponsePattern =
             @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK)\s+(?<cmd>SHUTDOWN)\s+--res='(?<res>(?s:.+))')";
 
-        private readonly string _helloResponsePattern = @"(?:(?<statuscode>200)\s+(?<statusdesc>OK)\s+(?<cmd>HELLO))";
+        private readonly string _helloResponsePattern = @"(?:(?<statuscode>200)\s+(?<statusdesc>OK)\s+(?<cmd>HELLO)\s+--pubkey='(?:(?<e>[0-9A-F]+)\|(?<m>[0-9A-F]+))'\s+--sessionkey='(?<sessionkey>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))')";
+        // 200 OK HELLO --pubkey='0123456789ABCDEF|0123456789ABCDEF' --sessionkey='4b6ef0fd-278d-44a9-bc1ab36d1117d7cd'
 
         public ConcurrentDictionary<string, string> ParseResponse(string response)
         {

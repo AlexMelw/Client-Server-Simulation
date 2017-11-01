@@ -6,6 +6,7 @@ namespace Presentation.WinForms.ClientApp
     using System.Diagnostics;
     using System.Drawing;
     using System.Net;
+    using System.Security.Cryptography;
     using System.Threading.Tasks;
     using System.Windows.Forms;
     using FlowProtocol.Interfaces.CommonConventions;
@@ -24,10 +25,7 @@ namespace Presentation.WinForms.ClientApp
 
         #region CONSTRUCTORS
 
-        static FlowClientForm()
-        {
-            IoC.RegisterAll();
-        }
+        static FlowClientForm() => IoC.RegisterAll();
 
         public FlowClientForm()
         {

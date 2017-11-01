@@ -1,6 +1,6 @@
 ﻿namespace FlowProtocol.Implementation.ProtocolHelpers
 {
-    using EasySharp.NHelpers.ExtensionMethods;
+    using EasySharp.NHelpers.CustomExMethods;
 
     public static class FlowProtocolEncodingHelper
     {

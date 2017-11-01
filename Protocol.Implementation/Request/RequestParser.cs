@@ -8,7 +8,7 @@
     public class RequestParser : IFlowProtocolRequestParser
     {
         private readonly string _authenticationRequestPattern =
-                @"(?:(?<cmd>AUTH)\s+(\s+securepassword\s+protectiontype='(?<passprotectiontype>\w+)')?\s+--login='(?<login>\w+)'\s+--pass='(?<pass>(?s:.+))')"
+                @"(?:(?<cmd>AUTH)\s+--login='(?<login>\w+)'\s+--pass='(?<pass>(?s:.+))')"
             ;
 
         private readonly string _getMessageRequestPattern =
@@ -26,7 +26,7 @@
                 @"(?:(?<cmd>TRANSLATE)\s+--sourcetext='(?<sourcetext>(?s:.+))'\s+--sourcelang='(?<sourcelang>ro|ru|en|unknown)'\s+--targetlang='(?<targetlang>ro|ru|en)')"
             ;
 
-        private readonly string _helloRequestPattern = @"(?<cmd>HELLO)";
+        private readonly string _helloRequestPattern = @"(?<cmd>HELLO)\s+--pubkey='(?:(?<e>[0-9A-F]+)\|(?<m>[0-9A-F]+))'"; //  HELLO --pubkey='0123456789ABCDEF|0123456789ABCDEF'
 
         public ConcurrentDictionary<string, string> ParseRequest(string request)
         {

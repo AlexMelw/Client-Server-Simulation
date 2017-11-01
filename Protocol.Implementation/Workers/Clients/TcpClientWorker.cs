@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
+    using System.Security.Cryptography;
     using DomainModels.Results;
     using Interfaces.CommonConventions;
     using Interfaces.Response;
@@ -17,6 +18,11 @@
     public class TcpClientWorker : IFlowTcpClientWorker
     {
         private readonly IFlowProtocolResponseParser _parser;
+
+        public RSAParameters ForeignPublicKey { get; set; }
+        public RSAParameters OwnPublicKey { get; set; }
+
+        private RSAParameters _ownPrivateKey;
 
         private TcpClient _client;
         private bool _initialized;
@@ -31,6 +37,17 @@
         public TcpClientWorker(IFlowProtocolResponseParser parser)
         {
             _parser = parser;
+            GenerateRsaKeyPair();
+        }
+
+        private void GenerateRsaKeyPair()
+        {
+            using (var rsa = new RSACryptoServiceProvider(2048))
+            {
+                rsa.PersistKeyInCsp = false;
+                OwnPublicKey = rsa.ExportParameters(false);
+                _ownPrivateKey = rsa.ExportParameters(true);
+            }
         }
 
         #endregion
@@ -40,7 +57,7 @@
             RemoteHostIpAddress = ipAddress;
             Port = port;
 
-            _initialized = true;
+            _initialized = false;
 
             try
             {
@@ -73,7 +90,12 @@
                 {
                     if (cmd.Equals(Commands.Hello))
                     {
+                        _initialized = true;
                         return true;
+                    }
+                    else
+                    {
+                        return false;
                     }
                 }
             }

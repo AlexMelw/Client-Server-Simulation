@@ -5,7 +5,7 @@
     using System.Net;
     using System.Net.Sockets;
     using System.Threading;
-    using EasySharp.NHelpers.Wrappers;
+    using EasySharp.NHelpers.CustomWrappers.Networking;
     using Interfaces.Servers;
     using Workers.Servers;
     using static Interfaces.CommonConventions.Conventions;

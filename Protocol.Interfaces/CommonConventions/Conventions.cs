@@ -44,6 +44,10 @@
         public const string Pass = "pass";
         public const string Login = "login";
 
+        // AUTHENTICATION
+        public const string Exponent = "e";
+        public const string Modulus = "m";
+
         // TRANSLATE
         public const string SourceText = "sourcetext";
 
