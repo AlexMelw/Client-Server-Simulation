@@ -9,6 +9,13 @@
 
     public class ResponseParser : IFlowProtocolResponseParser
     {
+        private const string HelloResponsePattern =
+                @"(?:(?<statuscode>200)\s+(?<statusdesc>OK)\s+(?<cmd>HELLO)\s+--pubkey='(?:(?<e>(?i:[0-9A-F+/]+))\|(?<m>(?i:[0-9A-F+/]+)))'\s+--sessionkey='(?<sessionkey>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))')"
+            ;
+
+        private const string EncryptedMessagePattern =
+            @"(?:(?<cmd>CONF)\s+secret:(?<secret>(?i:[a-z0-9+/]+)))";
+
         private const string AuthenticationResponsePattern =
                 @"(?:(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK)\s+(?<cmd>AUTH)\s+--res='(?<res>(?s:.+))'\s+--sessiontoken='(?<sessiontoken>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))')|(?:(?<statuscode>\d{3})\s+(?<statusdesc>ERR)\s+(?<cmd>AUTH)\s+--res='(?<res>(?s:.+))'))"
             ;
@@ -29,9 +36,8 @@
         private const string ShutdownServerResponsePattern =
             @"(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK)\s+(?<cmd>SHUTDOWN)\s+--res='(?<res>(?s:.+))')";
 
-        private const string HelloResponsePattern = @"(?:(?<statuscode>200)\s+(?<statusdesc>OK)\s+(?<cmd>HELLO)\s+--pubkey='(?:(?<e>[0-9A-F]+)\|(?<m>[0-9A-F]+))'\s+--sessionkey='(?<sessionkey>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))')";
         // 200 OK HELLO --pubkey='0123456789ABCDEF|0123456789ABCDEF' --sessionkey='4b6ef0fd-278d-44a9-bc1ab36d1117d7cd'
-
+        
         public ConcurrentDictionary<string, string> ParseResponse(string response)
         {
             var responseComponents = new ConcurrentDictionary<string, string>();
@@ -49,6 +55,20 @@
 
                 return responseComponents;
             }
+
+
+            // <ENCRYPTED RECEIVED MESSAGE> RESPONSE
+            parser = new Regex(EncryptedMessagePattern);
+            match = parser.Match(response);
+
+            if (match.Success)
+            {
+                responseComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
+                responseComponents.TryAdd(Secret, match.Groups[Secret].Value);
+
+                return responseComponents;
+            }
+
 
             // <REGISTRATION> RESPONSE
             parser = new Regex(RegisterResponsePattern);

@@ -50,8 +50,8 @@
                     string e = keys.ServerPublicKey.Exponent.ToBase64String();
                     string m = keys.ServerPublicKey.Modulus.ToBase64String();
 
-                    return
-                        $"200 OK HELLO --pubkey='{e}|{m}' --sessionkey='{sessionKey}'";
+                    // Must not be encrypted !
+                    return $"200 OK HELLO --pubkey='{e}|{m}' --sessionkey='{sessionKey}'";
 
                     //return $@"502 ERR HELLO --res='Cannot establish a secure connection'";
                 }
@@ -97,7 +97,10 @@
                                 sourceLang: sourceLang,
                                 targetLang: targetLang
                             );
-                            return $@"200 OK TRANSLATE --res='{translatedText}'";
+
+                            string originalMessage = $@"200 OK TRANSLATE --res='{translatedText}'";
+
+                            return EncapsulateEncryptedMessage(originalMessage, sessionKey);
                         }
                         if (cmd == Commands.Auth)
                         {
@@ -108,12 +111,16 @@
 
                             if (authToken != Guid.Empty)
                             {
-                                return $@"200 OK AUTH --res='User authenticated successfully' --sessiontoken='{
-                                        authToken
-                                    }'";
+                                string originalMessage =
+                                    $@"200 OK AUTH --res='User authenticated successfully' --sessiontoken='{
+                                            authToken
+                                        }'";
+                                return EncapsulateEncryptedMessage(originalMessage, sessionKey);
                             }
 
-                            return $@"530 ERR AUTH --res='login or password incorrect'";
+                            string originalMessage2 = $@"530 ERR AUTH --res='login or password incorrect'";
+
+                            return EncapsulateEncryptedMessage(originalMessage2, sessionKey);
                         }
                         if (cmd == Commands.SendMessage)
                         {
@@ -140,11 +147,16 @@
                                             SenderName = senderUser.Name
                                         });
 
-                                    return $@"200 OK SENDMSG --res='Message sent successfully'";
+                                    string originalMessage = $@"200 OK SENDMSG --res='Message sent successfully'";
+                                    return EncapsulateEncryptedMessage(originalMessage, sessionKey);
                                 }
-                                return $@"512 ERR SENDMSG --res='Inexistent recipient'";
+
+                                string originalMessage2 = $@"512 ERR SENDMSG --res='Inexistent recipient'";
+                                return EncapsulateEncryptedMessage(originalMessage2, sessionKey);
                             }
-                            return $@"511 ERR SENDMSG --res='Athentication required'";
+
+                            string originalMessage3 = $@"511 ERR SENDMSG --res='Athentication required'";
+                            return EncapsulateEncryptedMessage(originalMessage3, sessionKey);
                         }
                         if (cmd == Commands.GetMessage)
                         {
@@ -161,10 +173,13 @@
                                     if (CorrespondenceManagement.Instance.ClientChatMessageQueues[user.Login]
                                         .TryDequeue(out ChatMessage msg))
                                     {
-                                        return
+                                        string originalMessage =
                                             $"200 OK GETMSG --senderid='{msg.SenderId}' --sendername='{msg.SenderName}' --msg='{msg.TextBody}'";
+                                        return EncapsulateEncryptedMessage(originalMessage, sessionKey);
                                     }
-                                    return $@"513 ERR GETMSG --res='Message Box is empty'";
+
+                                    string originalMessage2 = $@"513 ERR GETMSG --res='Message Box is empty'";
+                                    return EncapsulateEncryptedMessage(originalMessage2, sessionKey);
                                 }
 
                                 if (translationMode == DoTranslate)
@@ -193,13 +208,18 @@
                                                 "[ Cognitive Services Reply: you have reached your translations limit for today ]";
                                         }
 
-                                        return
+                                        string originalMessage =
                                             $"200 OK GETMSG --senderid='{msg.SenderId}' --sendername='{msg.SenderName}' --msg='{translatedText}'";
+                                        return EncapsulateEncryptedMessage(originalMessage, sessionKey);
                                     }
-                                    return $@"513 ERR GETMSG --res='Message Box is empty'";
+
+                                    string originalMessage2 = $@"513 ERR GETMSG --res='Message Box is empty'";
+                                    return EncapsulateEncryptedMessage(originalMessage2, sessionKey);
                                 }
                             }
-                            return $"511 ERR GETMSG --res='Athentication required'";
+
+                            string originalMessage3 = $"511 ERR GETMSG --res='Athentication required'";
+                            return EncapsulateEncryptedMessage(originalMessage3, sessionKey);
                         }
                     }
                 }
@@ -222,7 +242,7 @@
             }
 
             string encapsulatedMessage = string.Format(Template.EncapsulateMessageTemplate,
-                    encryptedMessage.ToUtf8String());
+                encryptedMessage.ToUtf8String());
 
             return encapsulatedMessage;
         }

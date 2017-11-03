@@ -7,8 +7,10 @@
 
     public class RequestParser : IFlowProtocolRequestParser
     {
+        private const string _helloRequestPattern = @"(?<cmd>HELLO)\s+--pubkey='(?:(?<e>[0-9A-F]+)\|(?<m>[0-9A-F]+))'"; //  HELLO --pubkey='0123456789ABCDEF|0123456789ABCDEF'
+
         private readonly string _encryptedMessagePattern =
-                @"(?:(?<cmd>CONF)\s+sessionkey:(?<sessionkey>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))\s+secret:(?<secret>(?i:[a-z0-9+/]+)))"
+                @"(?:(?<cmd>CONF)\s+sessionkey:(?<sessionkey>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))\s+secret:(?<secret>(?i:[a-z0-9\+\/\=]+)))"
             ;
 
         private readonly string _authenticationRequestPattern =
@@ -29,8 +31,6 @@
         private readonly string _translateRequestPattern =
                 @"(?:(?<cmd>TRANSLATE)\s+--sourcetext='(?<sourcetext>(?s:.+))'\s+--sourcelang='(?<sourcelang>ro|ru|en|unknown)'\s+--targetlang='(?<targetlang>ro|ru|en)')"
             ;
-
-        private readonly string _helloRequestPattern = @"(?<cmd>HELLO)\s+--pubkey='(?:(?<e>[0-9A-F]+)\|(?<m>[0-9A-F]+))'"; //  HELLO --pubkey='0123456789ABCDEF|0123456789ABCDEF'
 
         public ConcurrentDictionary<string, string> ParseRequest(string request)
         {
