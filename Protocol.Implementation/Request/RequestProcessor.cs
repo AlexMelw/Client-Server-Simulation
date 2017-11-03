@@ -4,10 +4,14 @@
     using System.Collections.Concurrent;
     using System.Diagnostics;
     using System.Linq;
+    using System.Security.Cryptography;
     using DomainModels.Entities;
+    using EasySharp.NHelpers.CustomExMethods;
+    using Interfaces.CommonConventions;
     using Interfaces.Request;
     using MSTranslatorService;
     using Ninject;
+    using ProtocolHelpers;
     using Storage;
     using static Interfaces.CommonConventions.Conventions;
 
@@ -25,158 +29,238 @@
 
         public string ProcessRequest(string request)
         {
-            ConcurrentDictionary<string, string> requestComponents = _parser.ParseRequest(request);
+            ConcurrentDictionary<string, string> plainTextRequestComponents = _parser.ParseRequest(request);
 
-            if (requestComponents == null)
+            if (plainTextRequestComponents == null)
                 return BadRequest;
 
-            if (requestComponents.TryGetValue(Cmd, out string cmd))
+            if (plainTextRequestComponents.TryGetValue(Cmd, out string cmd))
             {
                 if (cmd == Commands.Hello)
                 {
                     //return $@"200 OK HELLO";
-                    requestComponents.TryGetValue(Exponent, out string clientEncryptionExponent);
-                    requestComponents.TryGetValue(Modulus, out string clientEncryptionModulus);
+                    plainTextRequestComponents.TryGetValue(Exponent, out string clientEncryptionExponent);
+                    plainTextRequestComponents.TryGetValue(Modulus, out string clientEncryptionModulus);
 
-                    if (TryEstablishSecureConnection(clientEncryptionExponent, clientEncryptionModulus))
-                    {
-                        throw new NotImplementedException();
-                    }
+                    Guid sessionKey = CreateSessionKey(clientEncryptionExponent, clientEncryptionModulus);
 
-                    return $@"502 ERR HELLO --res='Cannot establish a secure connection'";
+                    SecureSessionMap.Instance.Keeper.TryGetValue(sessionKey, out var keys);
 
+
+                    string e = keys.ServerPublicKey.Exponent.ToBase64String();
+                    string m = keys.ServerPublicKey.Modulus.ToBase64String();
+
+                    return
+                        $"200 OK HELLO --pubkey='{e}|{m}' --sessionkey='{sessionKey}'";
+
+                    //return $@"502 ERR HELLO --res='Cannot establish a secure connection'";
                 }
-                if (cmd == Commands.Register)
+                else
                 {
-                    requestComponents.TryGetValue(Login, out string login);
-                    requestComponents.TryGetValue(Pass, out string pass);
-                    requestComponents.TryGetValue(Name, out string name);
-
-                    if (RegisterUser(login, pass, name))
+                    if (cmd == Commands.Confidential)
                     {
-                        return $@"200 OK REGISTER --res='User registered successfully'";
-                    }
+                        ConcurrentDictionary<string, string> requestComponents = _parser.ParseRequest(request);
 
-                    return $@"502 ERR REGISTER --res='User already exists'";
-                }
-                if (cmd == Commands.Translate)
-                {
-                    requestComponents.TryGetValue(SourceText, out string sourceText);
-                    requestComponents.TryGetValue(SourceLang, out string sourceLang);
-                    requestComponents.TryGetValue(TargetLang, out string targetLang);
+                        if (requestComponents == null)
+                            return BadRequest;
 
-                    string translatedText = Translate(
-                        sourceText: sourceText,
-                        sourceLang: sourceLang,
-                        targetLang: targetLang
-                    );
-                    return $@"200 OK TRANSLATE --res='{translatedText}'";
-                }
-                if (cmd == Commands.Auth)
-                {
-                    requestComponents.TryGetValue(Login, out string login);
-                    requestComponents.TryGetValue(Pass, out string pass);
 
-                    Guid authToken = CreateNewSessionForUserWithCredentials(login, pass);
+                        requestComponents.TryGetValue(SessionKey, out string sessionKey);
+                        requestComponents.TryGetValue(Secret, out string secret);
 
-                    if (authToken != Guid.Empty)
-                    {
-                        return $@"200 OK AUTH --res='User authenticated successfully' --sessiontoken='{authToken}'";
-                    }
+                        string decryptedMessage = DecryptSecret(secret, sessionKey);
 
-                    return $@"530 ERR AUTH --res='login or password incorrect'";
-                }
-                if (cmd == Commands.SendMessage)
-                {
-                    requestComponents.TryGetValue(SessionToken, out string sessionToken);
-
-                    User senderUser = AuthenticateUser(sessionToken);
-
-                    if (senderUser != null)
-                    {
-                        requestComponents.TryGetValue(Recipient, out string recipient);
-
-                        if (AuthenticateRecipient(recipient))
+                        if (cmd == Commands.Register)
                         {
-                            requestComponents.TryGetValue(Message, out string message);
+                            requestComponents.TryGetValue(Login, out string login);
+                            requestComponents.TryGetValue(Pass, out string pass);
+                            requestComponents.TryGetValue(Name, out string name);
+
+                            if (RegisterUser(login, pass, name))
+                            {
+                                return $@"200 OK REGISTER --res='User registered successfully'";
+                            }
+
+                            return $@"502 ERR REGISTER --res='User already exists'";
+                        }
+                        if (cmd == Commands.Translate)
+                        {
+                            requestComponents.TryGetValue(SourceText, out string sourceText);
                             requestComponents.TryGetValue(SourceLang, out string sourceLang);
+                            requestComponents.TryGetValue(TargetLang, out string targetLang);
 
-                            Debug.Assert(recipient != null, "recipient != null");
-                            CorrespondenceManagement.Instance.ClientChatMessageQueues[recipient]
-                                .Enqueue(new ChatMessage
-                                {
-                                    SourceLang = sourceLang,
-                                    TextBody = message,
-                                    SenderId = senderUser.Login,
-                                    SenderName = senderUser.Name
-                                });
-
-                            return $@"200 OK SENDMSG --res='Message sent successfully'";
+                            string translatedText = Translate(
+                                sourceText: sourceText,
+                                sourceLang: sourceLang,
+                                targetLang: targetLang
+                            );
+                            return $@"200 OK TRANSLATE --res='{translatedText}'";
                         }
-                        return $@"512 ERR SENDMSG --res='Inexistent recipient'";
-                    }
-                    return $@"511 ERR SENDMSG --res='Athentication required'";
-                }
-                if (cmd == Commands.GetMessage)
-                {
-                    requestComponents.TryGetValue(SessionToken, out string sessionToken);
-
-                    User user = AuthenticateUser(sessionToken);
-
-                    if (user != null)
-                    {
-                        requestComponents.TryGetValue(TranslationMode, out string translationMode);
-
-                        if (translationMode == DoNotTranslate)
+                        if (cmd == Commands.Auth)
                         {
-                            if (CorrespondenceManagement.Instance.ClientChatMessageQueues[user.Login]
-                                .TryDequeue(out ChatMessage msg))
+                            requestComponents.TryGetValue(Login, out string login);
+                            requestComponents.TryGetValue(Pass, out string pass);
+
+                            Guid authToken = CreateNewSessionForUserWithCredentials(login, pass);
+
+                            if (authToken != Guid.Empty)
                             {
-                                return
-                                    $"200 OK GETMSG --senderid='{msg.SenderId}' --sendername='{msg.SenderName}' --msg='{msg.TextBody}'";
+                                return $@"200 OK AUTH --res='User authenticated successfully' --sessiontoken='{
+                                        authToken
+                                    }'";
                             }
-                            return $@"513 ERR GETMSG --res='Message Box is empty'";
+
+                            return $@"530 ERR AUTH --res='login or password incorrect'";
                         }
-
-                        if (translationMode == DoTranslate)
+                        if (cmd == Commands.SendMessage)
                         {
-                            if (CorrespondenceManagement.Instance.ClientChatMessageQueues[user.Login]
-                                .TryDequeue(out ChatMessage msg))
+                            requestComponents.TryGetValue(SessionToken, out string sessionToken);
+
+                            User senderUser = AuthenticateUser(sessionToken);
+
+                            if (senderUser != null)
                             {
-                                requestComponents.TryGetValue(TargetLang, out string targetLang);
+                                requestComponents.TryGetValue(Recipient, out string recipient);
 
-                                string fromLang = msg.SourceLang == Lang.Unknown ? "" : msg.SourceLang;
-                                string toLang = targetLang == Lang.Unknown
-                                    ? Lang.English
-                                    : targetLang;
-
-                                string translatedText;
-                                try
+                                if (AuthenticateRecipient(recipient))
                                 {
-                                    translatedText = Translate(
-                                        sourceText: msg.TextBody,
-                                        sourceLang: fromLang,
-                                        targetLang: toLang);
-                                }
-                                catch (Exception)
-                                {
-                                    translatedText =
-                                        "[ Cognitive Services Reply: you have reached your translations limit for today ]";
-                                }
+                                    requestComponents.TryGetValue(Message, out string message);
+                                    requestComponents.TryGetValue(SourceLang, out string sourceLang);
 
-                                return
-                                    $"200 OK GETMSG --senderid='{msg.SenderId}' --sendername='{msg.SenderName}' --msg='{translatedText}'";
+                                    Debug.Assert(recipient != null, "recipient != null");
+                                    CorrespondenceManagement.Instance.ClientChatMessageQueues[recipient]
+                                        .Enqueue(new ChatMessage
+                                        {
+                                            SourceLang = sourceLang,
+                                            TextBody = message,
+                                            SenderId = senderUser.Login,
+                                            SenderName = senderUser.Name
+                                        });
+
+                                    return $@"200 OK SENDMSG --res='Message sent successfully'";
+                                }
+                                return $@"512 ERR SENDMSG --res='Inexistent recipient'";
                             }
-                            return $@"513 ERR GETMSG --res='Message Box is empty'";
+                            return $@"511 ERR SENDMSG --res='Athentication required'";
+                        }
+                        if (cmd == Commands.GetMessage)
+                        {
+                            requestComponents.TryGetValue(SessionToken, out string sessionToken);
+
+                            User user = AuthenticateUser(sessionToken);
+
+                            if (user != null)
+                            {
+                                requestComponents.TryGetValue(TranslationMode, out string translationMode);
+
+                                if (translationMode == DoNotTranslate)
+                                {
+                                    if (CorrespondenceManagement.Instance.ClientChatMessageQueues[user.Login]
+                                        .TryDequeue(out ChatMessage msg))
+                                    {
+                                        return
+                                            $"200 OK GETMSG --senderid='{msg.SenderId}' --sendername='{msg.SenderName}' --msg='{msg.TextBody}'";
+                                    }
+                                    return $@"513 ERR GETMSG --res='Message Box is empty'";
+                                }
+
+                                if (translationMode == DoTranslate)
+                                {
+                                    if (CorrespondenceManagement.Instance.ClientChatMessageQueues[user.Login]
+                                        .TryDequeue(out ChatMessage msg))
+                                    {
+                                        requestComponents.TryGetValue(TargetLang, out string targetLang);
+
+                                        string fromLang = msg.SourceLang == Lang.Unknown ? "" : msg.SourceLang;
+                                        string toLang = targetLang == Lang.Unknown
+                                            ? Lang.English
+                                            : targetLang;
+
+                                        string translatedText;
+                                        try
+                                        {
+                                            translatedText = Translate(
+                                                sourceText: msg.TextBody,
+                                                sourceLang: fromLang,
+                                                targetLang: toLang);
+                                        }
+                                        catch (Exception)
+                                        {
+                                            translatedText =
+                                                "[ Cognitive Services Reply: you have reached your translations limit for today ]";
+                                        }
+
+                                        return
+                                            $"200 OK GETMSG --senderid='{msg.SenderId}' --sendername='{msg.SenderName}' --msg='{translatedText}'";
+                                    }
+                                    return $@"513 ERR GETMSG --res='Message Box is empty'";
+                                }
+                            }
+                            return $"511 ERR GETMSG --res='Athentication required'";
                         }
                     }
-                    return $"511 ERR GETMSG --res='Athentication required'";
                 }
             }
             return BadRequest;
         }
 
-        private bool TryEstablishSecureConnection(string clientEncryptionExponent, string clientEncryptionModulus)
+        private string DecryptSecret(string secret, string sessionKey)
+        {
+            Guid sessionKeyGuid = Guid.Parse(sessionKey);
+
+            if (SecureSessionMap.Instance.Keeper.TryGetValue(sessionKeyGuid, out var keys))
+            {
+                using (var rsaProvider = new RSACryptoServiceProvider(SecurityLevel))
+                {
+                    // Transform base64 -> plain text (still encrypted)
+                    byte[] source = secret.FromBase64StringToByteArray();
+
+                    rsaProvider.PersistKeyInCsp = false;
+                    rsaProvider.ImportParameters(keys.ServerPrivateKey);
+
+                    byte[] decryptedBytes = rsaProvider.Decrypt(source, true);
+
+                    return decryptedBytes.ToUtf8String();
+                }
+            }
+
+            return null;
+        }
+
+        private Guid CreateSessionKey(string clientEncryptionExponent, string clientEncryptionModulus)
+        {
+            byte[] exponent = clientEncryptionExponent.FromBase64StringToByteArray();
+            byte[] modulus = clientEncryptionModulus.FromBase64StringToByteArray();
+
+
+            var keys = new Keys
+            {
+                RemotePublicKey = new RSAParameters
+                {
+                    Exponent = exponent,
+                    Modulus = modulus
+                }
+            };
+
+            using (var rsaProvider = new RSACryptoServiceProvider(SecurityLevel))
+            {
+                rsaProvider.PersistKeyInCsp = false;
+                keys.ServerPublicKey = rsaProvider.ExportParameters(false);
+                keys.ServerPrivateKey = rsaProvider.ExportParameters(true);
+            }
+
+            Guid sessionKey;
+            do
+            {
+                sessionKey = Guid.NewGuid();
+            } while (SecureSessionMap.Instance.Keeper.ContainsKey(sessionKey));
+
+            SecureSessionMap.Instance.Keeper.AddOrUpdate(sessionKey, keys, (key, value) => keys);
+
+            return sessionKey;
+        }
+
+        private RSAParameters GetPublicKeyForSessionKey(Guid sessionKey)
         {
             throw new NotImplementedException();
         }

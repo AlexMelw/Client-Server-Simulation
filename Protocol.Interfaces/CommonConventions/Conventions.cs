@@ -55,6 +55,7 @@
 
         // HELLO
         public const string SessionKey = "sessionkey";
+        public const string Secret = "secret";
 
         public const string Exponent = "e";
         public const string Modulus = "m";
@@ -81,6 +82,7 @@
 
         public class Commands
         {
+            public const string Confidential = "CONF";
             public const string GetMessage = "GETMSG";
             public const string SendMessage = "SENDMSG";
             public const string Translate = "TRANSLATE";
@@ -88,5 +90,7 @@
             public const string Auth = "AUTH";
             public const string Hello = "HELLO";
         }
+
+        public const int SecurityLevel = 2048;
     }
 }

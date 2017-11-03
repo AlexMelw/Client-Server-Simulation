@@ -7,6 +7,10 @@
 
     public class RequestParser : IFlowProtocolRequestParser
     {
+        private readonly string _encryptedMessagePattern =
+                @"(?:(?<cmd>CONF)\s+sessionkey:(?<sessionkey>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))\s+secret:(?<secret>(?i:[a-z0-9+/]+)))"
+            ;
+
         private readonly string _authenticationRequestPattern =
                 @"(?:(?<cmd>AUTH)\s+--login='(?<login>\w+)'\s+--pass='(?<pass>(?s:.+))')"
             ;
@@ -39,6 +43,19 @@
             if (match.Success)
             {
                 requestComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
+
+                return requestComponents;
+            }
+
+            // <RECEIVE ENCRYPTED MESSAGE>
+            parser = new Regex(_encryptedMessagePattern);
+            match = parser.Match(request);
+
+            if (match.Success)
+            {
+                requestComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
+                requestComponents.TryAdd(SessionKey, match.Groups[SessionKey].Value);
+                requestComponents.TryAdd(Secret, match.Groups[Secret].Value);
 
                 return requestComponents;
             }
