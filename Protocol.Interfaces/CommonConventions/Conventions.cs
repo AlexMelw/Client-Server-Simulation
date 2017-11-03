@@ -4,7 +4,7 @@
     {
         public const int TcpServerListeningPort = 46418;
         public const int UdpServerListeningPort = 48146;
-        public const int EthernetTcpUdpPacketSize = 1472;
+        public const int TcpUdpBufferSize = 65536;
         public const int FromBeginning = 0;
 
         public const string Error = "ERR";
@@ -45,14 +45,19 @@
         public const string Login = "login";
 
         // AUTHENTICATION
-        public const string Exponent = "e";
-        public const string Modulus = "m";
+
 
         // TRANSLATE
         public const string SourceText = "sourcetext";
 
         public const string SourceLang = "sourcelang";
         public const string TargetLang = "targetlang";
+
+        // HELLO
+        public const string SessionKey = "sessionkey";
+
+        public const string Exponent = "e";
+        public const string Modulus = "m";
 
         public class Lang
         {

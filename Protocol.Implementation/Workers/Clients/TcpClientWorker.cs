@@ -28,6 +28,7 @@
         private bool _initialized;
 
         private Guid _sessionToken = Guid.Empty;
+        private string _sessionKey;
 
         public int Port { get; private set; }
         public IPAddress RemoteHostIpAddress { get; private set; }
@@ -66,8 +67,12 @@
 
                 NetworkStream networkStream = _client.GetStream();
 
-                byte[] buffer = Commands.Hello.ToFlowProtocolAsciiEncodedBytesArray();
+                string textToBeSent = string.Format(
+                    format: Template.HelloTemplate,
+                    arg0: OwnPublicKey.Exponent.ToBase64String(),
+                    arg1: OwnPublicKey.Modulus.ToBase64String());
 
+                byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
 
                 if (networkStream.CanWrite)
                 {
@@ -79,8 +84,8 @@
 
                 if (networkStream.CanRead)
                 {
-                    buffer = new byte[EthernetTcpUdpPacketSize];
-                    int bytesRead = networkStream.Read(buffer, FromBeginning, EthernetTcpUdpPacketSize);
+                    buffer = new byte[TcpUdpBufferSize];
+                    int bytesRead = networkStream.Read(buffer, FromBeginning, TcpUdpBufferSize);
                     response = buffer.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
                 }
 
@@ -90,12 +95,30 @@
                 {
                     if (cmd.Equals(Commands.Hello))
                     {
-                        _initialized = true;
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
+                        if (responseComponents.TryGetValue(StatusDescription, out string statusDesc))
+                        {
+                            if (statusDesc == Error)
+                            {
+                                return false;
+                            }
+                            if (responseComponents.TryGetValue(SessionKey, out string sessionKey))
+                            {
+                                if (responseComponents.TryGetValue(Exponent, out string foreignEncryptionExponent)
+                                    && responseComponents.TryGetValue(Modulus, out string foreignEncryptionModulus))
+                                {
+                                    ForeignPublicKey = new RSAParameters
+                                    {
+                                        Exponent = foreignEncryptionExponent.FromBase64StringToByteArray(),
+                                        Modulus = foreignEncryptionModulus.FromBase64StringToByteArray()
+                                    };
+
+                                    _initialized = true;
+                                    _sessionKey = sessionKey;
+
+                                    return true;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -107,7 +130,7 @@
             }
             finally
             {
-                _client.Close();
+                _client?.Close();
             }
             return false;
         }
@@ -141,8 +164,8 @@
 
                 if (networkStream.CanRead)
                 {
-                    buffer = new byte[EthernetTcpUdpPacketSize];
-                    int bytesRead = networkStream.Read(buffer, FromBeginning, EthernetTcpUdpPacketSize);
+                    buffer = new byte[TcpUdpBufferSize];
+                    int bytesRead = networkStream.Read(buffer, FromBeginning, TcpUdpBufferSize);
                     response = buffer.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
                 }
 
@@ -207,8 +230,8 @@
 
                 if (networkStream.CanRead)
                 {
-                    buffer = new byte[EthernetTcpUdpPacketSize];
-                    int bytesRead = networkStream.Read(buffer, FromBeginning, EthernetTcpUdpPacketSize);
+                    buffer = new byte[TcpUdpBufferSize];
+                    int bytesRead = networkStream.Read(buffer, FromBeginning, TcpUdpBufferSize);
                     response = buffer.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
                 }
 
@@ -277,8 +300,8 @@
 
                 if (networkStream.CanRead)
                 {
-                    buffer = new byte[EthernetTcpUdpPacketSize];
-                    int bytesRead = networkStream.Read(buffer, FromBeginning, EthernetTcpUdpPacketSize);
+                    buffer = new byte[TcpUdpBufferSize];
+                    int bytesRead = networkStream.Read(buffer, FromBeginning, TcpUdpBufferSize);
                     response = buffer.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
                 }
 
@@ -344,8 +367,8 @@
 
                 if (networkStream.CanRead)
                 {
-                    buffer = new byte[EthernetTcpUdpPacketSize];
-                    int bytesRead = networkStream.Read(buffer, FromBeginning, EthernetTcpUdpPacketSize);
+                    buffer = new byte[TcpUdpBufferSize];
+                    int bytesRead = networkStream.Read(buffer, FromBeginning, TcpUdpBufferSize);
                     response = buffer.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
                 }
 
@@ -447,8 +470,8 @@
 
                 if (networkStream.CanRead)
                 {
-                    byte[] buffer = new byte[EthernetTcpUdpPacketSize];
-                    int bytesRead = networkStream.Read(buffer, FromBeginning, EthernetTcpUdpPacketSize);
+                    byte[] buffer = new byte[TcpUdpBufferSize];
+                    int bytesRead = networkStream.Read(buffer, FromBeginning, TcpUdpBufferSize);
                     response = buffer.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
                 }
 

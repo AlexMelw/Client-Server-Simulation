@@ -34,20 +34,17 @@
             {
                 if (cmd == Commands.Hello)
                 {
-                    return $@"200 OK HELLO";
-                }
-                if (cmd == Commands.Translate)
-                {
-                    requestComponents.TryGetValue(SourceText, out string sourceText);
-                    requestComponents.TryGetValue(SourceLang, out string sourceLang);
-                    requestComponents.TryGetValue(TargetLang, out string targetLang);
+                    //return $@"200 OK HELLO";
+                    requestComponents.TryGetValue(Exponent, out string clientEncryptionExponent);
+                    requestComponents.TryGetValue(Modulus, out string clientEncryptionModulus);
 
-                    string translatedText = Translate(
-                        sourceText: sourceText,
-                        sourceLang: sourceLang,
-                        targetLang: targetLang
-                    );
-                    return $@"200 OK TRANSLATE --res='{translatedText}'";
+                    if (TryEstablishSecureConnection(clientEncryptionExponent, clientEncryptionModulus))
+                    {
+                        throw new NotImplementedException();
+                    }
+
+                    return $@"502 ERR HELLO --res='Cannot establish a secure connection'";
+
                 }
                 if (cmd == Commands.Register)
                 {
@@ -61,6 +58,19 @@
                     }
 
                     return $@"502 ERR REGISTER --res='User already exists'";
+                }
+                if (cmd == Commands.Translate)
+                {
+                    requestComponents.TryGetValue(SourceText, out string sourceText);
+                    requestComponents.TryGetValue(SourceLang, out string sourceLang);
+                    requestComponents.TryGetValue(TargetLang, out string targetLang);
+
+                    string translatedText = Translate(
+                        sourceText: sourceText,
+                        sourceLang: sourceLang,
+                        targetLang: targetLang
+                    );
+                    return $@"200 OK TRANSLATE --res='{translatedText}'";
                 }
                 if (cmd == Commands.Auth)
                 {
@@ -166,6 +176,11 @@
             return BadRequest;
         }
 
+        private bool TryEstablishSecureConnection(string clientEncryptionExponent, string clientEncryptionModulus)
+        {
+            throw new NotImplementedException();
+        }
+
         private bool AuthenticateRecipient(string recipient)
         {
             bool found = RegisteredUsers.Instance.Users.ContainsKey(recipient);
@@ -218,14 +233,14 @@
                 Name = name
             };
 
-            bool registrationSucceded = RegisteredUsers.Instance.TryRegisterUser(newcomer);
+            bool registrationSucceeded = RegisteredUsers.Instance.TryRegisterUser(newcomer);
 
-            if (registrationSucceded)
+            if (registrationSucceeded)
             {
-                registrationSucceded = CorrespondenceManagement.Instance.TryCreateMailboxForUser(newcomer);
+                registrationSucceeded = CorrespondenceManagement.Instance.TryCreateMailboxForUser(newcomer);
             }
 
-            return registrationSucceded;
+            return registrationSucceeded;
         }
 
         private string Translate(string sourceText, string sourceLang, string targetLang)
