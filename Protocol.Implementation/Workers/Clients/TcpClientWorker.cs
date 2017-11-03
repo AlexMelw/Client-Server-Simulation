@@ -7,6 +7,7 @@
     using System.Net.Sockets;
     using System.Security.Cryptography;
     using DomainModels.Results;
+    using EasySharp.NHelpers.CustomExMethods;
     using Interfaces.CommonConventions;
     using Interfaces.Response;
     using Interfaces.Workers.Clients;
@@ -22,7 +23,7 @@
         public RSAParameters ForeignPublicKey { get; set; }
         public RSAParameters OwnPublicKey { get; set; }
 
-        private RSAParameters _ownPrivateKey;
+        private RSAParameters _clientWorkerPrivateKey;
 
         private TcpClient _client;
         private bool _initialized;
@@ -47,7 +48,7 @@
             {
                 rsa.PersistKeyInCsp = false;
                 OwnPublicKey = rsa.ExportParameters(false);
-                _ownPrivateKey = rsa.ExportParameters(true);
+                _clientWorkerPrivateKey = rsa.ExportParameters(true);
             }
         }
 
@@ -117,7 +118,6 @@
 
                                     return true;
                                 }
-
                             }
                         }
                     }
@@ -153,7 +153,8 @@
 
                 string textToBeSent = string.Format(Template.AuthenticationTemplate, login, password);
 
-                byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
+                string encapsulatedMessage = EncryptAndEncapsulateMessage(textToBeSent);
+                byte[] buffer = encapsulatedMessage.ToFlowProtocolAsciiEncodedBytesArray();
 
                 if (networkStream.CanWrite)
                 {
@@ -170,22 +171,34 @@
                     response = buffer.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
                 }
 
-                var responseComponents = _parser.ParseResponse(response);
+                var encryptedRequestComponents = _parser.ParseResponse(response);
 
-                if (responseComponents.TryGetValue(Cmd, out string cmd))
+                if (encryptedRequestComponents.TryGetValue(Cmd, out string cmd))
                 {
-                    if (cmd == Commands.Auth)
+                    if (cmd == Commands.Confidential)
                     {
-                        if (responseComponents.TryGetValue(StatusDescription, out string statusDesc))
+                        encryptedRequestComponents.TryGetValue(Secret, out string secret);
+
+                        string decryptedMessage = DecryptSecret(secret);
+
+                        var responseComponents = _parser.ParseResponse(decryptedMessage);
+
+                        if (responseComponents.TryGetValue(Cmd, out string innerCmd))
                         {
-                            if (statusDesc == Error)
+                            if (innerCmd == Commands.Auth)
                             {
-                                return false;
-                            }
-                            if (responseComponents.TryGetValue(SessionToken, out string token))
-                            {
-                                _sessionToken = Guid.Parse(token);
-                                return true;
+                                if (responseComponents.TryGetValue(StatusDescription, out string statusDesc))
+                                {
+                                    if (statusDesc == Error)
+                                    {
+                                        return false;
+                                    }
+                                    if (responseComponents.TryGetValue(SessionToken, out string token))
+                                    {
+                                        _sessionToken = Guid.Parse(token);
+                                        return true;
+                                    }
+                                }
                             }
                         }
                     }
@@ -236,21 +249,33 @@
                     response = buffer.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
                 }
 
-                var responseComponents = _parser.ParseResponse(response);
+                var encryptedRequestComponents = _parser.ParseResponse(response);
 
-                if (responseComponents.TryGetValue(Cmd, out string cmd))
+                if (encryptedRequestComponents.TryGetValue(Cmd, out string cmd))
                 {
-                    if (cmd == Commands.Register)
+                    if (cmd == Commands.Confidential)
                     {
-                        if (responseComponents.TryGetValue(StatusDescription, out string statusDesc))
+                        encryptedRequestComponents.TryGetValue(Secret, out string secret);
+
+                        string decryptedMessage = DecryptSecret(secret);
+
+                        var responseComponents = _parser.ParseResponse(decryptedMessage);
+
+                        if (responseComponents.TryGetValue(Cmd, out string innerCmd))
                         {
-                            if (statusDesc == Error)
+                            if (innerCmd == Commands.Register)
                             {
-                                return false;
-                            }
-                            if (statusDesc == Ok)
-                            {
-                                return true;
+                                if (responseComponents.TryGetValue(StatusDescription, out string statusDesc))
+                                {
+                                    if (statusDesc == Error)
+                                    {
+                                        return false;
+                                    }
+                                    if (statusDesc == Ok)
+                                    {
+                                        return true;
+                                    }
+                                }
                             }
                         }
                     }
@@ -289,7 +314,8 @@
                 string textToBeSent = string.Format(Template.TranslateTemplate,
                     sourceText, sourceTextLang, targetTextLanguage);
 
-                byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
+                string encapsulatedMessage = EncryptAndEncapsulateMessage(textToBeSent);
+                byte[] buffer = encapsulatedMessage.ToFlowProtocolAsciiEncodedBytesArray();
 
                 if (networkStream.CanWrite)
                 {
@@ -306,15 +332,27 @@
                     response = buffer.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
                 }
 
-                var responseComponents = _parser.ParseResponse(response);
+                var encryptedRequestComponents = _parser.ParseResponse(response);
 
-                if (responseComponents.TryGetValue(Cmd, out string cmd))
+                if (encryptedRequestComponents.TryGetValue(Cmd, out string cmd))
                 {
-                    if (cmd == Commands.Translate)
+                    if (cmd == Commands.Confidential)
                     {
-                        if (responseComponents.TryGetValue(ResultValue, out string resultValue))
+                        encryptedRequestComponents.TryGetValue(Secret, out string secret);
+
+                        string decryptedMessage = DecryptSecret(secret);
+
+                        var responseComponents = _parser.ParseResponse(decryptedMessage);
+
+                        if (responseComponents.TryGetValue(Cmd, out string innerCmd))
                         {
-                            return resultValue;
+                            if (innerCmd == Commands.Translate)
+                            {
+                                if (responseComponents.TryGetValue(ResultValue, out string resultValue))
+                                {
+                                    return resultValue;
+                                }
+                            }
                         }
                     }
                 }
@@ -356,7 +394,8 @@
                 string textToBeSent = string.Format(Template.SendMessageTemplate,
                     recipient, messageText, messageTextLang, _sessionToken);
 
-                byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
+                string encapsulatedMessage = EncryptAndEncapsulateMessage(textToBeSent);
+                byte[] buffer = encapsulatedMessage.ToFlowProtocolAsciiEncodedBytesArray();
 
                 if (networkStream.CanWrite)
                 {
@@ -373,30 +412,42 @@
                     response = buffer.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
                 }
 
-                var responseComponents = _parser.ParseResponse(response);
+                var encryptedRequestComponents = _parser.ParseResponse(response);
 
-                if (responseComponents.TryGetValue(Cmd, out string cmd))
+                if (encryptedRequestComponents.TryGetValue(Cmd, out string cmd))
                 {
-                    if (cmd == Commands.SendMessage)
+                    if (cmd == Commands.Confidential)
                     {
-                        if (responseComponents.TryGetValue(StatusDescription, out string statusDesc))
+                        encryptedRequestComponents.TryGetValue(Secret, out string secret);
+
+                        string decryptedMessage = DecryptSecret(secret);
+
+                        var responseComponents = _parser.ParseResponse(decryptedMessage);
+
+                        if (responseComponents.TryGetValue(Cmd, out string innerCmd))
                         {
-                            if (statusDesc == Error)
+                            if (innerCmd == Commands.SendMessage)
                             {
-                                return new SendMessageResult
+                                if (responseComponents.TryGetValue(StatusDescription, out string statusDesc))
                                 {
-                                    Success = false
-                                };
-                            }
-                            if (statusDesc == Ok)
-                            {
-                                if (responseComponents.TryGetValue(ResultValue, out string resultValue))
-                                {
-                                    return new SendMessageResult
+                                    if (statusDesc == Error)
                                     {
-                                        Success = true,
-                                        ResponseMessage = resultValue
-                                    };
+                                        return new SendMessageResult
+                                        {
+                                            Success = false
+                                        };
+                                    }
+                                    if (statusDesc == Ok)
+                                    {
+                                        if (responseComponents.TryGetValue(ResultValue, out string resultValue))
+                                        {
+                                            return new SendMessageResult
+                                            {
+                                                Success = true,
+                                                ResponseMessage = resultValue
+                                            };
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -442,7 +493,8 @@
                     string textToBeSent = string.Format(Template.GetMessageUnmodifiedTemplate,
                         _sessionToken);
 
-                    byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
+                    string encapsulatedMessage = EncryptAndEncapsulateMessage(textToBeSent);
+                    byte[] buffer = encapsulatedMessage.ToFlowProtocolAsciiEncodedBytesArray();
 
                     if (networkStream.CanWrite)
                     {
@@ -458,7 +510,8 @@
                     string textToBeSent = string.Format(Template.GetMessageTranslatedTemplate,
                         _sessionToken, translationMode);
 
-                    byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
+                    string encapsulatedMessage = EncryptAndEncapsulateMessage(textToBeSent);
+                    byte[] buffer = encapsulatedMessage.ToFlowProtocolAsciiEncodedBytesArray();
 
                     if (networkStream.CanWrite)
                     {
@@ -476,37 +529,49 @@
                     response = buffer.Take(bytesRead).ToArray().ToFlowProtocolAsciiDecodedString();
                 }
 
-                var responseComponents = _parser.ParseResponse(response);
+                var encryptedRequestComponents = _parser.ParseResponse(response);
 
-                if (responseComponents.TryGetValue(Cmd, out string cmd))
+                if (encryptedRequestComponents.TryGetValue(Cmd, out string cmd))
                 {
-                    if (cmd == Commands.GetMessage)
+                    if (cmd == Commands.Confidential)
                     {
-                        if (responseComponents.TryGetValue(StatusDescription, out string statusDesc))
+                        encryptedRequestComponents.TryGetValue(Secret, out string secret);
+
+                        string decryptedMessage = DecryptSecret(secret);
+
+                        var responseComponents = _parser.ParseResponse(decryptedMessage);
+
+                        if (responseComponents.TryGetValue(Cmd, out string innerCmd))
                         {
-                            if (statusDesc == Error)
+                            if (innerCmd == Commands.GetMessage)
                             {
-                                responseComponents.TryGetValue(Conventions.ResultValue, out string resultValue);
-
-                                return new GetMessageResult
+                                if (responseComponents.TryGetValue(StatusDescription, out string statusDesc))
                                 {
-                                    Success = false,
-                                    ErrorExplained = resultValue
-                                };
-                            }
-                            if (statusDesc == Ok)
-                            {
-                                responseComponents.TryGetValue(SenderId, out string senderId);
-                                responseComponents.TryGetValue(SenderName, out string senderName);
-                                responseComponents.TryGetValue(Message, out string message);
+                                    if (statusDesc == Error)
+                                    {
+                                        responseComponents.TryGetValue(ResultValue, out string resultValue);
 
-                                return new GetMessageResult
-                                {
-                                    Success = true,
-                                    SenderId = senderId,
-                                    SenderName = senderName,
-                                    MessageBody = message
-                                };
+                                        return new GetMessageResult
+                                        {
+                                            Success = false,
+                                            ErrorExplained = resultValue
+                                        };
+                                    }
+                                    if (statusDesc == Ok)
+                                    {
+                                        responseComponents.TryGetValue(SenderId, out string senderId);
+                                        responseComponents.TryGetValue(SenderName, out string senderName);
+                                        responseComponents.TryGetValue(Message, out string message);
+
+                                        return new GetMessageResult
+                                        {
+                                            Success = true,
+                                            SenderId = senderId,
+                                            SenderName = senderName,
+                                            MessageBody = message
+                                        };
+                                    }
+                                }
                             }
                         }
                     }
@@ -526,6 +591,42 @@
             };
         }
 
-        public void Dispose() => ((IDisposable) _client)?.Dispose();
+        private string DecryptSecret(string secret)
+        {
+            using (var rsa = new RSACryptoServiceProvider(SecurityLevel))
+            {
+                // Transform base64 -> plain text (still encrypted)
+                byte[] source = secret.FromBase64StringToByteArray();
+
+                rsa.PersistKeyInCsp = false;
+                rsa.ImportParameters(_clientWorkerPrivateKey);
+
+                byte[] decryptedBytes = rsa.Decrypt(source, true);
+
+                return decryptedBytes.ToUtf8String();
+            }
+        }
+
+        private string EncryptAndEncapsulateMessage(string originalMessage)
+        {
+            using (var rsa = new RSACryptoServiceProvider(SecurityLevel))
+            {
+                rsa.PersistKeyInCsp = false;
+                rsa.ImportParameters(ForeignPublicKey);
+
+                byte[] encrypted = rsa.Encrypt(originalMessage.ToUtf8EncodedByteArray(), true);
+
+                string base64EncodedMessage = encrypted.ToBase64String();
+                string encapsulatedMessage = EncapsulatedMessage(base64EncodedMessage);
+
+                return encapsulatedMessage;
+            }
+        }
+
+        private string EncapsulatedMessage(string base64Message) =>
+            string.Format(Template.EncapsulatedRequestMessageTemplate,
+                _sessionKey, base64Message);
+
+        public void Dispose() => (_client as IDisposable)?.Dispose();
     }
 }

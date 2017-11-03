@@ -2,7 +2,9 @@
 {
     public class Template
     {
-        public const string EncapsulateMessageTemplate = @"CONF secret:{0}";
+        public const string EncapsulatedResponseMessageTemplate = @"CONF secret:{0}";
+
+        public const string EncapsulatedRequestMessageTemplate = @"CONF sessionkey:{0} secret:{1}";
 
         public const string AuthenticationTemplate =
             @"AUTH  --login='{0}' --pass='{1}'";

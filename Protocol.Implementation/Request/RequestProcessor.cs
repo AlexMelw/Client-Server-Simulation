@@ -30,18 +30,18 @@
 
         public string ProcessRequest(string request)
         {
-            ConcurrentDictionary<string, string> plainTextRequestComponents = _parser.ParseRequest(request);
+            ConcurrentDictionary<string, string> secureRequestComponents = _parser.ParseRequest(request);
 
-            if (plainTextRequestComponents == null)
+            if (secureRequestComponents == null)
                 return BadRequest;
 
-            if (plainTextRequestComponents.TryGetValue(Cmd, out string cmd))
+            if (secureRequestComponents.TryGetValue(Cmd, out string cmd))
             {
                 if (cmd == Commands.Hello)
                 {
                     //return $@"200 OK HELLO";
-                    plainTextRequestComponents.TryGetValue(Exponent, out string clientEncryptionExponent);
-                    plainTextRequestComponents.TryGetValue(Modulus, out string clientEncryptionModulus);
+                    secureRequestComponents.TryGetValue(Exponent, out string clientEncryptionExponent);
+                    secureRequestComponents.TryGetValue(Modulus, out string clientEncryptionModulus);
 
                     Guid sessionKey = CreateSessionKey(clientEncryptionExponent, clientEncryptionModulus);
 
@@ -59,16 +59,12 @@
                 {
                     if (cmd == Commands.Confidential)
                     {
-                        ConcurrentDictionary<string, string> requestComponents = _parser.ParseRequest(request);
-
-                        if (requestComponents == null)
-                            return BadRequest;
-
-
-                        requestComponents.TryGetValue(SessionKey, out string sessionKey);
-                        requestComponents.TryGetValue(Secret, out string secret);
+                        secureRequestComponents.TryGetValue(SessionKey, out string sessionKey);
+                        secureRequestComponents.TryGetValue(Secret, out string secret);
 
                         string decryptedMessage = DecryptSecret(secret, sessionKey);
+
+                        var requestComponents = _parser.ParseRequest(decryptedMessage);
 
                         if (cmd == Commands.Register)
                         {
@@ -241,7 +237,7 @@
                 encryptedMessage = rsaProvider.Encrypt(originalMessage.ToUtf8EncodedByteArray(), true);
             }
 
-            string encapsulatedMessage = string.Format(Template.EncapsulateMessageTemplate,
+            string encapsulatedMessage = string.Format(Template.EncapsulatedResponseMessageTemplate,
                 encryptedMessage.ToUtf8String());
 
             return encapsulatedMessage;
@@ -253,15 +249,15 @@
 
             if (SecureSessionMap.Instance.Keeper.TryGetValue(sessionKeyGuid, out var keys))
             {
-                using (var rsaProvider = new RSACryptoServiceProvider(SecurityLevel))
+                using (var rsa = new RSACryptoServiceProvider(SecurityLevel))
                 {
                     // Transform base64 -> plain text (still encrypted)
                     byte[] source = secret.FromBase64StringToByteArray();
 
-                    rsaProvider.PersistKeyInCsp = false;
-                    rsaProvider.ImportParameters(keys.ServerPrivateKey);
+                    rsa.PersistKeyInCsp = false;
+                    rsa.ImportParameters(keys.ServerPrivateKey);
 
-                    byte[] decryptedBytes = rsaProvider.Decrypt(source, true);
+                    byte[] decryptedBytes = rsa.Decrypt(source, true);
 
                     return decryptedBytes.ToUtf8String();
                 }
