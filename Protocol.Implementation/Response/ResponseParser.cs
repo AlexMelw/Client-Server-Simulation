@@ -10,7 +10,7 @@
     public class ResponseParser : IFlowProtocolResponseParser
     {
         private const string HelloResponsePattern =
-                @"(?:(?<statuscode>200)\s+(?<statusdesc>OK)\s+(?<cmd>HELLO)\s+--pubkey='(?:(?<e>(?i:[0-9A-F+/]+))\|(?<m>(?i:[0-9A-F+/]+)))'\s+--sessionkey='(?<sessionkey>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))')"
+                @"(?:(?<statuscode>200)\s+(?<statusdesc>OK)\s+(?<cmd>HELLO)\s+--pubkey='(?:(?<e>(?i:[a-z0-9\+\/\=]+))\|(?<m>(?i:[a-z0-9\+\/\=]+)))'\s+--sessionkey='(?<sessionkey>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))')"
             ;
 
         private const string EncryptedMessagePattern =
@@ -42,8 +42,8 @@
         {
             var responseComponents = new ConcurrentDictionary<string, string>();
 
-            // <TRANSLATE> RESPONSE
-            Regex parser = new Regex(TranslateResponsePattern);
+            // <HELLO> RESPONSE
+            Regex parser = new Regex(HelloResponsePattern);
             Match match = parser.Match(response);
 
             if (match.Success)
@@ -51,11 +51,12 @@
                 responseComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
                 responseComponents.TryAdd(StatusCode, match.Groups[StatusCode].Value);
                 responseComponents.TryAdd(StatusDescription, match.Groups[StatusDescription].Value);
-                responseComponents.TryAdd(ResultValue, match.Groups[ResultValue].Value);
+                responseComponents.TryAdd(Exponent, match.Groups[Exponent].Value);
+                responseComponents.TryAdd(Modulus, match.Groups[Modulus].Value);
+                responseComponents.TryAdd(SessionKey, match.Groups[SessionKey].Value);
 
                 return responseComponents;
             }
-
 
             // <ENCRYPTED RECEIVED MESSAGE> RESPONSE
             parser = new Regex(EncryptedMessagePattern);
@@ -69,6 +70,20 @@
                 return responseComponents;
             }
 
+
+            // <TRANSLATE> RESPONSE
+            parser = new Regex(TranslateResponsePattern);
+            match = parser.Match(response);
+
+            if (match.Success)
+            {
+                responseComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
+                responseComponents.TryAdd(StatusCode, match.Groups[StatusCode].Value);
+                responseComponents.TryAdd(StatusDescription, match.Groups[StatusDescription].Value);
+                responseComponents.TryAdd(ResultValue, match.Groups[ResultValue].Value);
+
+                return responseComponents;
+            }
 
             // <REGISTRATION> RESPONSE
             parser = new Regex(RegisterResponsePattern);
@@ -155,21 +170,6 @@
                 return responseComponents;
             }
 
-            // <HELLO> RESPONSE
-            parser = new Regex(HelloResponsePattern);
-            match = parser.Match(response);
-
-            if (match.Success)
-            {
-                responseComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
-                responseComponents.TryAdd(StatusCode, match.Groups[StatusCode].Value);
-                responseComponents.TryAdd(StatusDescription, match.Groups[StatusDescription].Value);
-                responseComponents.TryAdd(Exponent, match.Groups[Exponent].Value);
-                responseComponents.TryAdd(Modulus, match.Groups[Modulus].Value);
-                responseComponents.TryAdd(SessionKey, match.Groups[SessionKey].Value);
-
-                return responseComponents;
-            }
 
             return null;
         }

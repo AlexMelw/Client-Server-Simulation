@@ -232,7 +232,8 @@
 
                 string textToBeSent = string.Format(Template.RegisterTemplate, login, password, name);
 
-                byte[] buffer = textToBeSent.ToFlowProtocolAsciiEncodedBytesArray();
+                string encapsulatedMessage = EncryptAndEncapsulateMessage(textToBeSent);
+                byte[] buffer = encapsulatedMessage.ToFlowProtocolAsciiEncodedBytesArray();
 
                 if (networkStream.CanWrite)
                 {
@@ -256,6 +257,14 @@
                     if (cmd == Commands.Confidential)
                     {
                         encryptedRequestComponents.TryGetValue(Secret, out string secret);
+
+                        secret = secret.Replace(" ", "+");
+                        int mod4 = secret.Length % 4;
+                        if (mod4 > 0)
+                        {
+                            secret += new string('=', 4 - mod4);
+                        }
+
 
                         string decryptedMessage = DecryptSecret(secret);
 

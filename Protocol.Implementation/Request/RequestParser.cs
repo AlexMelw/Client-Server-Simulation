@@ -7,7 +7,7 @@
 
     public class RequestParser : IFlowProtocolRequestParser
     {
-        private const string HelloRequestPattern = @"(?<cmd>HELLO)\s+--pubkey='(?:(?<e>[0-9A-F]+)\|(?<m>[0-9A-F]+))'"; //  HELLO --pubkey='0123456789ABCDEF|0123456789ABCDEF'
+        private const string HelloRequestPattern = @"(?<cmd>HELLO)\s+--pubkey='(?:(?<e>(?i:[a-z0-9\+\/\=]+))\|(?<m>(?i:[a-z0-9\+\/\=]+)))'"; //  HELLO --pubkey='0123456789ABCDEF|0123456789ABCDEF'
 
         private const string EncryptedMessagePattern =
                 @"(?:(?<cmd>CONF)\s+sessionkey:(?<sessionkey>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))\s+secret:(?<secret>(?i:[a-z0-9\+\/\=]+)))"
@@ -43,6 +43,8 @@
             if (match.Success)
             {
                 requestComponents.TryAdd(Cmd, match.Groups[Cmd].Value);
+                requestComponents.TryAdd(Exponent, match.Groups[Exponent].Value);
+                requestComponents.TryAdd(Modulus, match.Groups[Modulus].Value);
 
                 return requestComponents;
             }

@@ -66,7 +66,9 @@
 
                         var requestComponents = _parser.ParseRequest(decryptedMessage);
 
-                        if (cmd == Commands.Register)
+                        requestComponents.TryGetValue(Cmd, out string innerCmd);
+
+                        if (innerCmd == Commands.Register)
                         {
                             requestComponents.TryGetValue(Login, out string login);
                             requestComponents.TryGetValue(Pass, out string pass);
@@ -82,7 +84,7 @@
 
                             return $@"502 ERR REGISTER --res='User already exists'";
                         }
-                        if (cmd == Commands.Translate)
+                        if (innerCmd == Commands.Translate)
                         {
                             requestComponents.TryGetValue(SourceText, out string sourceText);
                             requestComponents.TryGetValue(SourceLang, out string sourceLang);
@@ -98,7 +100,7 @@
 
                             return EncapsulateEncryptedMessage(originalMessage, sessionKey);
                         }
-                        if (cmd == Commands.Auth)
+                        if (innerCmd == Commands.Auth)
                         {
                             requestComponents.TryGetValue(Login, out string login);
                             requestComponents.TryGetValue(Pass, out string pass);
@@ -118,7 +120,7 @@
 
                             return EncapsulateEncryptedMessage(originalMessage2, sessionKey);
                         }
-                        if (cmd == Commands.SendMessage)
+                        if (innerCmd == Commands.SendMessage)
                         {
                             requestComponents.TryGetValue(SessionToken, out string sessionToken);
 
@@ -154,7 +156,7 @@
                             string originalMessage3 = $@"511 ERR SENDMSG --res='Athentication required'";
                             return EncapsulateEncryptedMessage(originalMessage3, sessionKey);
                         }
-                        if (cmd == Commands.GetMessage)
+                        if (innerCmd == Commands.GetMessage)
                         {
                             requestComponents.TryGetValue(SessionToken, out string sessionToken);
 
@@ -237,8 +239,11 @@
                 encryptedMessage = rsaProvider.Encrypt(originalMessage.ToUtf8EncodedByteArray(), true);
             }
 
+            string utf8EncodedMessage = encryptedMessage.ToUtf8String();
+            string base64EncodedMessage = utf8EncodedMessage.ToBase64String();
+
             string encapsulatedMessage = string.Format(Template.EncapsulatedResponseMessageTemplate,
-                encryptedMessage.ToUtf8String());
+                base64EncodedMessage);
 
             return encapsulatedMessage;
         }
@@ -297,11 +302,6 @@
             SecureSessionMap.Instance.Keeper.AddOrUpdate(sessionKey, keys, (key, value) => keys);
 
             return sessionKey;
-        }
-
-        private RSAParameters GetPublicKeyForSessionKey(Guid sessionKey)
-        {
-            throw new NotImplementedException();
         }
 
         private bool AuthenticateRecipient(string recipient)

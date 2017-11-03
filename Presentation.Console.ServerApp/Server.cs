@@ -6,15 +6,21 @@
 
     public class Server
     {
+        #region CONSTRUCTORS
+
+        static Server() => IoC.RegisterAll();
+
+        #endregion
+
         private static void Main(string[] args)
         {
+            System.Console.Title = "Flow TCP/UDP Server";
+
             IServer flowTcpServer = IoC.Resolve<IFlowTcpServer>();
             IServer flowUdpServer = IoC.Resolve<IFlowUdpServer>();
 
             flowTcpServer.StartListeningToPort(TcpServerListeningPort);
             flowUdpServer.StartListeningToPort(UdpServerListeningPort);
         }
-
-        static Server() => IoC.RegisterAll();
     }
 }
