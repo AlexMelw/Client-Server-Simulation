@@ -66,6 +66,7 @@
     <Compile Include="Servers\FlowTcpServer.cs" />
     <Compile Include="Servers\FlowUdpServer.cs" />
     <Compile Include="Storage\AuthenticatedClients.cs" />
+    <Compile Include="Storage\Keys.cs" />
     <Compile Include="Storage\RegisteredUsers.cs" />
     <Compile Include="Storage\CorrespondenceManagement.cs" />
     <Compile Include="Storage\SecureSessionMap.cs" />

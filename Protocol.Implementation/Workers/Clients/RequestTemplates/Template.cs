@@ -2,6 +2,8 @@
 {
     public class Template
     {
+        public const string EncapsulateMessageTemplate = @"CONF secret:{0}";
+
         public const string AuthenticationTemplate =
             @"AUTH  --login='{0}' --pass='{1}'";
 

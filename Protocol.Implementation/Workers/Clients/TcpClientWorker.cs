@@ -116,7 +116,8 @@
                                     _sessionKey = sessionKey;
 
                                     return true;
-                                }
+                                }
+
                             }
                         }
                     }

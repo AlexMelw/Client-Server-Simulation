@@ -13,6 +13,7 @@
     using Ninject;
     using ProtocolHelpers;
     using Storage;
+    using Workers.Clients.RequestTemplates;
     using static Interfaces.CommonConventions.Conventions;
 
     public class RequestProcessor : IFlowProtocolRequestProcessor
@@ -46,7 +47,6 @@
 
                     SecureSessionMap.Instance.Keeper.TryGetValue(sessionKey, out var keys);
 
-
                     string e = keys.ServerPublicKey.Exponent.ToBase64String();
                     string m = keys.ServerPublicKey.Modulus.ToBase64String();
 
@@ -78,7 +78,10 @@
 
                             if (RegisterUser(login, pass, name))
                             {
-                                return $@"200 OK REGISTER --res='User registered successfully'";
+                                string originalMessage = $@"200 OK REGISTER --res='User registered successfully'";
+                                string encapsulatedMessage = EncapsulateEncryptedMessage(originalMessage, sessionKey);
+
+                                return encapsulatedMessage;
                             }
 
                             return $@"502 ERR REGISTER --res='User already exists'";
@@ -202,6 +205,26 @@
                 }
             }
             return BadRequest;
+        }
+
+        private string EncapsulateEncryptedMessage(string originalMessage, string sessionKey)
+        {
+            byte[] encryptedMessage;
+            using (var rsaProvider = new RSACryptoServiceProvider(SecurityLevel))
+            {
+                Guid secureSessionKey = Guid.Parse(sessionKey);
+                var keys = SecureSessionMap.Instance.Keeper[secureSessionKey];
+
+                rsaProvider.PersistKeyInCsp = false;
+                rsaProvider.ImportParameters(keys.RemotePublicKey);
+
+                encryptedMessage = rsaProvider.Encrypt(originalMessage.ToUtf8EncodedByteArray(), true);
+            }
+
+            string encapsulatedMessage = string.Format(Template.EncapsulateMessageTemplate,
+                    encryptedMessage.ToUtf8String());
+
+            return encapsulatedMessage;
         }
 
         private string DecryptSecret(string secret, string sessionKey)
