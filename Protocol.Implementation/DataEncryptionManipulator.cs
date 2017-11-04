@@ -4,9 +4,9 @@
     using System.Linq;
     using System.Security.Cryptography;
     using EasySharp.NHelpers.CustomExMethods;
-    using Interfaces.CommonConventions;
     using ProtocolHelpers;
     using Storage;
+    using static Interfaces.CommonConventions.Conventions;
 
     public class DataEncryptionManipulator
     {
@@ -19,13 +19,14 @@
             return decodedMessage;
         }
 
-        public IEnumerable<byte[]> GetDecryptedChunksOfBytes(IEnumerable<byte[]> rsaEncryptedChunks, Keys keys)
+        public IEnumerable<byte[]> GetDecryptedChunksOfBytes(IEnumerable<byte[]> rsaEncryptedChunks,
+            RSAParameters privateKey)
         {
             var decryptedChunks = new LinkedList<byte[]>();
 
-            using (var rsa = new RSACryptoServiceProvider(Conventions.SecurityLevel))
+            using (var rsa = new RSACryptoServiceProvider(SecurityLevel))
             {
-                rsa.ImportParameters(keys.ServerPrivateKey);
+                rsa.ImportParameters(privateKey);
 
                 foreach (byte[] encryptedChunk in rsaEncryptedChunks)
                 {
@@ -56,6 +57,55 @@
             string[] chunks = colonSeparatedSequence.Split(':');
 
             return chunks;
+        }
+
+        // Another part of the Mood
+
+        public string GetColonSeparatedMessage(IEnumerable<string> stringChunks)
+        {
+            string colonConcatenatedChunks = string.Join(":", stringChunks);
+
+            return colonConcatenatedChunks;
+        }
+
+        public IEnumerable<string> GetBase64EncodedChunks(IEnumerable<byte[]> encryptedChunks)
+        {
+            LinkedList<string> base64EncodedChunks = new LinkedList<string>();
+
+            foreach (byte[] encryptedChunk in encryptedChunks)
+            {
+                string base64Encoded = encryptedChunk.ToBase64String();
+                base64EncodedChunks.AddLast(base64Encoded);
+            }
+
+            return base64EncodedChunks.ToArray();
+        }
+
+        public IEnumerable<byte[]> GetEncryptedChunks(IEnumerable<IEnumerable<byte>> batches,
+            RSAParameters publicKey)
+        {
+            LinkedList<byte[]> encryptedChunks = new LinkedList<byte[]>();
+
+            using (var rsa = new RSACryptoServiceProvider(SecurityLevel))
+            {
+                rsa.PersistKeyInCsp = false;
+                rsa.ImportParameters(publicKey);
+
+                foreach (IEnumerable<byte> batch in batches)
+                {
+                    byte[] encryptedBatch = rsa.Encrypt(batch.ToArray(), true);
+                    encryptedChunks.AddLast(encryptedBatch);
+                }
+            }
+
+            return encryptedChunks.ToArray();
+        }
+
+        public IEnumerable<IEnumerable<byte>> GetUtf8EncodedBytesChunks(string text)
+        {
+            byte[] utf8EncodedBytes = text.ToUtf8EncodedByteArray();
+            IEnumerable<IEnumerable<byte>> batches = utf8EncodedBytes.ChunkBy(32);
+            return batches;
         }
     }
 }

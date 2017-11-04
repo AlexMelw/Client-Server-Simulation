@@ -2,13 +2,11 @@
 {
     using System;
     using System.Collections.Concurrent;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
     using System.Security.Cryptography;
     using DomainModels.Entities;
     using EasySharp.NHelpers.CustomExMethods;
-    using Interfaces.CommonConventions;
     using Interfaces.Request;
     using MSTranslatorService;
     using Ninject;
@@ -23,11 +21,15 @@
 
         private readonly IFlowProtocolRequestParser _parser;
 
+        #region CONSTRUCTORS
+
         [Inject]
         public RequestProcessor(IFlowProtocolRequestParser parser)
         {
             _parser = parser;
         }
+
+        #endregion
 
         public string ProcessRequest(string request)
         {
@@ -92,9 +94,9 @@
                             requestComponents.TryGetValue(TargetLang, out string targetLang);
 
                             string translatedText = Translate(
-                                sourceText: sourceText,
-                                sourceLang: sourceLang,
-                                targetLang: targetLang
+                                sourceText,
+                                sourceLang,
+                                targetLang
                             );
 
                             string originalMessage = $@"200 OK TRANSLATE --res='{translatedText}'";
@@ -197,9 +199,9 @@
                                         try
                                         {
                                             translatedText = Translate(
-                                                sourceText: msg.TextBody,
-                                                sourceLang: fromLang,
-                                                targetLang: toLang);
+                                                msg.TextBody,
+                                                fromLang,
+                                                toLang);
                                         }
                                         catch (Exception)
                                         {
@@ -268,25 +270,16 @@
                 //    return decryptedBytes.ToUtf8String();
                 //}
 
-                var manipulator = new DataEncryptionManipulator();
+                var cryptoFormatter = new CryptoFormatter();
 
-                IEnumerable<string> base64EncodedChunks =
-                    manipulator.SplitColonSeparatedSecretToChunks(secret);
-
-                IEnumerable<byte[]> rsaEncryptedChunks =
-                    manipulator.GetDecodedBytesFromBase64Chunks(base64EncodedChunks);
-
-                IEnumerable<byte[]> decryptedChunksOfBytes =
-                    manipulator.GetDecryptedChunksOfBytes(rsaEncryptedChunks, keys);
-
-                string decryptedMessage = 
-                    manipulator.GetDecryptedMessage(decryptedChunksOfBytes);
+                string decryptedMessage = cryptoFormatter.GetDecryptedUnformattedMessage(secret, keys.ServerPrivateKey);
 
                 return decryptedMessage;
             }
 
             return null;
         }
+
 
         private Guid CreateSessionKey(string clientEncryptionExponent, string clientEncryptionModulus)
         {
@@ -345,13 +338,13 @@
             if (userFound && user.Pass.Equals(pass))
             {
                 AuthenticatedClients.Instance.Clients.AddOrUpdate(
-                    key: login,
-                    addValue: new AuthClient
+                    login,
+                    new AuthClient
                     {
                         User = user,
                         AuthToken = Guid.NewGuid()
                     },
-                    updateValueFactory: (keyLogin, authClient) =>
+                    (keyLogin, authClient) =>
                     {
                         authClient.AuthToken = Guid.NewGuid();
                         return authClient;
@@ -397,10 +390,10 @@
                     try
                     {
                         translatedText = translatorClient.Translate(
-                            appId: AppId,
-                            text: sourceText,
-                            from: $"{fromLang}",
-                            to: $"{toLang}");
+                            AppId,
+                            sourceText,
+                            $"{fromLang}",
+                            $"{toLang}");
                     }
                     catch (Exception)
                     {
