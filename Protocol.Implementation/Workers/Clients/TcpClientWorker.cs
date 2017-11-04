@@ -21,11 +21,6 @@
     {
         private readonly IFlowProtocolResponseParser _parser;
 
-        public RSAParameters ForeignPublicKey { get; set; }
-        public RSAParameters OwnPublicKey { get; set; }
-
-        private RSAParameters _clientWorkerPrivateKey;
-
         private TcpClient _client;
         private bool _initialized;
 
@@ -34,6 +29,30 @@
 
         public int Port { get; private set; }
         public IPAddress RemoteHostIpAddress { get; private set; }
+
+        private string DecryptSecret(string secret)
+        {
+            var cryptoFormatter = new CryptoFormatter();
+
+            string decryptedMessage = cryptoFormatter.GetDecryptedUnformattedMessage(secret, _clientWorkerPrivateKey);
+
+            return decryptedMessage;
+        }
+
+        private string EncryptAndEncapsulateMessage(string originalMessage)
+        {
+            var cryptoFormatter = new CryptoFormatter();
+
+            string encryptedFromattedMessage =
+                cryptoFormatter.GetEncryptedMessageWithFormatting(originalMessage, ForeignPublicKey);
+
+            string encapsulatedMessage = string.Format(
+                format: Template.EncapsulatedRequestMessageTemplate,
+                arg0: _sessionKey,
+                arg1: encryptedFromattedMessage);
+
+            return encapsulatedMessage;
+        }
 
         #region CONSTRUCTORS
 
@@ -594,43 +613,10 @@
             };
         }
 
-        private string DecryptSecret(string secret)
-        {
-            //using (var rsa = new RSACryptoServiceProvider(SecurityLevel))
-            //{
-            //    // Transform base64 -> plain text (still encrypted)
-            //    byte[] source = secret.FromBase64StringToByteArray();
-
-            //    rsa.PersistKeyInCsp = false;
-            //    rsa.ImportParameters(_clientWorkerPrivateKey);
-
-            //    byte[] decryptedBytes = rsa.Decrypt(source, true);
-
-            //    return decryptedBytes.ToUtf8String();
-            //}
-
-            var cryptoFormatter = new CryptoFormatter();
-
-            string decryptedMessage = cryptoFormatter.GetDecryptedUnformattedMessage(secret, _clientWorkerPrivateKey);
-
-            return decryptedMessage;
-        }
-
-        private string EncryptAndEncapsulateMessage(string originalMessage)
-        {
-            var cryptoFormatter = new CryptoFormatter();
-
-            string encryptedFromattedMessage =
-                cryptoFormatter.GetEncryptedMessageWithFormatting(originalMessage, ForeignPublicKey);
-
-            string encapsulatedMessage = string.Format(
-                format: Template.EncapsulatedRequestMessageTemplate,
-                arg0: _sessionKey,
-                arg1: encryptedFromattedMessage);
-
-            return encapsulatedMessage;
-        }
-
         public void Dispose() => (_client as IDisposable)?.Dispose();
+
+        public RSAParameters ForeignPublicKey { get; set; }
+        public RSAParameters OwnPublicKey { get; set; }
+        private RSAParameters _clientWorkerPrivateKey;
     }
 }

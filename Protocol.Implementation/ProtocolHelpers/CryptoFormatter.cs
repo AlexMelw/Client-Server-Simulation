@@ -14,8 +14,11 @@
 
             IEnumerable<byte[]> encryptedChunks =
                 manipulator.GetEncryptedChunks(utf8EncodedBytesChunks, publicKey);
+
             IEnumerable<string> base64EncodedChunks = manipulator.GetBase64EncodedChunks(encryptedChunks);
+
             string colonSeparatedMessage = manipulator.GetColonSeparatedMessage(base64EncodedChunks);
+
             return colonSeparatedMessage;
         }
 
@@ -34,8 +37,8 @@
 
             string decryptedMessage =
                 manipulator.GetDecryptedMessage(decryptedChunksOfBytes);
+
             return decryptedMessage;
         }
-
     }
 }

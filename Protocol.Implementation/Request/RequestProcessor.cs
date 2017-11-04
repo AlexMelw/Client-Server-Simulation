@@ -230,24 +230,6 @@
 
         private string EncapsulateEncryptedMessage(string originalMessage, string sessionKey)
         {
-            //byte[] encryptedMessage;
-            //using (var rsaProvider = new RSACryptoServiceProvider(SecurityLevel))
-            //{
-            //    Guid secureSessionKey = Guid.Parse(sessionKey);
-            //    var keys = SecureSessionMap.Instance.Keeper[secureSessionKey];
-
-            //    rsaProvider.PersistKeyInCsp = false;
-            //    rsaProvider.ImportParameters(keys.RemotePublicKey);
-
-            //    encryptedMessage = rsaProvider.Encrypt(originalMessage.ToUtf8EncodedByteArray(), true);
-            //}
-
-            //string utf8EncodedMessage = encryptedMessage.ToUtf8String();
-            //string base64EncodedMessage = utf8EncodedMessage.ToBase64String();
-
-            //string encapsulatedMessage = string.Format(Template.EncapsulatedResponseMessageTemplate,
-            //    base64EncodedMessage);
-
             Guid secureSessionKey = Guid.Parse(sessionKey);
             Keys keys = SecureSessionMap.Instance.Keeper[secureSessionKey];
 
@@ -269,19 +251,6 @@
 
             if (SecureSessionMap.Instance.Keeper.TryGetValue(sessionKeyGuid, out var keys))
             {
-                //using (var rsa = new RSACryptoServiceProvider(SecurityLevel))
-                //{
-                //    // Transform base64 -> plain text (still encrypted)
-                //    byte[] source = secret.FromBase64StringToByteArray();
-
-                //    rsa.PersistKeyInCsp = false;
-                //    rsa.ImportParameters(keys.ServerPrivateKey);
-
-                //    byte[] decryptedBytes = rsa.Decrypt(source, true);
-
-                //    return decryptedBytes.ToUtf8String();
-                //}
-
                 var cryptoFormatter = new CryptoFormatter();
 
                 string decryptedMessage = cryptoFormatter.GetDecryptedUnformattedMessage(secret, keys.ServerPrivateKey);
