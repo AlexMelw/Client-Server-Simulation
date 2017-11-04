@@ -259,8 +259,6 @@
                     {
                         encryptedRequestComponents.TryGetValue(Secret, out string secret);
 
-                        secret = Base64Util.Normalize(secret);
-
                         string decryptedMessage = DecryptSecret(secret);
 
                         var responseComponents = _parser.ParseResponse(decryptedMessage);
@@ -611,8 +609,6 @@
             //    return decryptedBytes.ToUtf8String();
             //}
 
-            secret = Base64Util.Normalize(secret);
-
             var cryptoFormatter = new CryptoFormatter();
 
             string decryptedMessage = cryptoFormatter.GetDecryptedUnformattedMessage(secret, _clientWorkerPrivateKey);
@@ -627,15 +623,13 @@
             string encryptedFromattedMessage =
                 cryptoFormatter.GetEncryptedMessageWithFormatting(originalMessage, ForeignPublicKey);
 
-            string encapsulatedMessage = EncapsulatedMessage(encryptedFromattedMessage);
+            string encapsulatedMessage = string.Format(
+                format: Template.EncapsulatedRequestMessageTemplate,
+                arg0: _sessionKey,
+                arg1: encryptedFromattedMessage);
 
             return encapsulatedMessage;
         }
-
-
-        private string EncapsulatedMessage(string base64Message) =>
-            string.Format(Template.EncapsulatedRequestMessageTemplate,
-                _sessionKey, base64Message);
 
         public void Dispose() => (_client as IDisposable)?.Dispose();
     }

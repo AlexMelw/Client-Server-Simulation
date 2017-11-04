@@ -42,7 +42,9 @@
 
             foreach (string chunk in base64EncodedChunks)
             {
-                byte[] bytes = chunk.FromBase64StringToByteArray();
+                string normalizedBase64EncodedChunk = Base64Util.Normalize(chunk);
+
+                byte[] bytes = normalizedBase64EncodedChunk.FromBase64StringToByteArray();
 
                 encryptedChunks.AddLast(bytes);
             }

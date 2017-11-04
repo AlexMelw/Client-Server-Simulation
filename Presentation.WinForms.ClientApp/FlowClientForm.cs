@@ -133,9 +133,12 @@ namespace Presentation.WinForms.ClientApp
                 {
                     try
                     {
+                        string login = authLoginTextBox.GetTextThreadSafely();
+                        string password = authPassTextBox.GetTextThreadSafely();
+
                         bool authenticated = _flowClientWorker.Authenticate(
-                            login: authLoginTextBox.Text,
-                            password: authPassTextBox.Text);
+                            login: login,
+                            password: password);
 
                         MessageBox.Show($@"Authenticated: {authenticated}");
                     }
@@ -155,9 +158,12 @@ namespace Presentation.WinForms.ClientApp
                 {
                     try
                     {
+                        string ipAddress = serverIpAddressTextBox.GetTextThreadSafely();
+                        string port = serverPortTextBox.Text;
+
                         bool connected = _flowClientWorker.Connect(
-                            ipAddress: IPAddress.Parse(serverIpAddressTextBox.Text.Trim()),
-                            port: int.Parse(serverPortTextBox.Text.Trim()));
+                            ipAddress: IPAddress.Parse(ipAddress.Trim()),
+                            port: int.Parse(port.Trim()));
 
                         MessageBox.Show($@"Connected: {connected}");
                     }
@@ -177,10 +183,14 @@ namespace Presentation.WinForms.ClientApp
                 {
                     try
                     {
+                        string login = registerLoginTextBox.GetTextThreadSafely();
+                        string password = registerPassTextBox.GetTextThreadSafely();
+                        string text = registerNameTextBox.GetTextThreadSafely();
+
                         bool registered = _flowClientWorker.Register(
-                            login: registerLoginTextBox.Text,
-                            password: registerPassTextBox.Text,
-                            name: registerNameTextBox.Text);
+                            login: login,
+                            password: password,
+                            name: text);
 
                         MessageBox.Show(registered
                             ? @"Registered successfully"
@@ -200,17 +210,19 @@ namespace Presentation.WinForms.ClientApp
             {
                 Task.Run(() =>
                 {
-                    if (string.IsNullOrWhiteSpace(translateInputRichTextBox.Text))
+                    string sourceText = translateInputRichTextBox.GetTextThreadSafely();
+
+                    if (string.IsNullOrWhiteSpace(sourceText))
                     {
                         return;
                     }
                     try
                     {
-                        string inputTextLang = fromLangComboBox.Text;
-                        string outputTextLang = toLangComboBox.Text;
+                        string inputTextLang = fromLangComboBox.GetTextThreadSafely();
+                        string outputTextLang = toLangComboBox.GetTextThreadSafely();
 
                         string translatedText = _flowClientWorker.Translate(
-                            sourceText: translateInputRichTextBox.Text,
+                            sourceText: sourceText,
                             sourceTextLang: inputTextLang,
                             targetTextLanguage: outputTextLang);
 
@@ -240,14 +252,16 @@ namespace Presentation.WinForms.ClientApp
             {
                 Task.Run(() =>
                 {
-                    if (string.IsNullOrWhiteSpace(outgoingMessagesRichTextBox.Text))
+                    string messageText = outgoingMessagesRichTextBox.GetTextThreadSafely();
+
+                    if (string.IsNullOrWhiteSpace(messageText))
                     {
                         return;
                     }
 
-                    string recipient = recipientTextBox.Text.Trim();
-                    string messageBody = outgoingMessagesRichTextBox.Text;
-                    string sourceTextLanguage = outgoingLangComboBox.Text;
+                    string recipient = recipientTextBox.GetTextThreadSafely().Trim();
+                    string messageBody = outgoingMessagesRichTextBox.GetTextThreadSafely();
+                    string sourceTextLanguage = outgoingLangComboBox.GetTextThreadSafely();
 
                     try
                     {
@@ -329,7 +343,7 @@ namespace Presentation.WinForms.ClientApp
 
                     ((Button) sender).FlatAppearance.BorderColor = Color.DeepSkyBlue;
                     activateOnlineModeButton.FlatAppearance.BorderColor = Color.Gray;
-                });
+                }).ConfigureAwait(true);
             };
         }
 

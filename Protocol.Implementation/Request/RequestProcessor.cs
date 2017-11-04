@@ -282,8 +282,6 @@
                 //    return decryptedBytes.ToUtf8String();
                 //}
 
-                secret = Base64Util.Normalize(secret);
-
                 var cryptoFormatter = new CryptoFormatter();
 
                 string decryptedMessage = cryptoFormatter.GetDecryptedUnformattedMessage(secret, keys.ServerPrivateKey);
