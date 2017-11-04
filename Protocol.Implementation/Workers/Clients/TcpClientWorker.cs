@@ -259,13 +259,7 @@
                     {
                         encryptedRequestComponents.TryGetValue(Secret, out string secret);
 
-                        secret = secret.Replace(" ", "+");
-                        int mod4 = secret.Length % 4;
-                        if (mod4 > 0)
-                        {
-                            secret += new string('=', 4 - mod4);
-                        }
-
+                        secret = Base64Util.Normalize(secret);
 
                         string decryptedMessage = DecryptSecret(secret);
 
@@ -301,6 +295,7 @@
             }
             return false;
         }
+
 
         public string Translate(string sourceText, string sourceTextLang, string targetTextLanguage)
         {
@@ -603,31 +598,39 @@
 
         private string DecryptSecret(string secret)
         {
-            using (var rsa = new RSACryptoServiceProvider(SecurityLevel))
-            {
-                // Transform base64 -> plain text (still encrypted)
-                byte[] source = secret.FromBase64StringToByteArray();
+            //using (var rsa = new RSACryptoServiceProvider(SecurityLevel))
+            //{
+            //    // Transform base64 -> plain text (still encrypted)
+            //    byte[] source = secret.FromBase64StringToByteArray();
 
-                rsa.PersistKeyInCsp = false;
-                rsa.ImportParameters(_clientWorkerPrivateKey);
+            //    rsa.PersistKeyInCsp = false;
+            //    rsa.ImportParameters(_clientWorkerPrivateKey);
 
-                byte[] decryptedBytes = rsa.Decrypt(source, true);
+            //    byte[] decryptedBytes = rsa.Decrypt(source, true);
 
-                return decryptedBytes.ToUtf8String();
-            }
+            //    return decryptedBytes.ToUtf8String();
+            //}
+
+            secret = Base64Util.Normalize(secret);
+
+            var cryptoFormatter = new CryptoFormatter();
+
+            string decryptedMessage = cryptoFormatter.GetDecryptedUnformattedMessage(secret, _clientWorkerPrivateKey);
+
+            return decryptedMessage;
         }
 
         private string EncryptAndEncapsulateMessage(string originalMessage)
         {
             var cryptoFormatter = new CryptoFormatter();
 
-            string encryptedFromattedMessage = cryptoFormatter. GetEncryptedMessageWithFormatting(originalMessage, ForeignPublicKey);
+            string encryptedFromattedMessage =
+                cryptoFormatter.GetEncryptedMessageWithFormatting(originalMessage, ForeignPublicKey);
 
             string encapsulatedMessage = EncapsulatedMessage(encryptedFromattedMessage);
 
             return encapsulatedMessage;
         }
-
 
 
         private string EncapsulatedMessage(string base64Message) =>

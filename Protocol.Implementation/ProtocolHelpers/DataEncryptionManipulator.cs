@@ -1,12 +1,10 @@
-﻿namespace FlowProtocol.Implementation
+﻿namespace FlowProtocol.Implementation.ProtocolHelpers
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Cryptography;
     using EasySharp.NHelpers.CustomExMethods;
-    using ProtocolHelpers;
-    using Storage;
-    using static Interfaces.CommonConventions.Conventions;
+    using Interfaces.CommonConventions;
 
     public class DataEncryptionManipulator
     {
@@ -24,7 +22,7 @@
         {
             var decryptedChunks = new LinkedList<byte[]>();
 
-            using (var rsa = new RSACryptoServiceProvider(SecurityLevel))
+            using (var rsa = new RSACryptoServiceProvider(Conventions.SecurityLevel))
             {
                 rsa.ImportParameters(privateKey);
 
@@ -86,7 +84,7 @@
         {
             LinkedList<byte[]> encryptedChunks = new LinkedList<byte[]>();
 
-            using (var rsa = new RSACryptoServiceProvider(SecurityLevel))
+            using (var rsa = new RSACryptoServiceProvider(Conventions.SecurityLevel))
             {
                 rsa.PersistKeyInCsp = false;
                 rsa.ImportParameters(publicKey);

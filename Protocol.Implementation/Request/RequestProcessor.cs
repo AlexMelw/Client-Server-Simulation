@@ -8,10 +8,10 @@
     using DomainModels.Entities;
     using EasySharp.NHelpers.CustomExMethods;
     using Interfaces.Request;
-    using MSTranslatorService;
     using Ninject;
     using ProtocolHelpers;
     using Storage;
+    using Web_References.MSTranslatorService;
     using Workers.Clients.RequestTemplates;
     using static Interfaces.CommonConventions.Conventions;
 
@@ -230,26 +230,38 @@
 
         private string EncapsulateEncryptedMessage(string originalMessage, string sessionKey)
         {
-            byte[] encryptedMessage;
-            using (var rsaProvider = new RSACryptoServiceProvider(SecurityLevel))
-            {
-                Guid secureSessionKey = Guid.Parse(sessionKey);
-                var keys = SecureSessionMap.Instance.Keeper[secureSessionKey];
+            //byte[] encryptedMessage;
+            //using (var rsaProvider = new RSACryptoServiceProvider(SecurityLevel))
+            //{
+            //    Guid secureSessionKey = Guid.Parse(sessionKey);
+            //    var keys = SecureSessionMap.Instance.Keeper[secureSessionKey];
 
-                rsaProvider.PersistKeyInCsp = false;
-                rsaProvider.ImportParameters(keys.RemotePublicKey);
+            //    rsaProvider.PersistKeyInCsp = false;
+            //    rsaProvider.ImportParameters(keys.RemotePublicKey);
 
-                encryptedMessage = rsaProvider.Encrypt(originalMessage.ToUtf8EncodedByteArray(), true);
-            }
+            //    encryptedMessage = rsaProvider.Encrypt(originalMessage.ToUtf8EncodedByteArray(), true);
+            //}
 
-            string utf8EncodedMessage = encryptedMessage.ToUtf8String();
-            string base64EncodedMessage = utf8EncodedMessage.ToBase64String();
+            //string utf8EncodedMessage = encryptedMessage.ToUtf8String();
+            //string base64EncodedMessage = utf8EncodedMessage.ToBase64String();
+
+            //string encapsulatedMessage = string.Format(Template.EncapsulatedResponseMessageTemplate,
+            //    base64EncodedMessage);
+
+            Guid secureSessionKey = Guid.Parse(sessionKey);
+            Keys keys = SecureSessionMap.Instance.Keeper[secureSessionKey];
+
+            var cryptoFormatter = new CryptoFormatter();
+
+            string encryptedMessage = cryptoFormatter.GetEncryptedMessageWithFormatting(
+                originalMessage, keys.RemotePublicKey);
 
             string encapsulatedMessage = string.Format(Template.EncapsulatedResponseMessageTemplate,
-                base64EncodedMessage);
+                encryptedMessage);
 
             return encapsulatedMessage;
         }
+
 
         private string DecryptSecret(string secret, string sessionKey)
         {
@@ -269,6 +281,8 @@
 
                 //    return decryptedBytes.ToUtf8String();
                 //}
+
+                secret = Base64Util.Normalize(secret);
 
                 var cryptoFormatter = new CryptoFormatter();
 

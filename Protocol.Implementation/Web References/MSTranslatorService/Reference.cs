@@ -13,20 +13,18 @@
 // 
 #pragma warning disable 1591
 
-namespace FlowProtocol.Implementation.MSTranslatorService {
-    using System;
-    using System.Web.Services;
+namespace FlowProtocol.Implementation.Web_References.MSTranslatorService {
+    using System.ComponentModel;
     using System.Diagnostics;
+    using System.Web.Services;
     using System.Web.Services.Protocols;
     using System.Xml.Serialization;
-    using System.ComponentModel;
-    
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Web.Services.WebServiceBindingAttribute(Name="BasicHttpBinding_LanguageService", Namespace="http://tempuri.org/")]
+    [DebuggerStepThrough()]
+    [DesignerCategory("code")]
+    [WebServiceBinding(Name="BasicHttpBinding_LanguageService", Namespace="http://tempuri.org/")]
     public partial class SoapService : System.Web.Services.Protocols.SoapHttpClientProtocol {
         
         private System.Threading.SendOrPostCallback GetLanguagesOperationCompleted;
@@ -88,10 +86,10 @@ namespace FlowProtocol.Implementation.MSTranslatorService {
         public event TranslateCompletedEventHandler TranslateCompleted;
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguages", RequestNamespace="http://api.microsofttranslator.com/v1/soap.svc", ResponseNamespace="http://api.microsofttranslator.com/v1/soap.svc", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
-        public string[] GetLanguages([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string appId) {
+        [SoapDocumentMethod("http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguages", RequestNamespace="http://api.microsofttranslator.com/v1/soap.svc", ResponseNamespace="http://api.microsofttranslator.com/v1/soap.svc", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: XmlArray(IsNullable=true)]
+        [return: XmlArrayItem(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
+        public string[] GetLanguages([XmlElement(IsNullable=true)] string appId) {
             object[] results = this.Invoke("GetLanguages", new object[] {
                         appId});
             return ((string[])(results[0]));
@@ -119,10 +117,10 @@ namespace FlowProtocol.Implementation.MSTranslatorService {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguageNames", RequestNamespace="http://api.microsofttranslator.com/v1/soap.svc", ResponseNamespace="http://api.microsofttranslator.com/v1/soap.svc", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
-        public string[] GetLanguageNames([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string appId, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string locale) {
+        [SoapDocumentMethod("http://api.microsofttranslator.com/v1/soap.svc/LanguageService/GetLanguageNames", RequestNamespace="http://api.microsofttranslator.com/v1/soap.svc", ResponseNamespace="http://api.microsofttranslator.com/v1/soap.svc", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: XmlArray(IsNullable=true)]
+        [return: XmlArrayItem(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
+        public string[] GetLanguageNames([XmlElement(IsNullable=true)] string appId, [XmlElement(IsNullable=true)] string locale) {
             object[] results = this.Invoke("GetLanguageNames", new object[] {
                         appId,
                         locale});
@@ -152,9 +150,9 @@ namespace FlowProtocol.Implementation.MSTranslatorService {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://api.microsofttranslator.com/v1/soap.svc/LanguageService/Detect", RequestNamespace="http://api.microsofttranslator.com/v1/soap.svc", ResponseNamespace="http://api.microsofttranslator.com/v1/soap.svc", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string Detect([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string appId, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string text) {
+        [SoapDocumentMethod("http://api.microsofttranslator.com/v1/soap.svc/LanguageService/Detect", RequestNamespace="http://api.microsofttranslator.com/v1/soap.svc", ResponseNamespace="http://api.microsofttranslator.com/v1/soap.svc", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: XmlElement(IsNullable=true)]
+        public string Detect([XmlElement(IsNullable=true)] string appId, [XmlElement(IsNullable=true)] string text) {
             object[] results = this.Invoke("Detect", new object[] {
                         appId,
                         text});
@@ -184,9 +182,9 @@ namespace FlowProtocol.Implementation.MSTranslatorService {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://api.microsofttranslator.com/v1/soap.svc/LanguageService/Translate", RequestNamespace="http://api.microsofttranslator.com/v1/soap.svc", ResponseNamespace="http://api.microsofttranslator.com/v1/soap.svc", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string Translate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string appId, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string text, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string from, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string to) {
+        [SoapDocumentMethod("http://api.microsofttranslator.com/v1/soap.svc/LanguageService/Translate", RequestNamespace="http://api.microsofttranslator.com/v1/soap.svc", ResponseNamespace="http://api.microsofttranslator.com/v1/soap.svc", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: XmlElement(IsNullable=true)]
+        public string Translate([XmlElement(IsNullable=true)] string appId, [XmlElement(IsNullable=true)] string text, [XmlElement(IsNullable=true)] string from, [XmlElement(IsNullable=true)] string to) {
             object[] results = this.Invoke("Translate", new object[] {
                         appId,
                         text,
@@ -244,8 +242,8 @@ namespace FlowProtocol.Implementation.MSTranslatorService {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [DebuggerStepThrough()]
+    [DesignerCategory("code")]
     public partial class GetLanguagesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
@@ -270,8 +268,8 @@ namespace FlowProtocol.Implementation.MSTranslatorService {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [DebuggerStepThrough()]
+    [DesignerCategory("code")]
     public partial class GetLanguageNamesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
@@ -296,8 +294,8 @@ namespace FlowProtocol.Implementation.MSTranslatorService {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [DebuggerStepThrough()]
+    [DesignerCategory("code")]
     public partial class DetectCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
@@ -322,8 +320,8 @@ namespace FlowProtocol.Implementation.MSTranslatorService {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [DebuggerStepThrough()]
+    [DesignerCategory("code")]
     public partial class TranslateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;

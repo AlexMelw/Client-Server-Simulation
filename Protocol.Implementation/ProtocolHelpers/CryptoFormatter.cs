@@ -1,8 +1,7 @@
-﻿namespace FlowProtocol.Implementation
+﻿namespace FlowProtocol.Implementation.ProtocolHelpers
 {
     using System.Collections.Generic;
     using System.Security.Cryptography;
-    using Storage;
 
     public class CryptoFormatter
     {

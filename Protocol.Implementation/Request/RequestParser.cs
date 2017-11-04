@@ -10,7 +10,7 @@
         private const string HelloRequestPattern = @"(?<cmd>HELLO)\s+--pubkey='(?:(?<e>(?i:[a-z0-9\+\/\=]+))\|(?<m>(?i:[a-z0-9\+\/\=]+)))'"; //  HELLO --pubkey='0123456789ABCDEF|0123456789ABCDEF'
 
         private const string EncryptedMessagePattern =
-                @"(?:(?<cmd>CONF)\s+sessionkey:(?<sessionkey>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))\s+secret:(?<secret>(?i:[a-z0-9\+\/\=]+)))"
+                @"(?:(?<cmd>CONF)\s+sessionkey:(?<sessionkey>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))\s+secret:(?<secret>(?i:[a-z0-9\+\/\=\:]+)))"
             ;
 
         private const string AuthenticationRequestPattern =

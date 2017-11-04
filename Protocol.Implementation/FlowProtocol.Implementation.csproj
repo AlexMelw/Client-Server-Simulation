@@ -53,14 +53,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CryptoFormatter.cs" />
-    <Compile Include="DataEncryptionManipulator.cs" />
+    <Compile Include="ProtocolHelpers\CryptoFormatter.cs" />
+    <Compile Include="ProtocolHelpers\DataEncryptionManipulator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="ProtocolHelpers\Base64Util.cs" />
     <Compile Include="ProtocolHelpers\FlowProtocolEncodingHelper.cs" />
     <Compile Include="Request\RequestParser.cs" />
     <Compile Include="Request\RequestProcessor.cs" />

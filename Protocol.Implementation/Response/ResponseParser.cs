@@ -14,7 +14,7 @@
             ;
 
         private const string EncryptedMessagePattern =
-            @"(?:(?<cmd>CONF)\s+secret:(?<secret>(?i:[a-z0-9+/]+)))";
+            @"(?:(?<cmd>CONF)\s+secret:(?<secret>(?i:[a-z0-9\+\/\=\:]+)))";
 
         private const string AuthenticationResponsePattern =
                 @"(?:(?:(?<statuscode>\d{3})\s+(?<statusdesc>OK)\s+(?<cmd>AUTH)\s+--res='(?<res>(?s:.+))'\s+--sessiontoken='(?<sessiontoken>(?i:[{(?:]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?))')|(?:(?<statuscode>\d{3})\s+(?<statusdesc>ERR)\s+(?<cmd>AUTH)\s+--res='(?<res>(?s:.+))'))"
