@@ -1,6 +1,7 @@
 ﻿namespace FlowProtocol.Implementation.Workers.Clients
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
     using System.Net;
@@ -618,18 +619,59 @@
 
         private string EncryptAndEncapsulateMessage(string originalMessage)
         {
+            IEnumerable<byte[]> encryptedChunks = GetEncryptedChunks(originalMessage);
+
+            IEnumerable<string> base64EncodedChunks = GetBase64EncodedChunks(encryptedChunks);
+
+            string colonSeparatedMessage = GetColonSeparatedMessage(base64EncodedChunks);
+
+            string encapsulatedMessage = EncapsulatedMessage(colonSeparatedMessage);
+
+            return encapsulatedMessage;
+        }
+
+        private string GetColonSeparatedMessage(IEnumerable<string> stringChunks)
+        {
+            string colonConcatenatedChunks = string.Join(":", stringChunks);
+
+            return colonConcatenatedChunks;
+        }
+
+        private static IEnumerable<string> GetBase64EncodedChunks(IEnumerable<byte[]> encryptedChunks)
+        {
+            LinkedList<string> base64EncodedChunks = new LinkedList<string>();
+
+            foreach (byte[] encryptedChunk in encryptedChunks)
+            {
+                string base64Encoded = encryptedChunk.ToBase64String();
+                base64EncodedChunks.AddLast(base64Encoded);
+            }
+
+            return base64EncodedChunks.ToArray();
+        }
+
+        private IEnumerable<byte[]> GetEncryptedChunks(string originalMessage)
+        {
+            LinkedList<byte[]> encryptedChunks = new LinkedList<byte[]>();
+
             using (var rsa = new RSACryptoServiceProvider(SecurityLevel))
             {
                 rsa.PersistKeyInCsp = false;
                 rsa.ImportParameters(ForeignPublicKey);
 
-                byte[] encrypted = rsa.Encrypt(originalMessage.ToUtf8EncodedByteArray(), true);
+                //byte[] encrypted = rsa.Encrypt(originalMessage.ToUtf8EncodedByteArray(), true);
 
-                string base64EncodedMessage = encrypted.ToBase64String();
-                string encapsulatedMessage = EncapsulatedMessage(base64EncodedMessage);
+                byte[] utf8EncodedBytes = originalMessage.ToUtf8EncodedByteArray();
+                IEnumerable<IEnumerable<byte>> batches = utf8EncodedBytes.ChunkBy(32);
 
-                return encapsulatedMessage;
+                foreach (IEnumerable<byte> batch in batches)
+                {
+                    byte[] encryptedBatch = rsa.Encrypt(batch.ToArray(), true);
+                    encryptedChunks.AddLast(encryptedBatch);
+                }
             }
+
+            return encryptedChunks.ToArray();
         }
 
         private string EncapsulatedMessage(string base64Message) =>

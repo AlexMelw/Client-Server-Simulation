@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Concurrent;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
     using System.Security.Cryptography;
@@ -254,18 +255,34 @@
 
             if (SecureSessionMap.Instance.Keeper.TryGetValue(sessionKeyGuid, out var keys))
             {
-                using (var rsa = new RSACryptoServiceProvider(SecurityLevel))
-                {
-                    // Transform base64 -> plain text (still encrypted)
-                    byte[] source = secret.FromBase64StringToByteArray();
+                //using (var rsa = new RSACryptoServiceProvider(SecurityLevel))
+                //{
+                //    // Transform base64 -> plain text (still encrypted)
+                //    byte[] source = secret.FromBase64StringToByteArray();
 
-                    rsa.PersistKeyInCsp = false;
-                    rsa.ImportParameters(keys.ServerPrivateKey);
+                //    rsa.PersistKeyInCsp = false;
+                //    rsa.ImportParameters(keys.ServerPrivateKey);
 
-                    byte[] decryptedBytes = rsa.Decrypt(source, true);
+                //    byte[] decryptedBytes = rsa.Decrypt(source, true);
 
-                    return decryptedBytes.ToUtf8String();
-                }
+                //    return decryptedBytes.ToUtf8String();
+                //}
+
+                var manipulator = new DataEncryptionManipulator();
+
+                IEnumerable<string> base64EncodedChunks =
+                    manipulator.SplitColonSeparatedSecretToChunks(secret);
+
+                IEnumerable<byte[]> rsaEncryptedChunks =
+                    manipulator.GetDecodedBytesFromBase64Chunks(base64EncodedChunks);
+
+                IEnumerable<byte[]> decryptedChunksOfBytes =
+                    manipulator.GetDecryptedChunksOfBytes(rsaEncryptedChunks, keys);
+
+                string decryptedMessage = 
+                    manipulator.GetDecryptedMessage(decryptedChunksOfBytes);
+
+                return decryptedMessage;
             }
 
             return null;
