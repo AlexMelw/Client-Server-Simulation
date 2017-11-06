@@ -63,6 +63,19 @@
     </Compile>
     <Compile Include="ProtocolHelpers\Base64Util.cs" />
     <Compile Include="ProtocolHelpers\FlowProtocolEncodingHelper.cs" />
+    <Compile Include="Request\Commands\CommandsContainer.cs" />
+    <Compile Include="Request\Commands\Implementers\Unprotected\AuthenticationCommand.cs" />
+    <Compile Include="Request\Commands\Implementers\Unprotected\GetMessageCommand.cs" />
+    <Compile Include="Request\Commands\Implementers\Unprotected\RegisterCommand.cs" />
+    <Compile Include="Request\Commands\Implementers\Unprotected\SendMessageCommand.cs" />
+    <Compile Include="Request\Commands\Implementers\Unprotected\TranslateCommand.cs" />
+    <Compile Include="Request\Commands\Interfaces\IFactoryRequestCommand.cs" />
+    <Compile Include="Request\Commands\Interfaces\IRequestCommand.cs" />
+    <Compile Include="Request\Commands\Implementers\Unprotected\NotFoundRequestCommand.cs" />
+    <Compile Include="Request\Commands\Implementers\Protected\ConfidentialCommand.cs" />
+    <Compile Include="Request\Commands\Implementers\Protected\HelloCommand.cs" />
+    <Compile Include="Request\Commands\RequestCommandProcessor.cs" />
+    <Compile Include="Request\Commands\Utilities\CommandUtil.cs" />
     <Compile Include="Request\RequestParser.cs" />
     <Compile Include="Request\RequestProcessor.cs" />
     <Compile Include="Response\ResponseParser.cs" />
@@ -146,5 +159,6 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
