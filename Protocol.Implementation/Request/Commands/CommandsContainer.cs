@@ -10,30 +10,30 @@
     public class CommandsContainer
 
     {
-        public ConcurrentDictionary<string, Lazy<IFactoryRequestCommand>> Commands { get; } =
+        public ConcurrentDictionary<string, Lazy<IRequestCommandFactory>> Commands { get; } =
 
-            new ConcurrentDictionary<string, Lazy<IFactoryRequestCommand>>
+            new ConcurrentDictionary<string, Lazy<IRequestCommandFactory>>
             {
                 [Conventions.Commands.Hello] =
-                new Lazy<IFactoryRequestCommand>(() => new HelloCommand(), true),
+                new Lazy<IRequestCommandFactory>(() => new HelloCommand(), true),
 
                 [Conventions.Commands.Confidential] =
-                new Lazy<IFactoryRequestCommand>(() => new ConfidentialCommand(), true),
+                new Lazy<IRequestCommandFactory>(() => new ConfidentialCommand(), true),
 
                 [Conventions.Commands.Auth] =
-                new Lazy<IFactoryRequestCommand>(() => new AuthenticationCommand(), true),
+                new Lazy<IRequestCommandFactory>(() => new AuthenticationCommand(), true),
 
                 [Conventions.Commands.Register] =
-                new Lazy<IFactoryRequestCommand>(() => new RegisterCommand(), true),
+                new Lazy<IRequestCommandFactory>(() => new RegisterCommand(), true),
 
                 [Conventions.Commands.SendMessage] =
-                new Lazy<IFactoryRequestCommand>(() => new SendMessageCommand(), true),
+                new Lazy<IRequestCommandFactory>(() => new SendMessageCommand(), true),
 
                 [Conventions.Commands.GetMessage] =
-                new Lazy<IFactoryRequestCommand>(() => new GetMessageCommand(), true),
+                new Lazy<IRequestCommandFactory>(() => new GetMessageCommand(), true),
 
                 [Conventions.Commands.Translate] =
-                new Lazy<IFactoryRequestCommand>(() => new TranslateCommand(), true),
+                new Lazy<IRequestCommandFactory>(() => new TranslateCommand(), true),
             };
     }
 }

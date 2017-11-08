@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FlowProtocol.Implementation.Request.Commands.CommandsContainer">
+    <Position X="16" Y="0.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Request\Commands\CommandsContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FlowProtocol.Implementation.Request.Commands.Implementers.Unprotected.AuthenticationCommand" BaseTypeListCollapsed="true">
+    <Position X="8.5" Y="5.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAQAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Request\Commands\Implementers\Unprotected\AuthenticationCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="FlowProtocol.Implementation.Request.Commands.Implementers.Unprotected.RegisterCommand" BaseTypeListCollapsed="true">
+    <Position X="11" Y="6.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAQAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Request\Commands\Implementers\Unprotected\RegisterCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="FlowProtocol.Implementation.Request.Commands.RequestCommandFactory">
+    <Position X="11.25" Y="0.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAgAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Request\Commands\RequestCommandFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FlowProtocol.Implementation.Request.RequestProcessor">
+    <Position X="6.75" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Request\RequestProcessor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FlowProtocol.Implementation.Request.Commands.Utilities.CommandInterpreter">
+    <Position X="4.75" Y="5.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>EAAACAAAAAAAAAABEQAAAAAIAABAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Request\Commands\Utilities\CommandInterpreter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FlowProtocol.Implementation.Request.Commands.Implementers.Unprotected.NotFoundRequestCommand">
+    <Position X="13.25" Y="7.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Request\Commands\Implementers\Unprotected\NotFoundRequestCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FlowProtocol.Implementation.Server" Collapsed="true">
+    <Position X="3.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Server.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="FlowProtocol.Implementation.Request.Commands.Interfaces.IRequestCommandFactory">
+    <Position X="16" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Request\Commands\Interfaces\IRequestCommandFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FlowProtocol.Implementation.Request.Commands.Interfaces.IRequestCommand">
+    <Position X="11.75" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Request\Commands\Interfaces\IRequestCommand.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

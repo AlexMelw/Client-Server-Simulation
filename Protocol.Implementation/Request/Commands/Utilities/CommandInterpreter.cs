@@ -11,7 +11,7 @@
     using Web_References.MSTranslatorService;
     using Workers.Clients.RequestTemplates;
 
-    public static class CommandUtil
+    public static class CommandInterpreter
     {
         public static string EncapsulateEncryptedMessage(string originalMessage, string sessionKey)
         {

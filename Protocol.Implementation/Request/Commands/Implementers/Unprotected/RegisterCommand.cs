@@ -5,7 +5,7 @@
     using Interfaces;
     using Utilities;
 
-    public class RegisterCommand : IRequestCommand, IFactoryRequestCommand
+    public class RegisterCommand : IRequestCommand, IRequestCommandFactory
     {
         private ConcurrentDictionary<string, string> _requestComponents;
 
@@ -23,10 +23,10 @@
             _requestComponents.TryGetValue(Conventions.Name, out string name);
             _requestComponents.TryGetValue(Conventions.SessionKey, out string sessionKey);
 
-            if (CommandUtil.RegisterUser(login, pass, name))
+            if (CommandInterpreter.RegisterUser(login, pass, name))
             {
                 string originalMessage = $@"200 OK REGISTER --res='User registered successfully'";
-                string encapsulatedMessage = CommandUtil.EncapsulateEncryptedMessage(originalMessage, sessionKey);
+                string encapsulatedMessage = CommandInterpreter.EncapsulateEncryptedMessage(originalMessage, sessionKey);
 
                 return encapsulatedMessage;
             }

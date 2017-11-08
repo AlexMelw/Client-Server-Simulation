@@ -5,7 +5,7 @@
     using Interfaces;
     using Utilities;
 
-    public class TranslateCommand : IRequestCommand, IFactoryRequestCommand
+    public class TranslateCommand : IRequestCommand, IRequestCommandFactory
     {
         private ConcurrentDictionary<string, string> _requestComponents;
 
@@ -24,7 +24,7 @@
             _requestComponents.TryGetValue(Conventions.SessionKey, out string sessionKey);
 
 
-            string translatedText = CommandUtil.Translate(
+            string translatedText = CommandInterpreter.Translate(
                 sourceText,
                 sourceLang,
                 targetLang
@@ -32,7 +32,7 @@
 
             string originalMessage = $@"200 OK TRANSLATE --res='{translatedText}'";
 
-            return CommandUtil.EncapsulateEncryptedMessage(originalMessage, sessionKey);
+            return CommandInterpreter.EncapsulateEncryptedMessage(originalMessage, sessionKey);
         }
     }
 }

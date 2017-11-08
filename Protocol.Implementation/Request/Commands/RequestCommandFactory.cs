@@ -7,15 +7,15 @@
     using Implementers.Unprotected;
     using Interfaces;
 
-    public class RequestCommandProcessor
+    public class RequestCommandFactory
     {
-        private readonly ConcurrentDictionary<string, Lazy<IFactoryRequestCommand>> _requestProcessingCommands;
+        private readonly ConcurrentDictionary<string, Lazy<IRequestCommandFactory>> _requestProcessingCommands;
         private readonly IFlowProtocolRequestParser _parser;
 
         #region CONSTRUCTORS
 
-        public RequestCommandProcessor(
-            ConcurrentDictionary<string, Lazy<IFactoryRequestCommand>> requestProcessingCommands,
+        public RequestCommandFactory(
+            ConcurrentDictionary<string, Lazy<IRequestCommandFactory>> requestProcessingCommands,
             IFlowProtocolRequestParser parser)
         {
             _requestProcessingCommands = requestProcessingCommands
@@ -33,7 +33,7 @@
 
             if (requestComponents.TryGetValue(Conventions.Cmd, out string cmd))
             {
-                if (_requestProcessingCommands.TryGetValue(cmd, out Lazy<IFactoryRequestCommand> lazyCommandFactory))
+                if (_requestProcessingCommands.TryGetValue(cmd, out Lazy<IRequestCommandFactory> lazyCommandFactory))
                 {
                     return lazyCommandFactory.Value.BuildCommand(requestComponents);
                 }
@@ -49,7 +49,7 @@
 
             if (requestComponents.TryGetValue(Conventions.Cmd, out string cmd))
             {
-                if (_requestProcessingCommands.TryGetValue(cmd, out Lazy<IFactoryRequestCommand> lazyCommandFactory))
+                if (_requestProcessingCommands.TryGetValue(cmd, out Lazy<IRequestCommandFactory> lazyCommandFactory))
                 {
                     return lazyCommandFactory.Value.BuildCommand(requestComponents);
                 }

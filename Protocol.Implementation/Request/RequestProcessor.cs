@@ -25,7 +25,7 @@
         {
             var commandsContainer = new CommandsContainer();
 
-            var commandProcessor = new RequestCommandProcessor(commandsContainer.Commands, _parser);
+            var commandProcessor = new RequestCommandFactory(commandsContainer.Commands, _parser);
 
             IRequestCommand requestCommand = commandProcessor.CreateProtectedRequestCommand(request);
 

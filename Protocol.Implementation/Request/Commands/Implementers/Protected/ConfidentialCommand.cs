@@ -7,7 +7,7 @@
     using Interfaces;
     using Utilities;
 
-    public class ConfidentialCommand : IRequestCommand, IFactoryRequestCommand
+    public class ConfidentialCommand : IRequestCommand, IRequestCommandFactory
     {
         private ConcurrentDictionary<string, string> _requestComponents;
 
@@ -35,7 +35,7 @@
             _requestComponents.TryGetValue(Conventions.SessionKey, out string sessionKey);
             _requestComponents.TryGetValue(Conventions.Secret, out string secret);
 
-            string decryptedRequestMessage = CommandUtil.DecryptSecret(secret, sessionKey);
+            string decryptedRequestMessage = CommandInterpreter.DecryptSecret(secret, sessionKey);
 
             var requestComponents = _parser.ParseRequest(decryptedRequestMessage);
 
@@ -49,7 +49,7 @@
             {
                 var commandsContainer = new CommandsContainer();
 
-                var commandProcessor = new RequestCommandProcessor(commandsContainer.Commands, _parser);
+                var commandProcessor = new RequestCommandFactory(commandsContainer.Commands, _parser);
 
                 IRequestCommand requestCommand =
                     commandProcessor.CreateUnprotectedRequestCommand(decryptedRequestMessage, sessionKey);

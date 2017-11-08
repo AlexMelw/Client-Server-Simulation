@@ -2,7 +2,7 @@
 {
     using System.Collections.Concurrent;
 
-    public interface IFactoryRequestCommand
+    public interface IRequestCommandFactory
     {
         IRequestCommand BuildCommand(ConcurrentDictionary<string, string> requestComponents);
     }

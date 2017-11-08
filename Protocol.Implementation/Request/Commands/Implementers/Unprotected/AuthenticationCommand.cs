@@ -6,7 +6,7 @@
     using Interfaces;
     using Utilities;
 
-    public class AuthenticationCommand : IRequestCommand, IFactoryRequestCommand
+    public class AuthenticationCommand : IRequestCommand, IRequestCommandFactory
     {
         private ConcurrentDictionary<string, string> _requestComponents;
 
@@ -24,18 +24,18 @@
             _requestComponents.TryGetValue(Conventions.SessionKey, out string sessionKey);
 
 
-            Guid authToken = CommandUtil.CreateNewSessionForUserWithCredentials(login, pass);
+            Guid authToken = CommandInterpreter.CreateNewSessionForUserWithCredentials(login, pass);
 
             if (authToken != Guid.Empty)
             {
                 string originalMessage =
                     $@"200 OK AUTH --res='User authenticated successfully' --sessiontoken='{authToken}'";
-                return CommandUtil.EncapsulateEncryptedMessage(originalMessage, sessionKey);
+                return CommandInterpreter.EncapsulateEncryptedMessage(originalMessage, sessionKey);
             }
 
             string originalMessage2 = $@"530 ERR AUTH --res='login or password incorrect'";
 
-            return CommandUtil.EncapsulateEncryptedMessage(originalMessage2, sessionKey);
+            return CommandInterpreter.EncapsulateEncryptedMessage(originalMessage2, sessionKey);
         }
     }
 }

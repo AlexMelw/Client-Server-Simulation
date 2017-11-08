@@ -8,7 +8,7 @@
     using Storage;
     using Utilities;
 
-    public class HelloCommand : IRequestCommand, IFactoryRequestCommand
+    public class HelloCommand : IRequestCommand, IRequestCommandFactory
     {
         private ConcurrentDictionary<string, string> _requestComponents;
 
@@ -25,7 +25,7 @@
             _requestComponents.TryGetValue(Conventions.Exponent, out string clientEncryptionExponent);
             _requestComponents.TryGetValue(Conventions.Modulus, out string clientEncryptionModulus);
 
-            Guid sessionKey = CommandUtil.CreateSessionKey(clientEncryptionExponent, clientEncryptionModulus);
+            Guid sessionKey = CommandInterpreter.CreateSessionKey(clientEncryptionExponent, clientEncryptionModulus);
 
             SecureSessionMap.Instance.Keeper.TryGetValue(sessionKey, out var keys);
 

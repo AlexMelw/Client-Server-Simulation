@@ -69,13 +69,13 @@
     <Compile Include="Request\Commands\Implementers\Unprotected\RegisterCommand.cs" />
     <Compile Include="Request\Commands\Implementers\Unprotected\SendMessageCommand.cs" />
     <Compile Include="Request\Commands\Implementers\Unprotected\TranslateCommand.cs" />
-    <Compile Include="Request\Commands\Interfaces\IFactoryRequestCommand.cs" />
+    <Compile Include="Request\Commands\Interfaces\IRequestCommandFactory.cs" />
     <Compile Include="Request\Commands\Interfaces\IRequestCommand.cs" />
     <Compile Include="Request\Commands\Implementers\Unprotected\NotFoundRequestCommand.cs" />
     <Compile Include="Request\Commands\Implementers\Protected\ConfidentialCommand.cs" />
     <Compile Include="Request\Commands\Implementers\Protected\HelloCommand.cs" />
-    <Compile Include="Request\Commands\RequestCommandProcessor.cs" />
-    <Compile Include="Request\Commands\Utilities\CommandUtil.cs" />
+    <Compile Include="Request\Commands\RequestCommandFactory.cs" />
+    <Compile Include="Request\Commands\Utilities\CommandInterpreter.cs" />
     <Compile Include="Request\RequestParser.cs" />
     <Compile Include="Request\RequestProcessor.cs" />
     <Compile Include="Response\ResponseParser.cs" />
@@ -123,6 +123,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Request\Commands\CommandsClassDiagram.cd" />
     <None Include="Web References\MSTranslatorService\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

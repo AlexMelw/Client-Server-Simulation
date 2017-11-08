@@ -8,7 +8,7 @@
     using Storage;
     using Utilities;
 
-    public class SendMessageCommand : IRequestCommand, IFactoryRequestCommand
+    public class SendMessageCommand : IRequestCommand, IRequestCommandFactory
     {
         private ConcurrentDictionary<string, string> _requestComponents;
 
@@ -24,13 +24,13 @@
             _requestComponents.TryGetValue(Conventions.SessionToken, out string sessionToken);
             _requestComponents.TryGetValue(Conventions.SessionKey, out string sessionKey);
 
-            User senderUser = CommandUtil.AuthenticateUser(sessionToken);
+            User senderUser = CommandInterpreter.AuthenticateUser(sessionToken);
 
             if (senderUser != null)
             {
                 _requestComponents.TryGetValue(Conventions.Recipient, out string recipient);
 
-                if (CommandUtil.AuthenticateRecipient(recipient))
+                if (CommandInterpreter.AuthenticateRecipient(recipient))
                 {
                     _requestComponents.TryGetValue(Conventions.Message, out string message);
                     _requestComponents.TryGetValue(Conventions.SourceLang, out string sourceLang);
@@ -46,15 +46,15 @@
                         });
 
                     string originalMessage = $@"200 OK SENDMSG --res='Message sent successfully'";
-                    return CommandUtil.EncapsulateEncryptedMessage(originalMessage, sessionKey);
+                    return CommandInterpreter.EncapsulateEncryptedMessage(originalMessage, sessionKey);
                 }
 
                 string originalMessage2 = $@"512 ERR SENDMSG --res='Inexistent recipient'";
-                return CommandUtil.EncapsulateEncryptedMessage(originalMessage2, sessionKey);
+                return CommandInterpreter.EncapsulateEncryptedMessage(originalMessage2, sessionKey);
             }
 
             string originalMessage3 = $@"511 ERR SENDMSG --res='Athentication required'";
-            return CommandUtil.EncapsulateEncryptedMessage(originalMessage3, sessionKey);
+            return CommandInterpreter.EncapsulateEncryptedMessage(originalMessage3, sessionKey);
         }
     }
 }

@@ -8,7 +8,7 @@
     using Storage;
     using Utilities;
 
-    public class GetMessageCommand : IRequestCommand, IFactoryRequestCommand
+    public class GetMessageCommand : IRequestCommand, IRequestCommandFactory
     {
         private ConcurrentDictionary<string, string> _requestComponents;
 
@@ -25,7 +25,7 @@
             _requestComponents.TryGetValue(Conventions.SessionKey, out string sessionKey);
 
 
-            User user = CommandUtil.AuthenticateUser(sessionToken);
+            User user = CommandInterpreter.AuthenticateUser(sessionToken);
 
             if (user != null)
             {
@@ -38,11 +38,11 @@
                     {
                         string originalMessage =
                             $"200 OK GETMSG --senderid='{msg.SenderId}' --sendername='{msg.SenderName}' --msg='{msg.TextBody}'";
-                        return CommandUtil.EncapsulateEncryptedMessage(originalMessage, sessionKey);
+                        return CommandInterpreter.EncapsulateEncryptedMessage(originalMessage, sessionKey);
                     }
 
                     string originalMessage2 = $@"513 ERR GETMSG --res='Message Box is empty'";
-                    return CommandUtil.EncapsulateEncryptedMessage(originalMessage2, sessionKey);
+                    return CommandInterpreter.EncapsulateEncryptedMessage(originalMessage2, sessionKey);
                 }
 
                 if (translationMode == Conventions.DoTranslate)
@@ -60,7 +60,7 @@
                         string translatedText;
                         try
                         {
-                            translatedText = CommandUtil.Translate(
+                            translatedText = CommandInterpreter.Translate(
                                 msg.TextBody,
                                 fromLang,
                                 toLang);
@@ -73,16 +73,16 @@
 
                         string originalMessage =
                             $"200 OK GETMSG --senderid='{msg.SenderId}' --sendername='{msg.SenderName}' --msg='{translatedText}'";
-                        return CommandUtil.EncapsulateEncryptedMessage(originalMessage, sessionKey);
+                        return CommandInterpreter.EncapsulateEncryptedMessage(originalMessage, sessionKey);
                     }
 
                     string originalMessage2 = $@"513 ERR GETMSG --res='Message Box is empty'";
-                    return CommandUtil.EncapsulateEncryptedMessage(originalMessage2, sessionKey);
+                    return CommandInterpreter.EncapsulateEncryptedMessage(originalMessage2, sessionKey);
                 }
             }
 
             string originalMessage3 = $"511 ERR GETMSG --res='Athentication required'";
-            return CommandUtil.EncapsulateEncryptedMessage(originalMessage3, sessionKey);
+            return CommandInterpreter.EncapsulateEncryptedMessage(originalMessage3, sessionKey);
         }
     }
 }
